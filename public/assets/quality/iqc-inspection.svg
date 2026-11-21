@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="IQC来料公差与端子抽检 IQC Dimensional Inspection">
+  <title>IQC来料公差与端子抽检 IQC Dimensional Inspection</title>
+  <rect x="6" y="6" width="108" height="108" rx="18" fill="#F8FAFC" stroke="#A8CFEE" stroke-width="1.5"/>
+  <circle cx="60" cy="62" r="38" fill="none" stroke="#A8CFEE" stroke-width="1" stroke-dasharray="3 3" opacity="0.65"/>
+  <line x1="60" y1="14" x2="60" y2="110" stroke="#A8CFEE" stroke-width="0.8" stroke-dasharray="2 3" opacity="0.45"/>
+  <line x1="14" y1="62" x2="106" y2="62" stroke="#A8CFEE" stroke-width="0.8" stroke-dasharray="2 3" opacity="0.45"/>
+  <path d="M18.88 16.45 Q19.97 16.45 20.59 17.23 Q21.32 18.16 21.32 20.29 Q21.32 22.43 20.58 23.36 Q19.97 24.13 18.88 24.13 Q17.78 24.13 17.11 23.28 Q16.44 22.44 16.44 20.28 Q16.44 18.16 17.18 17.22 Q17.79 16.45 18.88 16.45 Z M18.88 17.65 Q18.62 17.65 18.41 17.81 Q18.21 17.98 18.10 18.41 Q17.95 18.97 17.95 20.29 Q17.95 21.62 18.08 22.11 Q18.21 22.61 18.42 22.77 Q18.62 22.93 18.88 22.93 Q19.14 22.93 19.35 22.77 Q19.55 22.60 19.67 22.17 Q19.81 21.62 19.81 20.29 Q19.81 18.97 19.68 18.48 Q19.55 17.98 19.35 17.81 Q19.14 17.65 18.88 17.65 Z M27.95 22.66 L27.95 24.00 L22.90 24.00 Q22.98 23.24 23.39 22.56 Q23.80 21.88 25.01 20.76 Q25.99 19.85 26.21 19.53 Q26.51 19.08 26.51 18.65 Q26.51 18.17 26.25 17.91 Q25.99 17.65 25.53 17.65 Q25.08 17.65 24.81 17.92 Q24.55 18.19 24.51 18.82 L23.07 18.68 Q23.20 17.49 23.88 16.97 Q24.55 16.45 25.57 16.45 Q26.68 16.45 27.32 17.05 Q27.95 17.65 27.95 18.54 Q27.95 19.05 27.77 19.51 Q27.59 19.97 27.19 20.47 Q26.93 20.81 26.25 21.43 Q25.57 22.06 25.39 22.26 Q25.20 22.47 25.09 22.66 Z" fill="#617282" opacity="0.85"/>
+  <rect x="33" y="46" width="54" height="32" rx="4" fill="#FFFFFF" stroke="#092143" stroke-width="2.8"/>
+  <rect x="41" y="39" width="38" height="7" rx="1.5" fill="#A8CFEE" stroke="#092143" stroke-width="2"/>
+  <circle cx="45" cy="57" r="3" fill="#092143"/>
+  <circle cx="60" cy="57" r="3" fill="#092143"/>
+  <circle cx="75" cy="57" r="3" fill="#092143"/>
+  <circle cx="45" cy="68" r="3" fill="#02B0EE"/>
+  <circle cx="60" cy="68" r="3" fill="#02B0EE"/>
+  <circle cx="75" cy="68" r="3" fill="#02B0EE"/>
+  <!-- Precision Caliper / Tolerance Dimensioning -->
+  <line x1="33" y1="88" x2="87" y2="88" stroke="#FE6A08" stroke-width="2.2"/>
+  <line x1="33" y1="83" x2="33" y2="93" stroke="#FE6A08" stroke-width="2.4"/>
+  <line x1="87" y1="83" x2="87" y2="93" stroke="#FE6A08" stroke-width="2.4"/>
+  <circle cx="76" cy="44" r="14" fill="#FFFFFF" fill-opacity="0.92" stroke="#02B0EE" stroke-width="2.8"/>
+  <line x1="86" y1="54" x2="95" y2="63" stroke="#092143" stroke-width="3.4" stroke-linecap="round"/>
+  <line x1="71" y1="44" x2="81" y2="44" stroke="#FE6A08" stroke-width="1.8"/>
+  <line x1="76" y1="39" x2="76" y2="49" stroke="#FE6A08" stroke-width="1.8"/>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Ou-Link Favicon">
+  <title>Ou-Link</title>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#092143"/>
+  <defs>
+    <linearGradient id="ou-orange-favicon" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FE6A08"/>
+      <stop offset="100%" stop-color="#FF8524"/>
+    </linearGradient>
+    <linearGradient id="ou-cyber-favicon" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#02B0EE"/>
+      <stop offset="100%" stop-color="#4AD0FF"/>
+    </linearGradient>
+    <linearGradient id="ou-silver-favicon" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#A8CFEE"/>
+      <stop offset="100%" stop-color="#F1F5F9"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <path d="M 35.99 18.76 A 7.68 7.68 0 0 1 43.60 31.68 L 30.87 43.55 A 7.68 7.68 0 0 1 18.33 40.31 L 21.86 39.77 A 4.20 4.20 0 0 0 28.50 41.01 L 41.23 29.14 A 4.20 4.20 0 0 0 37.63 21.93 Z" fill="url(#ou-cyber-favicon)"/>
+    <path d="M 28.08 50.48 A 12.78 12.78 0 0 1 16.92 28.59 L 29.65 16.72 A 12.78 12.78 0 1 1 47.08 35.41 L 42.25 39.91 L 40.65 35.83 L 44.30 32.43 A 8.70 8.70 0 1 0 32.43 19.70 L 19.70 31.57 A 8.70 8.70 0 0 0 26.09 46.62 Z" fill="url(#ou-orange-favicon)"/>
+    <path d="M 27.50 17.32 L 16.23 27.84 A 13.80 13.80 0 1 0 35.05 48.03 L 40.89 42.58 L 42.04 46.10 L 37.34 50.48 A 17.16 17.16 0 1 1 13.93 25.38 L 24.03 15.97 Z" fill="url(#ou-silver-favicon)"/>
+    <path d="M 43.26 44.96 L 50.07 38.62 A 17.16 17.16 0 0 0 53.92 18.81 L 51.41 21.57 A 13.80 13.80 0 0 1 47.77 36.16 L 42.11 41.44 Z" fill="#A8CFEE"/>
+  </g>
+</svg>

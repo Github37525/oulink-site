@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Ou-Link Connector Emblem">
+  <title>Ou-Link Electronics Emblem</title>
+  <defs>
+    <linearGradient id="ou-orange-color" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#E05500"/>
+      <stop offset="55%" stop-color="#FE6A08"/>
+      <stop offset="100%" stop-color="#FF8524"/>
+    </linearGradient>
+    <linearGradient id="ou-cyber-color" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#008CC4"/>
+      <stop offset="60%" stop-color="#02B0EE"/>
+      <stop offset="100%" stop-color="#38C8FA"/>
+    </linearGradient>
+    <linearGradient id="ou-navy-color" x1="0%" y1="100%" x2="85%" y2="0%">
+      <stop offset="0%" stop-color="#092143"/>
+      <stop offset="58%" stop-color="#092143"/>
+      <stop offset="100%" stop-color="#617282"/>
+    </linearGradient>
+  </defs>
+  <g stroke="#A8CFEE" stroke-width="0.90" fill="none" opacity="0.48">
+    <circle cx="60.00" cy="60.00" r="40.32" stroke-dasharray="3.4 2.8"/>
+    <circle cx="71.88" cy="48.92" r="23.74"/>
+    <circle cx="48.12" cy="71.08" r="31.81"/>
+    <line x1="9.60" y1="60.00" x2="110.40" y2="60.00" stroke-dasharray="2.2 2.2"/>
+    <line x1="60.00" y1="9.60" x2="60.00" y2="110.40" stroke-dasharray="2.2 2.2"/>
+  </g>
+  <g>
+    <path d="M 67.31 34.86 A 14.78 14.78 0 0 1 81.96 59.74 L 58.21 81.89 A 14.78 14.78 0 0 1 34.06 75.64 L 40.07 75.00 A 8.96 8.96 0 0 0 54.23 77.63 L 77.99 55.48 A 8.96 8.96 0 0 0 70.32 40.10 Z" fill="url(#ou-cyber-color)"/>
+    <path d="M 52.65 94.38 A 23.74 23.74 0 0 1 31.93 53.71 L 55.68 31.56 A 23.74 23.74 0 1 1 88.07 66.29 L 79.06 74.69 L 76.69 67.71 L 83.49 61.37 A 17.02 17.02 0 1 0 60.27 36.47 L 36.51 58.63 A 17.02 17.02 0 0 0 49.01 88.08 Z" fill="url(#ou-orange-color)"/>
+    <path d="M 51.45 32.44 L 30.40 52.07 A 25.98 25.98 0 1 0 65.84 90.08 L 76.74 79.92 L 78.58 86.17 L 69.82 94.34 A 31.81 31.81 0 1 1 26.43 47.81 L 45.27 30.24 Z" fill="url(#ou-navy-color)"/>
+    <path d="M 80.87 84.03 L 93.57 72.19 A 31.81 31.81 0 0 0 100.71 35.48 L 96.45 40.46 A 25.98 25.98 0 0 1 89.60 67.93 L 79.03 77.78 Z" fill="#617282"/>
+    <path d="M 82.35 87.25 L 95.04 75.41 L 94.80 73.18 L 82.11 85.02 Z" fill="#8395A7" opacity="0.72"/>
+  </g>
+</svg>

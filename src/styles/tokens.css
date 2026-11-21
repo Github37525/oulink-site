@@ -1,0 +1,45 @@
+:root {
+  /* === 1. Official VI Core Brand Palette (Pixel-Sampled Swatches) === */
+  --ou-navy: #092143;          /* Deep Navy: primary brand color, dark plates, primary headings */
+  --ou-navy-deep: #05152C;     /* Deepest Navy: footer nameplate & technical status bar */
+  --ou-navy-hover: #123361;    /* Deep Navy hover state */
+
+  --ou-cyber-blue: #02B0EE;    /* Cyber Blue: high-frequency/high-speed data interconnect accent */
+  --ou-cyber-dark: #0082B3;    /* Accessible dark cyan for text badges on light backgrounds */
+  --ou-cyber-tint: rgba(2, 176, 238, 0.10);
+
+  --ou-volt-orange: #FE6A08;   /* Volt Orange: high-voltage power accent, core RFQ CTA & focus ring */
+  --ou-volt-hover: #E05A00;    /* Volt Orange hover state */
+  --ou-volt-tint: rgba(254, 106, 8, 0.10);
+
+  --ou-slate: #617282;         /* Slate Gray: neutral engineering caption & metadata */
+  --ou-ice-blue: #A8CFEE;      /* Engineering Ice Blue: CAD construction arcs, micro-grid & hairline highlight */
+
+  /* === 2. Surface Hierarchy === */
+  --bg-canvas: #EFF3F7;        /* Official Canvas Gray-Blue global drafting background */
+  --bg-muted: #EDF0F4;         /* Secondary industrial muted panel */
+  --bg-card: #FFFFFF;          /* Pure white specification sheet card */
+
+  /* === 3. Typography & Hairline Tolerance Borders === */
+  --text-primary: #092143;     /* Primary text (>13:1 AAA contrast on white/canvas) */
+  --text-body: #2B3B4E;        /* Extended technical copy color */
+  --text-muted: #617282;       /* Secondary parameter labels */
+  --text-on-dark: #F7FAFC;     /* Reversed text on Deep Navy surfaces */
+
+  --border-subtle: #DCE4EE;    /* 1px standard card tolerance line */
+  --border-strong: #B8C9DC;    /* Table rule & form control border */
+
+  /* === 4. Industrial Typography Stacks === */
+  --font-display: "Barlow", "DIN Alternate", "Bahnschrift", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", sans-serif;
+  --font-sans: "Plus Jakarta Sans", "HarmonyOS Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", sans-serif;
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", "Cascadia Mono", "Consolas", "Courier New", monospace;
+
+  /* === 5. Crisp Industrial Geometry & Elevation === */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --shadow-card: 0 1px 3px rgba(9, 33, 67, 0.05), 0 8px 24px rgba(9, 33, 67, 0.04);
+  --shadow-elevated: 0 14px 36px rgba(9, 33, 67, 0.12);
+  --header-height: 72px;
+  --container-max: 1320px;
+}

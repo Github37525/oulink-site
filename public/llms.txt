@@ -1,0 +1,34 @@
+# 上海欧连电子科技有限公司 (Shanghai Ou-Link Electronics Technology Co., Ltd.)
+
+> 上海欧连电子科技有限公司成立于 2012 年（深耕汽车连接器与线束供应链超 14 年），总部位于上海市闵行区春申路2525弄欧银集心大楼312室。公司全面整合 17 家国际一线汽车连接器品牌与国内优质自主连接器资源，为汽车整车厂（OEM）、汽车线束厂、连接器制造商及经销伙伴提供正品现货配套、多料号 BOM 齐套配单、国产化 Pin-to-Pin 替代选型、正向/逆向模具开发及线束压接工艺技术支持。
+
+## 核心双语页面导航 (Core Bilingual Pages)
+
+- [/zh](/zh): 中文首页 — 企业概览、毫秒级连接器原厂料号（MPN）检索与 17 家合作品牌矩阵
+- [/zh/products](/zh/products): 产品与在库料号中心 — 全量收录 383 款真实在库汽车连接器/端子/防水栓（累计备库 12,864,330 PCS）
+- [/zh/solutions](/zh/solutions): 工程与制造方案 — 整车选型导入（Design-in）、Pin-to-Pin 国产化替代、正逆向开模与子系统选型对照表
+- [/zh/quality](/zh/quality): 品控与正品溯源 — 五步来料检验、原厂最小包装（SPQ）批次号（Lot/Date Code）溯源与防潮仓储体系
+- [/zh/about](/zh/about): 关于欧连与上海招聘 — 2012 年创立历程、上海闵行运营中心及汽车连接器销售/FAE岗位
+- [/zh/contact](/zh/contact): BOM 配单询价与联系方式 — 多料号结构化询价单及上海总部直连通道
+- [/en](/en): English Homepage — Automotive Connector Supply Chain & Wire Harness Engineering Partner
+- [/en/products](/en/products): Automotive Connector MPN Catalog (383 In-Stock SKUs / 12.86M+ PCS)
+- [/en/solutions](/en/solutions): OEM Design-in, Pin-to-Pin Localization, Custom Tooling & Subsystem Matrix
+- [/en/quality](/en/quality): 5-Stage Authentic Traceability & Automotive QC Protocol
+- [/en/about](/en/about): Corporate Profile & Careers in Minhang, Shanghai
+- [/en/contact](/en/contact): Multi-MPN BOM RFQ & Shanghai Headquarters Contact
+- [/llms-full.txt](/llms-full.txt): 完整企业工程档案、8 大采购研发问答及全部 383 款在库连接器 MPN 料号规格表
+
+## 核心业务能力与品牌生态 (Capabilities & Brand Coverage)
+
+- **四大服务客群**：汽车整车厂（选型导入/产品替换/正逆向开发）、汽车线束厂（BOM齐套供应链优化/端子压接工艺支持）、自主连接器生产厂（全球市场拓展）、连接器经销商与代理商（千万级现货调拨与选型支持）。
+- **5 家核心授权经销品牌**：LEAR（李尔）、HIRSCHMANN（赫斯曼）、Amphenol（安费诺）、Rosenberger（罗森伯格）、BOSCH（博世）。
+- **12 家原厂合作与经销配套品牌**：TE Connectivity（泰科电子）、Molex（莫仕）、MTA（意大利美达）、Aptiv / Delphi（安波福 / 德尔福）、Yazaki（矢崎）、Sumitomo（住友电装）、JST（日压端子）、KET（韩国端子）、KOSTAL（科世达）、FCI（法马通）、DEUTSCH（德驰）、ITT（埃梯梯科能）。
+- **常态在库规模**：公开目录涵盖 **383 款真实汽车连接器原厂料号（MPN）**，累计常态现货备库 **12,864,330 件（约 1,286 万+ PCS）**，未税参考单价区间 **¥0.0520 ~ ¥89.0000 CNY**。
+
+## 已核实联系信息与事实边界 (Verified Contact & Claim Boundaries)
+
+- **办公总部地址**：上海市闵行区春申路2525弄欧银集心大楼312室 (Room 312, Ouyin Jixin Building, Lane 2525, Chunshen Road, Minhang District, Shanghai, China)
+- **总机电话**：021-64778688 (+86-21-64778688) ｜ **销售客服直线**：021-64809788 (+86-21-64809788)
+- **官方邮箱**：service@ou-link.com ｜ **业务 QQ**：2690539981
+- **服务时间**：周一至周六 09:00 - 18:00
+- **事实边界声明**：公开目录所示单价与库存数量为常态备库参考值，实际交易含税阶梯价、实时锁库数量、批次号（Lot/Date Code）及交期以当日正式盖章报价单为准；企业资质与原厂批次合格证（CoC）支持按客户 SQE 审厂流程点对点提供核验。

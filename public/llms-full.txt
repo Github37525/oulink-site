@@ -1,0 +1,499 @@
+# 上海欧连电子科技有限公司 (Shanghai Ou-Link Electronics Technology Co., Ltd.) — 全量工程能力与 383 款在库汽车连接器料号手册
+
+> 文档生成日期：2026-11-21
+> 主体全称：上海欧连电子科技有限公司 / Shanghai Ou-Link Electronics Technology Co., Ltd.
+> 总部地址：上海市闵行区春申路2525弄欧银集心大楼312室 (Room 312, Ouyin Jixin Building, Lane 2525, Chunshen Road, Minhang District, Shanghai, China)
+> 联系电话：总机 021-64778688 ｜ 销售直线 021-64809788 ｜ 邮箱：service@ou-link.com ｜ QQ：2690539981
+
+---
+
+## 一、企业工程定位与四大产业赋能场景
+
+在汽车电动化、智能化与供应链国产化深刻演进的背景下，整车厂与线束厂既需要国际一线品牌（如 TE 泰科、LEAR 李尔、HIRSCHMANN 赫斯曼、BOSCH 博世、Rosenberger 罗森伯格、Amphenol 安费诺、Molex 莫仕等）的稳定正品现货保障，也迫切需要高可靠、可快速导入的国产替代与定制开发方案。
+
+欧连电子构建了独特的“全球采 + 销 + 工程技术支持”三维业务模式：一方面深耕 17 大国际连接器品牌正规供应生态，在上海建立超 1,286 万件（383+ 主力 SKU）常态现货仓；另一方面深度携手国内优质自主连接器制造商，为客户提供从前期 Design-in 选型、BOM 齐套降本、Pin-to-Pin 替代验证到正逆向模具端子开发的全流程服务。
+
+### 01 / AUTOMOTIVE OEM — 新车型选型导入、Pin-to-Pin 国产替代与正逆向开发（面向汽车整车厂（OEM 电器/线束研发部））
+针对整车电器架构升级或进口长交期/停产（EOL）瓶颈，提供高可靠车规连接器选型建议、跨品牌对插兼容验证及定制模具开发。
+- 新项目前期连接器选型导入（Design-in）与 DV/PV 研发试制快速供样
+- 进口型号 Pin-to-Pin 国产化替代五维对标（接口公差/端子温升/IP密封/材料耐温/CPA锁止）
+- 基于 3D STEP 数模、2D 图纸或对插端实物样件的正向设计与逆向精密开模开发
+
+### 02 / WIRE HARNESS TIER-1 & TIER-2 — BOM 整单齐套优化与端子压接生产应用支持（面向汽车线束厂（采购部 / 制造工程 ME））
+解决线束厂多品牌长尾物料分散采购、护套与端子到货不同步导致停线，以及产线压接剖面达标调试痛点。
+- 护套（Housing）+ 端子（Terminal）+ 防水栓（Wire Seal）+ 锁片（TPA/CPA）一站式齐套配单
+- 端子压接高度/宽度公差建议、B-Crimp 剖面金相与拉脱力标准技术协同（参考 USCAR-2 / QC/T 1067）
+- 产线紧急缺料上海现货秒级锁库调配，以及项目变更余料/呆滞库存合规调剂
+
+### 03 / DOMESTIC MANUFACTURERS — 战略生态合作与海内外主机厂/线束厂市场拓展（面向国内优质自主连接器生产厂）
+甄选具备 IATF 16949 质量体系与精密模具制造实力的本土连接器工厂建立深度战略协作，双向赋能市场转化。
+- 依托欧连 14 年整车与线束客户网络，推动优质国产车规连接器进入客户 AVL 短名单
+- 联合承接主机厂非标定制护套、特种复合材料件及高压/高速互连组件研发项目
+- 协同海外贸易渠道，助力中国本土高性价比车规连接器拓展全球售后与制造市场
+
+### 04 / GLOBAL DISTRIBUTORS — 千万级常态现货拆零/整盘调拨与交叉选型赋能（面向海内外连接器经销商与贸易伙伴）
+依托上海闵行运营中心与 1,286 万+ 件常态备库，为同行伙伴提供透明、正品可溯源的现货协同与技术背书。
+- 383+ 主力车规型号常备库存快速发货，支持原厂整盘（SPQ）与研发小批灵活拆配
+- 17 大国际品牌复杂料号前缀解析、系列归属识别与配套公母端/端子配对核查
+- 全球授权与正规渠道稀缺冷门车规料号联合寻源与交期锁定
+
+---
+
+## 二、汽车各大电子子系统连接器选型对照表
+
+| 汽车电子子系统 | 典型工况与防护要求 | 重点涉及品牌与代表系列 | 欧连电子工程配套能力 |
+| :--- | :--- | :--- | :--- |
+| 动力总成与发动机电控传感 (Powertrain & ECU) | -40°C ~ +150°C 耐高温、强振动等级、IP67 / IP6K9K 耐燃油与高压水汽密封 | BOSCH（192840xxxx 喷油/传感系列）、TE（AMP MCP / HDSCS）、Molex（CMC 高密度舱内系列）、HIRSCHMANN（805 / 872 密封系列） | 原厂正品现货急件锁库、护套+镀金/镀锡端子+单线密封塞全套齐套供应 |
+| 智能座舱与高阶智驾高速互连 (ADAS & Infotainment) | DC–6GHz / 20GHz 高频阻抗匹配（50Ω/100Ω）、低回波损耗、Code A–Z 防呆机械编码 | Rosenberger（FAKRA / HFM / HSD / 车载以太网）、Amphenol（精密射频与高速互连）、TE（MATE-AX / NanoMQS） | 车载摄像头/雷达射频连接器选型导入（Design-in）、同轴线束端接工艺指导与 DV 样件快供 |
+| 新能源三电低压信号与高压辅助 (xEV BMS & HVIL) | 高绝缘耐压、电磁屏蔽（EMC）、CPA 二次锁止防松脱与高压互锁回路可靠性 | LEAR（精密端子与新能源信号系统）、Amphenol（高压与工业密封）、TE、Aptiv / Delphi、MTA（大电流配电） | BMS 采集线束高密度连接器配单、高压辅助互锁选型及本土化降本替代验证 |
+| 车身域控、门窗座椅与舒适照明 (Body BCM & Lighting) | 多极数紧凑安装空间、TPA 端子保持力保障、大规模量产高一致性与成本敏感 | LEAR（26xxx / 14xxx 系列）、Yazaki（矢崎）、Sumitomo（住友）、KET、JST、KOSTAL 及战略合作自主品牌 | 跨品牌 Pin-to-Pin 国产化降本方案导入、正逆向开模定制与线束厂大批量阶梯备货 |
+| 底盘制动、转向安全与轮速传感 (Chassis & Safety) | 抗泥水盐雾飞溅、耐极端冷热冲击、高保持力双重锁扣与气密性要求 | HIRSCHMANN（709 / 805 底盘传感系列）、BOSCH、Continental 配套体系、FCI、KOSTAL | 严苛安全件 100% 原厂最小包装批次号（Lot/Date Code）溯源与防潮受控仓储直发 |
+| 商用车、工程机械与特种车辆重载 (Heavy-Duty & Off-Highway) | 抗强冲击与盐雾腐蚀、金属卡口或增强热塑外壳、多芯厚壁防水高插拔寿命 | DEUTSCH（德驰 DT/DTM 重载系列）、Amphenol（AT04 / AT06 系列）、ITT Cannon、MTA | 商用车与非道路机械重载连接器跨品牌兼容替换、车架分支线束定制技术支持 |
+
+---
+
+## 三、六大在库技术品类统计（合计 383 款 SKU / 12,864,330 PCS）
+
+- **车规连接器护套 (Automotive Connector Housings)** [178 SKUs]: 覆盖车身控制、底盘线束与传感器端接的多极塑胶护套及线对板插接件（含 TPA/CPA 二次锁止结构）。
+- **重载与高等级密封连接器 (Heavy-Duty & Sealed Connectors)** [71 SKUs]: 面向发动机舱、变速箱、商用车及工程机械的 IP67/IP6K9K 高防护矩形与圆形防水互连系统。
+- **车规精密压接端子 (Automotive Crimp Terminals)** [96 SKUs]: 适配全自动压接机的镀锡/镀银/镀金冲压公母端子，涵盖 MQS、MCP、JPT、MCON 及李尔精密端子系列。
+- **防水栓、盲堵与锁止附件 (Wire Seals, Plugs & Locks)** [30 SKUs]: 硅橡胶单线防水栓（SWS）、空腔盲堵、出线护套后盖及二次锁片等齐套线束附件。
+- **大电流配电连接组件 (Power Distribution & High-Current)** [3 SKUs]: 用于车载配电盒（PDU）、主保险丝盒及大线径电源线束的高载流端子与配电连接件。
+- **通用车规与主机厂配套号 (OEM & Cross-Reference Parts)** [5 SKUs]: 按主机厂工程图号或跨品牌通用标准备库的车规互连件，支持实样测绘与 Pin-to-Pin 替代核验。
+
+---
+
+## 四、五步原厂正品溯源与品质管控工序
+
+- **STEP 01 原厂与一级授权渠道准入核验**：严格限定原厂直采、授权经销体系及经审计的全球合规供应链准入，从源头杜绝散新料、拆机件与不明来源库存。
+- **STEP 02 IQC 来料外观公差与端子针脚抽检**：入库前执行车规互连外观抽检：核对护套防呆键位编码（Keying Code）、锁扣完整性、端子镀层光泽及插针共面度无弯针变形。
+- **STEP 03 原厂最小包装（SPQ）与批次条码溯源**：完整保留原厂卷盘标（Reel Label）与外箱标（Box Label），逐批登记 MPN 原厂料号、生产批次号（Lot No.）、生产周期（Date Code）与原产地。
+- **STEP 04 恒温防潮（MSL）与防静电受控仓储**：针对 PA66/PBT 吸湿性工程塑胶护套及镀银/镀金/镀锡精密端子，执行温湿度分区存储与密封防氧化管理，保障线束厂上机压接良率。
+- **STEP 05 压接应用协同与出库双人复核追溯**：出库执行料号、数量、批次号双人扫码复核，拆零研发样件同步附带源自母盘的溯源副标，并提供压接规格参数技术衔接。
+
+---
+
+## 五、高频工程选型与采购事实问答（8 大 FAQ）
+
+### Q1: 上海欧连电子主营哪些品牌的汽车连接器？是纯贸易商还是具备工程开发配套能力？
+上海欧连电子科技有限公司创立于 2012 年（深耕行业超 14 年），兼具“国际原厂连接器现货整合”与“整车/线束工程技术配套”双重能力。我们覆盖 17 家国际主流品牌——包括李尔（LEAR）、赫斯曼（HIRSCHMANN）、安费诺（Amphenol）、罗森伯格（Rosenberger）、博世（BOSCH）5 大核心授权经销品牌，以及泰科（TE Connectivity）、莫仕（Molex）、意大利美达（MTA）、安波福/德尔福（Aptiv/Delphi）、矢崎（Yazaki）、住友（Sumitomo）、JST、KET、科世达（KOSTAL）、FCI、德驰（DEUTSCH）、ITT 等 12 家合作经销品牌，同时联合国内优质 IATF 16949 自主连接器厂商提供选型导入、国产替代与正逆向开发服务。
+
+### Q2: 如何快速查询某个原厂料号（如 368500-1 或 1928404745）是否有现货及获取 BOM 整单报价？
+您可直接在首页或「产品与料号库」搜索框输入完整或部分料号片段（检索引擎自动忽略连字符 `-`、斜杠与大小写，如输入 `368500` 即可匹配 `368500-1`）。命中型号后点击 `+ BOM` 可将多个护套、端子料号累加至配单车，一键带入「BOM 询价与联系」页，或批量粘贴 Excel 清单发送至 service@ou-link.com，工作时间通常 2 小时内反馈实时库存批次与报价。
+
+### Q3: 进口汽车连接器交期过长或停产（EOL）时，欧连如何协助整车厂或线束厂完成国产化 Pin-to-Pin 替代？
+我们的 FAE 团队执行严谨的五维技术对标流程：① 对插接口几何尺寸与防呆键位（Keying）公差核对；② 端子载流能力、接触电阻与温升曲线匹配；③ 防水密封等级（IP67 / IP6K9K）及壳体工程塑料（PA66 / PBT+GF）耐温等级核验；④ TPA / CPA 二次锁止结构与现有线束压接模具兼容性评估；⑤ 快速提供免费或小批工程样件供客户装车试制与实验验证。
+
+### Q4: 正向连接器开发与逆向精密开模开发分别需要客户提供哪些输入资料？
+逆向开发支持客户仅提供对插公端/母端实物样件或接口局部包络要求，由我们协同战略合作模具工厂完成精密三维测绘、结构设计、模流分析与开模试产；正向开发支持依据整车电器原理定义、回路极数、载流需求及 3D STEP 数模同步开发定制连接器，按节点交付 T0/T1 样品及尺寸材质检验报告。
+
+### Q5: 针对汽车线束厂大批量生产，欧连电子能提供哪些产线加工与应用支持？
+首先提供“护套 + 精密端子 + 防水盲堵 + 锁片”齐套配单管理，避免因单一辅料缺货导致裁线压接产线停工；其次可协同提供标准端子压接高度/宽度公差、拉脱力及 B-Crimp 压接翼金相剖面技术参考；此外支持按主机厂滚动预测建立上海本地安全库存（Safety Stock）及项目变更呆滞原厂料合规调剂。
+
+### Q6: 欧连电子如何保障所供应的进口连接器为原厂正品并实现批次溯源？
+全流程执行五道品控工序：严控正规原厂与一级授权分销渠道准入 -> IQC 入库前对塑壳锁扣与端子针脚抽检 -> 完整保留原厂最小包装盘标/箱标（记录 MPN、Lot No. 批次号、Date Code 生产周期与产地） -> 恒温防潮防静电（MSL/ESD）仓储防氧化保护 -> 出库双人扫码复核，支持按客户 SQE 审厂要求点对点提供批次溯源核验凭证。
+
+### Q7: 是否支持研发阶段（Proto / DV / PV）小批量样品采购？最小包装量（SPQ）与起订量（MOQ）如何规定？
+针对上海仓 383+ 款常备现货型号，我们积极支持主机厂与线束厂前期研发打样（DV/PV）的小批量或拆盘灵活采购；针对需向海外原厂订货的期货型号，则遵循原厂标准最小包装量（SPQ/MPQ）及起订量（MOQ）执行，具体每款料号的包装规格已在产品目录表中透明公示。
+
+### Q8: 官网公示的参考单价与库存数量是实时结算价吗？支持开具 13% 增值税专用发票吗？
+上海欧连电子为一般纳税人企业，全面支持开具正规 13% 增值税专用发票。官网产品库所示未税单价（CNY）与库存件数为目录常态备库参考值；由于铜材、工程塑料价格波动、进口汇率及采购阶梯数量差异，最终执行单价、实时锁库数量、生产年份批次及交期均以欧连商务出具的当日正式盖章报价单为准。
+
+---
+
+## 六、事实与合规披露边界（Claim Ledger）
+
+- 库存与单价边界：公开目录所示现货数量（累计 1,286 万+ 件）与未税参考单价（￥0.0520 - ￥89.0000）基于企业常态备库台账；实时可用库存、具体生产批次（Lot / Date Code）、最小起订/包装量（MOQ / SPQ）及含税阶梯价以当日正式 BOM 报价单为准。
+- 正品溯源与审厂资质核验：所有出库连接器与端子均保留原厂最小包装标签及批次追溯码；企业营业执照、一般纳税人资质、原厂代理授权文件及批次出厂合格证（CoC / 出库检验记录）支持按客户供应商准入（审厂）流程点对点提供核验，绝不悬挂任何未经核实的模板证书。
+- 原厂商标与知识产权声明：页面展示的 LEAR、HIRSCHMANN、Amphenol、Rosenberger、BOSCH、TE Connectivity、Molex 等品牌名称与徽标均归各原厂权利人所有，仅用于客观说明汽车连接器经销渠道覆盖、正品现货调配及 Pin-to-Pin 工程选型配套范围。
+- ICP 备案合规插槽：站点页脚已预留工信部 ICP 备案号可配置字段（icpRecord），待企业确认正式沪 ICP 备案编号后填入即自动展示并链接至工信部政务平台，未配置前保持留空，严禁虚构备案编号。
+
+---
+
+## 七、全部 383 款在库汽车连接器原厂料号（MPN）完整索引表
+
+| 序号 | MPN 原厂料号 | 品牌归属 | 技术品类 | 系列说明 | SPQ/MOQ | 参考备库 (PCS) | 未税参考单价 (CNY) |
+| :--- | :--- | :--- | :--- | :--- | :--- | ---: | ---: |
+| 1 | `368500-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 2400/2400 | 2400 | ¥0.3500 |
+| 2 | `3-1418390-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 400/400 | 1200 | ¥5.8000 |
+| 3 | `1928404745` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 500/500 | 1500 | ¥4.4000 |
+| 4 | `1241380-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE AMP MCP Terminal Series | 54000/54000 | 432000 | ¥0.1500 |
+| 5 | `1-1355132-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 102/102 | 102 | ¥3.5000 |
+| 6 | `776492-2` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE AMPSEAL ECU Sealed Series | 4000/4000 | 8000 | ¥1.0000 |
+| 7 | `964274-2` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE JPT / Timer Terminal Series | 4000/4000 | 32000 | ¥0.1500 |
+| 8 | `1928403698` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 3000/3000 | 15000 | ¥2.9000 |
+| 9 | `1928405521` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 500/500 | 7475 | ¥2.6000 |
+| 10 | `26806201184` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 13500/13500 | 13500 | ¥0.4000 |
+| 11 | `26538201141` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 15000/15000 | 235000 | ¥0.3000 |
+| 12 | `14481562647` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 2700/2700 | 3400 | ¥0.2860 |
+| 13 | `1928405239` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 21000/21000 | 27000 | ¥0.2500 |
+| 14 | `284362-5` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE AMP Superseal 1.5 Series | 80/80 | 80 | ¥37.0000 |
+| 15 | `284362-3` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE AMP Superseal 1.5 Series | 80/80 | 80 | ¥36.0000 |
+| 16 | `RT0W6106SNH03` | 安费诺 (Amphenol) | 重载与高等级密封连接器 | Amphenol RT0W Circular Bayonet Series | 200/200 | 555 | ¥33.7500 |
+| 17 | `RT0W6106SWH03` | 安费诺 (Amphenol) | 重载与高等级密封连接器 | Amphenol RT0W Circular Bayonet Series | 200/200 | 555 | ¥33.7500 |
+| 18 | `044-8597-000` | 埃梯梯科能 (ITT) | 重载与高等级密封连接器 | ITT Cannon Heavy-Duty Circular Series | 1200/1200 | 2726 | ¥23.0000 |
+| 19 | `2-1564526-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 150/150 | 541 | ¥14.5000 |
+| 20 | `1-1703841-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 450/450 | 1800 | ¥7.0000 |
+| 21 | `AT04-3P-MM03` | 德驰 (DEUTSCH) | 重载与高等级密封连接器 | DEUTSCH / AT04 Sealed Rectangular Series | 236/236 | 236 | ¥3.7000 |
+| 22 | `1534358-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 1500/1500 | 15000 | ¥1.2500 |
+| 23 | `SS16M1F` | 通用车规 / OEM配套 (Automotive Standard / OEM) | 通用车规与主机厂配套号 | Standard Automotive Interconnect | 3000/3000 | 3000 | ¥0.6700 |
+| 24 | `172505-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 1800/1800 | 1800 | ¥0.6200 |
+| 25 | `1-1355118-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 17/17 | 17 | ¥0.4013 |
+| 26 | `7123-6317` | 矢崎 (Yazaki) | 车规连接器护套 | Yazaki 7123 Automotive Housing Series | 3000/3000 | 9500 | ¥0.3900 |
+| 27 | `1-1355135-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 707/707 | 707 | ¥0.3315 |
+| 28 | `2-964300-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 10500/10500 | 31500 | ¥0.2400 |
+| 29 | `7-1452668-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE MCON 1.2mm Terminal Series | 18000/18000 | 240000 | ¥0.1700 |
+| 30 | `34083-3001` | 莫仕 (Molex) | 车规连接器护套 | Molex MX150 / Automotive Series | 4000/4000 | 28000 | ¥0.2000 |
+| 31 | `964269-2` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE JPT / Timer Terminal Series | 36000/36000 | 360000 | ¥0.1650 |
+| 32 | `964263-2` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE JPT / Timer Terminal Series | 6000/6000 | 6000 | ¥0.1700 |
+| 33 | `964261-2` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE JPT / Timer Terminal Series | 7000/7000 | 126000 | ¥0.1600 |
+| 34 | `26112201178` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 5000/5000 | 5000 | ¥0.3200 |
+| 35 | `1-1418390-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 800/800 | 4000 | ¥5.3000 |
+| 36 | `1-1563878-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 230/230 | 2480 | ¥11.0000 |
+| 37 | `1-1418469-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 400/400 | 1600 | ¥5.5000 |
+| 38 | `1-1564528-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 100/100 | 1900 | ¥11.5000 |
+| 39 | `2-1564542-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 326/326 | 326 | ¥6.5000 |
+| 40 | `770680-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE AMPSEAL ECU Sealed Series | 140/140 | 3500 | ¥26.0000 |
+| 41 | `7-1452671-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE MCON 1.2mm Terminal Series | 24000/24000 | 234000 | ¥0.1860 |
+| 42 | `175265-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 10000/10000 | 220000 | ¥0.1450 |
+| 43 | `2-1703639-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 300/300 | 4800 | ¥8.4000 |
+| 44 | `1928499045` | 博世 (BOSCH) | 车规精密压接端子 | BOSCH 192849 Precision Terminal Series | 11000/11000 | 66000 | ¥0.3300 |
+| 45 | `1-967624-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 1000/1000 | 5000 | ¥2.3000 |
+| 46 | `1928405161` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 748/748 | 748 | ¥20.0000 |
+| 47 | `28319306185` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 12000/12000 | 12000 | ¥0.2100 |
+| 48 | `12034413` | 安波福 / 德尔福 (Aptiv / Delphi) | 车规连接器护套 | Aptiv / Delphi Metri-Pack 120 Series | 22620/22620 | 22620 | ¥0.0600 |
+| 49 | `967542-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE AMP MCP Terminal Series | 36000/36000 | 116000 | ¥0.4100 |
+| 50 | `1670146-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE MCON 1.2mm Terminal Series | 13000/13000 | 13000 | ¥0.2400 |
+| 51 | `968221-1` | 泰科电子 (TE Connectivity) | 防水栓、盲堵与锁止附件 | TE Wire Seal & Cavity Plug Series | 40000/40000 | 120000 | ¥0.1450 |
+| 52 | `1-1564416-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 250/250 | 1326 | ¥9.9000 |
+| 53 | `1-967640-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 3400/3400 | 42500 | ¥3.3000 |
+| 54 | `1-1703639-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 300/300 | 3000 | ¥8.2000 |
+| 55 | `927768-3` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE JPT / Timer Terminal Series | 3300/3300 | 336600 | ¥0.1900 |
+| 56 | `26780201184` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 15000/15000 | 30000 | ¥0.5500 |
+| 57 | `174264-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 1200/1200 | 60000 | ¥1.0500 |
+| 58 | `1670866-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 500/500 | 3000 | ¥2.8000 |
+| 59 | `936201-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 1320/1320 | 3960 | ¥0.9000 |
+| 60 | `1928405068` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 7203/7203 | 2203 | ¥1.1500 |
+| 61 | `26125201179` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 19500/19500 | 39000 | ¥0.4200 |
+| 62 | `172852-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 2000/2000 | 4000 | ¥2.8500 |
+| 63 | `1-1813099-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 6000/6000 | 12000 | ¥2.5000 |
+| 64 | `173681-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 5000/5000 | 120000 | ¥0.1350 |
+| 65 | `2005071-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 1000/1000 | 8000 | ¥1.4500 |
+| 66 | `18683000000` | 李尔 (LEAR) | 车规连接器护套 | LEAR 18000 Housing Series | 560/560 | 960 | ¥13.0000 |
+| 67 | `1674719-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 432/432 | 432 | ¥6.5000 |
+| 68 | `7-968974-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 1000/1000 | 15000 | ¥2.7000 |
+| 69 | `936151-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 4000/4000 | 4000 | ¥1.0000 |
+| 70 | `1928498056` | 博世 (BOSCH) | 车规精密压接端子 | BOSCH 192849 Precision Terminal Series | 4000/4000 | 4000 | ¥0.3600 |
+| 71 | `917992-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 800/800 | 800 | ¥3.2000 |
+| 72 | `2-1418390-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 400/400 | 6581 | ¥5.6000 |
+| 73 | `1670144-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE MCON 1.2mm Terminal Series | 45000/45000 | 45000 | ¥0.1650 |
+| 74 | `1-968857-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE AMP MCP Terminal Series | 48000/48000 | 480000 | ¥0.2300 |
+| 75 | `1318386-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 2800/2800 | 5600 | ¥1.6000 |
+| 76 | `172850-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 1600/1600 | 3200 | ¥1.9500 |
+| 77 | `174047-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 1200/1200 | 12000 | ¥1.2000 |
+| 78 | `1928405073` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 500/500 | 1800 | ¥0.5800 |
+| 79 | `368049-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 1307/1307 | 1307 | ¥0.6000 |
+| 80 | `RT0W01419PN03` | 安费诺 (Amphenol) | 重载与高等级密封连接器 | Amphenol RT0W Circular Bayonet Series | 20/20 | 20 | ¥11.0000 |
+| 81 | `963530-1` | 泰科电子 (TE Connectivity) | 防水栓、盲堵与锁止附件 | TE Wire Seal & Cavity Plug Series | 20000/20000 | 160000 | ¥0.0700 |
+| 82 | `927771-3` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE JPT / Timer Terminal Series | 12000/12000 | 8000 | ¥0.1700 |
+| 83 | `64320-1301` | 莫仕 (Molex) | 车规连接器护套 | Molex CMC Sealed Automotive Series | 171/171 | 171 | ¥0.6200 |
+| 84 | `6-968975-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 900/900 | 7200 | ¥3.2000 |
+| 85 | `1534170-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 20000/20000 | 20000 | ¥0.6400 |
+| 86 | `1-1563759-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 76/76 | 76 | ¥12.0000 |
+| 87 | `776494-2` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE AMPSEAL ECU Sealed Series | 342/342 | 2280 | ¥9.6000 |
+| 88 | `1-1564520-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 220/220 | 220 | ¥15.0000 |
+| 89 | `4-1670901-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 230/230 | 351 | ¥12.0000 |
+| 90 | `18242000000` | 李尔 (LEAR) | 车规连接器护套 | LEAR 18000 Housing Series | 4800/4800 | 24000 | ¥12.5000 |
+| 91 | `1-1418883-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 117/117 | 1872 | ¥34.0000 |
+| 92 | `14816660636` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 4000/4000 | 16000 | ¥0.4000 |
+| 93 | `18286000002` | 李尔 (LEAR) | 车规连接器护套 | LEAR 18000 Housing Series | 1200/1200 | 1200 | ¥3.0000 |
+| 94 | `963904-1` | 泰科电子 (TE Connectivity) | 防水栓、盲堵与锁止附件 | TE Wire Seal & Cavity Plug Series | 4000/4000 | 12000 | ¥0.3200 |
+| 95 | `1355206-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 700/700 | 2800 | ¥6.0000 |
+| 96 | `1241406-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE AMP MCP Terminal Series | 6000/6000 | 22000 | ¥0.3900 |
+| 97 | `282080-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE AMP Superseal 1.5 Series | 800/800 | 93700 | ¥1.0500 |
+| 98 | `776228-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE AMPSEAL ECU Sealed Series | 220/220 | 659 | ¥34.0000 |
+| 99 | `1-1718645-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 3000/3000 | 3000 | ¥2.9000 |
+| 100 | `4545300` | 意大利美达 (MTA) | 大电流配电连接组件 | MTA High-Current Power Distribution Series | 2400/2400 | 48000 | ¥0.8000 |
+| 101 | `28272306185` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 13500/13500 | 270000 | ¥0.2000 |
+| 102 | `6-968973-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 1200/1200 | 9400 | ¥2.7000 |
+| 103 | `805-120-521` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 805 SealStar Series | 12000/12000 | 50000 | ¥1.4500 |
+| 104 | `709-115-511` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 709 Seal & Accessory Series | 2500/2500 | 2500 | ¥3.7100 |
+| 105 | `4545100` | 意大利美达 (MTA) | 大电流配电连接组件 | MTA High-Current Power Distribution Series | 4800/4800 | 24000 | ¥0.2600 |
+| 106 | `1-1813099-3` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 600/600 | 30000 | ¥2.5800 |
+| 107 | `1241858-2` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE AMP MCP Terminal Series | 7000/7000 | 70000 | ¥0.1700 |
+| 108 | `1719059-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 4800/4800 | 112000 | ¥0.3600 |
+| 109 | `172850-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 1600/1600 | 3200 | ¥1.9500 |
+| 110 | `172852-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 13660/13660 | 13660 | ¥1.6000 |
+| 111 | `2-964296-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE JPT / Timer Terminal Series | 9900/9900 | 39600 | ¥0.1950 |
+| 112 | `3-1813099-3` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 1200/1200 | 7690 | ¥2.9500 |
+| 113 | `368086-1` | 泰科电子 (TE Connectivity) | 防水栓、盲堵与锁止附件 | TE Wire Seal & Cavity Plug Series | 4000/4000 | 4000 | ¥0.0750 |
+| 114 | `8-968970-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 2400/2400 | 20800 | ¥1.8500 |
+| 115 | `963715-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE MQS 0.63mm Terminal Series | 120000/120000 | 9785 | ¥0.0950 |
+| 116 | `1-1564337-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 1000/1000 | 2760 | ¥10.5000 |
+| 117 | `1241416-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE AMP MCP Terminal Series | 9000/9000 | 9000 | ¥0.3300 |
+| 118 | `1703278-2` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE MCON 1.2mm Terminal Series | 12000/12000 | 96000 | ¥0.4100 |
+| 119 | `929974-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE JPT / Timer Terminal Series | 3000/3000 | 63000 | ¥0.4200 |
+| 120 | `1-1718485-4` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 270/270 | 270 | ¥11.5000 |
+| 121 | `1473255-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 1200/1200 | 7600 | ¥1.1500 |
+| 122 | `805-120-527` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 805 SealStar Series | 1695/1695 | 1695 | ¥1.4000 |
+| 123 | `1928498652` | 博世 (BOSCH) | 车规精密压接端子 | BOSCH 192849 Precision Terminal Series | 283/283 | 283 | ¥0.3800 |
+| 124 | `805-031-541` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 805 SealStar Series | 2000/2000 | 4000 | ¥3.2000 |
+| 125 | `19055000000` | 李尔 (LEAR) | 车规连接器护套 | LEAR 19000 Housing Series | 3700/3700 | 3700 | ¥2.9000 |
+| 126 | `828920-1` | 泰科电子 (TE Connectivity) | 防水栓、盲堵与锁止附件 | TE Wire Seal & Cavity Plug Series | 10000/10000 | 100000 | ¥0.1000 |
+| 127 | `964273-2` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE JPT / Timer Terminal Series | 7000/7000 | 63000 | ¥0.1750 |
+| 128 | `E02057400` | 李尔 (LEAR) | 车规连接器护套 | LEAR E-Series | 20/20 | 20 | ¥0.3200 |
+| 129 | `2005392-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 100/100 | 100 | ¥1.2500 |
+| 130 | `805-198-523` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 805 SealStar Series | 4000/4000 | 4000 | ¥1.6000 |
+| 131 | `1-967644-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 2700/2700 | 32400 | ¥1.9000 |
+| 132 | `2137752-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 540/540 | 540 | ¥2.7500 |
+| 133 | `1-1355133-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 2376/2376 | 2376 | ¥3.8000 |
+| 134 | `7283-6134-70` | 矢崎 (Yazaki) | 车规连接器护套 | Yazaki 7283 Automotive Housing Series | 630/630 | 1890 | ¥6.3000 |
+| 135 | `2209545-9` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 540/540 | 1080 | ¥16.5000 |
+| 136 | `1473252-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 168/168 | 1848 | ¥12.0000 |
+| 137 | `709-427-502` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 709 Seal & Accessory Series | 2400/2400 | 1500 | ¥2.7000 |
+| 138 | `1743455-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 2800/2800 | 19600 | ¥0.2800 |
+| 139 | `1897660-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 9000/9000 | 9000 | ¥0.1800 |
+| 140 | `368088-1` | 泰科电子 (TE Connectivity) | 防水栓、盲堵与锁止附件 | TE Wire Seal & Cavity Plug Series | 20000/20000 | 20000 | ¥0.0800 |
+| 141 | `805-120-522` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 805 SealStar Series | 5000/5000 | 25000 | ¥1.5000 |
+| 142 | `828905-1` | 泰科电子 (TE Connectivity) | 防水栓、盲堵与锁止附件 | TE Wire Seal & Cavity Plug Series | 10000/10000 | 60000 | ¥0.0700 |
+| 143 | `828904-1` | 泰科电子 (TE Connectivity) | 防水栓、盲堵与锁止附件 | TE Wire Seal & Cavity Plug Series | 10000/10000 | 100000 | ¥0.0700 |
+| 144 | `1743654-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 25000/25000 | 25000 | ¥0.0880 |
+| 145 | `353376-3` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 16000/16000 | 32000 | ¥0.5000 |
+| 146 | `5-968974-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 1000/1000 | 9000 | ¥3.0000 |
+| 147 | `18386000001` | 李尔 (LEAR) | 车规连接器护套 | LEAR 18000 Housing Series | 500/500 | 6250 | ¥13.0000 |
+| 148 | `13054598699` | 李尔 (LEAR) | 车规连接器护套 | LEAR 13000 Housing Series | 1400/1400 | 7000 | ¥1.6500 |
+| 149 | `26634201184` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 13500/13500 | 54000 | ¥0.5500 |
+| 150 | `18650000001` | 李尔 (LEAR) | 车规连接器护套 | LEAR 18000 Housing Series | 1000/1000 | 10000 | ¥4.5000 |
+| 151 | `14782568613` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 500/500 | 9000 | ¥5.2000 |
+| 152 | `14783568613` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 500/500 | 5000 | ¥4.8000 |
+| 153 | `17987000001` | 李尔 (LEAR) | 车规连接器护套 | LEAR 17000 Housing Series | 1000/1000 | 5000 | ¥6.5000 |
+| 154 | `18792000001` | 李尔 (LEAR) | 车规连接器护套 | LEAR 18000 Housing Series | 1000/1000 | 2000 | ¥2.5000 |
+| 155 | `13065592620` | 李尔 (LEAR) | 车规连接器护套 | LEAR 13000 Housing Series | 1400/1400 | 4200 | ¥1.8000 |
+| 156 | `13085627642` | 李尔 (LEAR) | 车规连接器护套 | LEAR 13000 Housing Series | 7000/7000 | 32000 | ¥0.4200 |
+| 157 | `14459627646` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 7000/7000 | 14000 | ¥0.2800 |
+| 158 | `18169000002` | 李尔 (LEAR) | 车规连接器护套 | LEAR 18000 Housing Series | 1800/1800 | 3600 | ¥2.8000 |
+| 159 | `16883592661` | 李尔 (LEAR) | 车规连接器护套 | LEAR 16000 Housing Series | 1400/1400 | 13947 | ¥1.6000 |
+| 160 | `14458627610` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 7000/7000 | 42000 | ¥0.3000 |
+| 161 | `927827-2` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE JPT / Timer Terminal Series | 4400/4400 | 6600 | ¥0.4900 |
+| 162 | `1928406097` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 288/288 | 1728 | ¥21.0000 |
+| 163 | `1928406091` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 288/288 | 1728 | ¥21.0000 |
+| 164 | `1928406093` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 288/288 | 2880 | ¥18.0000 |
+| 165 | `1928406094` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 288/288 | 2880 | ¥18.0000 |
+| 166 | `1928406096` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 576/576 | 1728 | ¥21.0000 |
+| 167 | `1928406098` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 288/288 | 2880 | ¥18.0000 |
+| 168 | `1928406099` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 288/288 | 2880 | ¥18.0000 |
+| 169 | `1928406104` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 500/500 | 1200 | ¥2.4000 |
+| 170 | `1928406100` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 1000/1000 | 1000 | ¥0.8500 |
+| 171 | `182916-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE AMP Superseal 1.5 Series | 100/100 | 700 | ¥7.9000 |
+| 172 | `964267-2` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE JPT / Timer Terminal Series | 6000/6000 | 90000 | ¥0.1600 |
+| 173 | `14709568501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 500/500 | 6000 | ¥5.2000 |
+| 174 | `25701201184` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 5000/5000 | 20000 | ¥0.8500 |
+| 175 | `872-860-541` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 872 SealStar Series | 2500/2500 | 25000 | ¥2.5000 |
+| 176 | `E-5756` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 2200/2200 | 701 | ¥3.0000 |
+| 177 | `1-1703818-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 1900/1900 | 1900 | ¥5.6500 |
+| 178 | `2822344-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 1000/1000 | 15000 | ¥5.4000 |
+| 179 | `1674298-1` | 泰科电子 (TE Connectivity) | 防水栓、盲堵与锁止附件 | TE Wire Seal & Cavity Plug Series | 2620/2620 | 2620 | ¥0.0520 |
+| 180 | `1823396-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 1000/1000 | 2000 | ¥9.7000 |
+| 181 | `1897014-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 39/39 | 39 | ¥0.3700 |
+| 182 | `8-968972-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 1500/1500 | 15000 | ¥2.5500 |
+| 183 | `8-968973-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 1200/1200 | 4800 | ¥2.4000 |
+| 184 | `8-968975-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 289/289 | 289 | ¥2.4000 |
+| 185 | `144969-1` | 泰科电子 (TE Connectivity) | 防水栓、盲堵与锁止附件 | TE Wire Seal & Cavity Plug Series | 11000/11000 | 66000 | ¥0.1200 |
+| 186 | `1534594-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 10000/10000 | 80000 | ¥0.1650 |
+| 187 | `2-1718643-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 2000/2000 | 20000 | ¥1.8000 |
+| 188 | `709-840-501` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 709 Seal & Accessory Series | 100/100 | 1000 | ¥8.7500 |
+| 189 | `709-841-503` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 709 Seal & Accessory Series | 1/1 | 712 | ¥4.1000 |
+| 190 | `HC08B-P32R` | 通用车规 / OEM配套 (Automotive Standard / OEM) | 通用车规与主机厂配套号 | Standard Automotive Interconnect | 712/712 | 712 | ¥31.0000 |
+| 191 | `14900625699` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 3500/3500 | 237 | ¥1.3000 |
+| 192 | `5-928999-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE MQS 0.63mm Terminal Series | 52000/52000 | 208000 | ¥0.0880 |
+| 193 | `805-123-541` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 805 SealStar Series | 2500/2500 | 20000 | ¥2.4000 |
+| 194 | `26807201184` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 27000/27000 | 270000 | ¥0.3500 |
+| 195 | `1393366-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 50000/50000 | 50000 | ¥0.1300 |
+| 196 | `1928492555` | 博世 (BOSCH) | 车规精密压接端子 | BOSCH 192849 Precision Terminal Series | 11000/11000 | 11000 | ¥0.2400 |
+| 197 | `1-1534229-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 2700/2700 | 8100 | ¥7.9000 |
+| 198 | `368388-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 8000/8000 | 8000 | ¥0.1600 |
+| 199 | `1-1718806-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 1000/1000 | 5000 | ¥3.5000 |
+| 200 | `1452503-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE MCON 1.2mm Terminal Series | 8000/8000 | 96000 | ¥0.1700 |
+| 201 | `1928405064` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 373/373 | 1394 | ¥17.8000 |
+| 202 | `54200206` | 莫仕 (Molex) | 车规连接器护套 | Molex Automotive Wire-to-Board Series | 1100/1100 | 11000 | ¥3.4000 |
+| 203 | `936429-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 328/328 | 3240 | ¥5.5000 |
+| 204 | `26165201178` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 13500/13500 | 135000 | ¥0.2500 |
+| 205 | `1707670` | 意大利美达 (MTA) | 大电流配电连接组件 | MTA High-Current Power Distribution Series | 1300/1300 | 1300 | ¥1.7500 |
+| 206 | `28155201184` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 10000/10000 | 50000 | ¥0.7500 |
+| 207 | `26571201184` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 8100/8100 | 145800 | ¥0.4500 |
+| 208 | `26041331185` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 15000/15000 | 30000 | ¥0.1450 |
+| 209 | `1563111-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 100/100 | 2100 | ¥3.2000 |
+| 210 | `1-967642-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 1900/1900 | 33600 | ¥2.0000 |
+| 211 | `3-1355136-3` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 108/108 | 2160 | ¥14.0000 |
+| 212 | `12084200` | 安波福 / 德尔福 (Aptiv / Delphi) | 车规连接器护套 | Aptiv / Delphi Metri-Pack 120 Series | 1/1 | 3566 | ¥0.1400 |
+| 213 | `709-841-501` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 709 Seal & Accessory Series | 860/860 | 460 | ¥4.3000 |
+| 214 | `316372-6` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 1000/1000 | 13000 | ¥0.9600 |
+| 215 | `12010973` | 安波福 / 德尔福 (Aptiv / Delphi) | 车规连接器护套 | Aptiv / Delphi Metri-Pack 120 Series | 87/87 | 87 | ¥1.3000 |
+| 216 | `706-430-503` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 706 Seal & Accessory Series | 1/1 | 2931 | ¥1.5500 |
+| 217 | `706-430-501` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 706 Seal & Accessory Series | 3060/3060 | 2710 | ¥1.5500 |
+| 218 | `872-857-561` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 872 SealStar Series | 5000/5000 | 5000 | ¥1.3000 |
+| 219 | `805-120-581` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 805 SealStar Series | 5000/5000 | 4000 | ¥1.7000 |
+| 220 | `709-113-504` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 709 Seal & Accessory Series | 4860/4860 | 4510 | ¥1.6000 |
+| 221 | `872-857-563` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 872 SealStar Series | 5000/5000 | 50000 | ¥1.3500 |
+| 222 | `955-002-001` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 955 Seal & Accessory Series | 1/1 | 113 | ¥89.0000 |
+| 223 | `1K0906234` | 通用车规 / OEM配套 (Automotive Standard / OEM) | 通用车规与主机厂配套号 | OEM Harness Cross-Reference | 5600/5600 | 5600 | ¥4.0000 |
+| 224 | `805-031-551` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 805 SealStar Series | 2000/2000 | 10000 | ¥3.6000 |
+| 225 | `171662-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 12000/12000 | 18000 | ¥0.0850 |
+| 226 | `171661-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 18000/18000 | 6000 | ¥0.0890 |
+| 227 | `872-858-546` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 872 SealStar Series | 5000/5000 | 3923 | ¥1.6000 |
+| 228 | `26033201179` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 9000/9000 | 68400 | ¥0.6800 |
+| 229 | `26659330185` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 30000/30000 | 150000 | ¥0.1700 |
+| 230 | `1123343-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 10000/10000 | 40000 | ¥0.1000 |
+| 231 | `26648330186` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 6900/6900 | 1855900 | ¥0.2300 |
+| 232 | `18385000002` | 李尔 (LEAR) | 车规连接器护套 | LEAR 18000 Housing Series | 1200/1200 | 28695 | ¥3.0000 |
+| 233 | `1928300600` | 博世 (BOSCH) | 防水栓、盲堵与锁止附件 | BOSCH 192830 Single Wire Seal Series | 5000/5000 | 50000 | ¥0.1700 |
+| 234 | `31410-1120` | 莫仕 (Molex) | 车规连接器护套 | Molex Automotive Wire-to-Board Series | 1350/1350 | 1350 | ¥1.5000 |
+| 235 | `16018568613` | 李尔 (LEAR) | 车规连接器护套 | LEAR 16000 Housing Series | 500/500 | 6000 | ¥4.9000 |
+| 236 | `172496-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 8800/8800 | 8800 | ¥0.6000 |
+| 237 | `E-3550` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 3000/3000 | 30000 | ¥1.7000 |
+| 238 | `26701201185` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 150000/150000 | 600000 | ¥0.1250 |
+| 239 | `26035201179` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 9000/9000 | 94500 | ¥0.5700 |
+| 240 | `6-968974-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 1000/1000 | 15000 | ¥2.9000 |
+| 241 | `7-968973-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 1200/1200 | 10600 | ¥2.5500 |
+| 242 | `26595201702` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 15000/15000 | 25000 | ¥0.6000 |
+| 243 | `805-122-542` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 805 SealStar Series | 2500/2500 | 2500 | ¥2.8000 |
+| 244 | `18938000000` | 李尔 (LEAR) | 车规连接器护套 | LEAR 18000 Housing Series | 5600/5600 | 5600 | ¥3.5000 |
+| 245 | `967067-1` | 泰科电子 (TE Connectivity) | 防水栓、盲堵与锁止附件 | TE Wire Seal & Cavity Plug Series | 20000/20000 | 20000 | ¥0.0900 |
+| 246 | `1928405782` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 1000/1000 | 1000 | ¥8.9000 |
+| 247 | `1928405783` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 1000/1000 | 1000 | ¥3.2000 |
+| 248 | `316371-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 1000/1000 | 15000 | ¥0.9600 |
+| 249 | `806-821-541` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 806 SealStar Series | 1000/1000 | 6000 | ¥13.0000 |
+| 250 | `7-1452671-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE MCON 1.2mm Terminal Series | 6000/6000 | 6000 | ¥0.2200 |
+| 251 | `1897119-4` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 1000/1000 | 9000 | ¥0.8500 |
+| 252 | `26539201141` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 15000/15000 | 40000 | ¥0.3300 |
+| 253 | `18985000000` | 李尔 (LEAR) | 车规连接器护套 | LEAR 18000 Housing Series | 750/750 | 7500 | ¥1.4000 |
+| 254 | `28307306185` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 6600/6600 | 26400 | ¥0.3500 |
+| 255 | `1670144-3` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE MCON 1.2mm Terminal Series | 9000/9000 | 36000 | ¥0.1950 |
+| 256 | `26570201184` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 8100/8100 | 8100 | ¥1.2000 |
+| 257 | `709-427-504` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 709 Seal & Accessory Series | 2600/2600 | 5200 | ¥2.8100 |
+| 258 | `709-972-501` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 709 Seal & Accessory Series | 2615/2615 | 2615 | ¥2.9200 |
+| 259 | `54001400` | 法马通 (FCI) | 车规连接器护套 | FCI Apex 2.8 Automotive Series | 10800/10800 | 81000 | ¥0.2500 |
+| 260 | `173716-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 5000/5000 | 15000 | ¥0.0950 |
+| 261 | `1-1418483-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 700/700 | 2100 | ¥3.7000 |
+| 262 | `184042-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE AMP Superseal 1.5 Series | 2036/2036 | 2036 | ¥1.2000 |
+| 263 | `14777601699` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 504/504 | 5040 | ¥5.1000 |
+| 264 | `14776601699` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 504/504 | 5040 | ¥4.2000 |
+| 265 | `174985-7` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 3500/3500 | 3500 | ¥0.7200 |
+| 266 | `18369062000` | 李尔 (LEAR) | 车规连接器护套 | LEAR 18000 Housing Series | 800/800 | 29000 | ¥6.1000 |
+| 267 | `806-344-541` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 806 SealStar Series | 300/300 | 3000 | ¥7.0200 |
+| 268 | `5-963715-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE MQS 0.63mm Terminal Series | 80000/80000 | 300000 | ¥0.0900 |
+| 269 | `965999-2` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE JPT / Timer Terminal Series | 621/621 | 621 | ¥0.1200 |
+| 270 | `18347000000` | 李尔 (LEAR) | 车规连接器护套 | LEAR 18000 Housing Series | 14697/14697 | 12000 | ¥9.7500 |
+| 271 | `18348000000` | 李尔 (LEAR) | 车规连接器护套 | LEAR 18000 Housing Series | 1000/1000 | 5697 | ¥9.7500 |
+| 272 | `18343062000` | 李尔 (LEAR) | 车规连接器护套 | LEAR 18000 Housing Series | 800/800 | 10350 | ¥10.5000 |
+| 273 | `26306212179` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 2700/2700 | 6300 | ¥5.2000 |
+| 274 | `14957562621` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 3000/3000 | 21000 | ¥0.5500 |
+| 275 | `14473562501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 2447/2447 | 2447 | ¥1.3000 |
+| 276 | `14472562501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 9947/9947 | 9947 | ¥1.5000 |
+| 277 | `14782568501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 500/500 | 5000 | ¥4.6000 |
+| 278 | `16810562501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 16000 Housing Series | 7947/7947 | 7947 | ¥0.6500 |
+| 279 | `14476562501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 6842/6842 | 6842 | ¥1.4000 |
+| 280 | `14478562608` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 7497/7497 | 7497 | ¥1.4500 |
+| 281 | `14783568501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 500/500 | 4000 | ¥4.5000 |
+| 282 | `MG680448` | 韩国端子 (KET) | 车规连接器护套 | KET MG600000 Multi-Pole Housing Series | 2000/2000 | 2000 | ¥0.1300 |
+| 283 | `14780568501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 1000/1000 | 50000 | ¥4.8000 |
+| 284 | `14463562501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 587/587 | 587 | ¥1.4000 |
+| 285 | `14465562501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 1547/1547 | 1547 | ¥1.4000 |
+| 286 | `14474562501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 5000/5000 | 5000 | ¥1.2500 |
+| 287 | `14781568501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 3447/3447 | 3447 | ¥4.7000 |
+| 288 | `14947568501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 600/600 | 4747 | ¥3.9000 |
+| 289 | `16115598699` | 李尔 (LEAR) | 车规连接器护套 | LEAR 16000 Housing Series | 2500/2500 | 10000 | ¥1.4000 |
+| 290 | `18170000002` | 李尔 (LEAR) | 车规连接器护套 | LEAR 18000 Housing Series | 3547/3547 | 1747 | ¥2.7800 |
+| 291 | `26685330185` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 8800/8800 | 8800 | ¥0.3800 |
+| 292 | `1813344-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 600/600 | 600 | ¥3.6000 |
+| 293 | `1719057-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 1/1 | 126 | ¥2.0000 |
+| 294 | `26739122179` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 13000/13000 | 13000 | ¥2.9500 |
+| 295 | `14477562621` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 13800/13800 | 13800 | ¥1.5000 |
+| 296 | `25678201184` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 54000/54000 | 31500 | ¥0.3000 |
+| 297 | `16052598613` | 李尔 (LEAR) | 车规连接器护套 | LEAR 16000 Housing Series | 2500/2500 | 2500 | ¥0.4000 |
+| 298 | `26695330185` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 30000/30000 | 30000 | ¥0.3000 |
+| 299 | `16695627619` | 李尔 (LEAR) | 车规连接器护套 | LEAR 16000 Housing Series | 50000/50000 | 50000 | ¥0.1300 |
+| 300 | `14696669696` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 8000/8000 | 8000 | ¥0.7500 |
+| 301 | `14464562501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 3097/3097 | 3097 | ¥1.4000 |
+| 302 | `85223-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 2500/2500 | 2500 | ¥0.6000 |
+| 303 | `2-1703930-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE MCON 1.2mm Terminal Series | 34000/34000 | 34000 | ¥0.1100 |
+| 304 | `1743757-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 3000/3000 | 6000 | ¥1.6000 |
+| 305 | `936151-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 1000/1000 | 10000 | ¥1.2000 |
+| 306 | `936154-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Automotive Connector Series | 1040/1040 | 10400 | ¥1.2500 |
+| 307 | `806-229-571` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 806 SealStar Series | 500/500 | 1500 | ¥12.9300 |
+| 308 | `706-541-501` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 706 Seal & Accessory Series | 2500/2500 | 2500 | ¥3.6100 |
+| 309 | `709-973-501` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 709 Seal & Accessory Series | 1000/1000 | 10000 | ¥14.5000 |
+| 310 | `806-230-516` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 806 SealStar Series | 150/150 | 1500 | ¥46.0000 |
+| 311 | `1-1355134-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 1080/1080 | 1080 | ¥0.4000 |
+| 312 | `1670720-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 100/100 | 100 | ¥1.8000 |
+| 313 | `174045-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 1500/1500 | 15000 | ¥1.1000 |
+| 314 | `1743350-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 1200/1200 | 1200 | ¥3.5000 |
+| 315 | `2137754-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 540/540 | 540 | ¥3.9500 |
+| 316 | `282109-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 4000/4000 | 8000 | ¥0.1400 |
+| 317 | `43025-0600` | 莫仕 (Molex) | 车规连接器护套 | Molex Micro-Fit 3.0 Series | 3000/3000 | 3000 | ¥0.3600 |
+| 318 | `806-229-572` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 806 SealStar Series | 90/90 | 90 | ¥12.3600 |
+| 319 | `8-968974-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 1000/1000 | 10000 | ¥2.4000 |
+| 320 | `967633-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE Automotive Crimp Terminal Series | 6000/6000 | 6000 | ¥0.4500 |
+| 321 | `173633-3` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 18000/18000 | 18000 | ¥0.8500 |
+| 322 | `1-1241370-3` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 6000/6000 | 4200 | ¥1.6500 |
+| 323 | `1241380-3` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE AMP MCP Terminal Series | 40500/40500 | 121500 | ¥0.3800 |
+| 324 | `1670364-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 1000/1000 | 20000 | ¥2.2000 |
+| 325 | `1928403876` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 1000/1000 | 3000 | ¥3.0000 |
+| 326 | `805-200-521` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 805 SealStar Series | 1500/1500 | 262 | ¥2.1000 |
+| 327 | `25719201184` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 27000/27000 | 27000 | ¥0.8000 |
+| 328 | `14818660636` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 8000/8000 | 40000 | ¥0.3900 |
+| 329 | `805-121-523` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 805 SealStar Series | 4000/4000 | 4000 | ¥1.9000 |
+| 330 | `174259-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 1662/1662 | 1662 | ¥1.0000 |
+| 331 | `1718760-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE MCON 1.2mm Terminal Series | 6000/6000 | 6000 | ¥0.1870 |
+| 332 | `9200326011` | 科世达 (KOSTAL) | 车规连接器护套 | KOSTAL Automotive Control Connector Series | 700/700 | 7000 | ¥7.8000 |
+| 333 | `14342000001` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 5000/5000 | 45000 | ¥1.2000 |
+| 334 | `E26349300` | 李尔 (LEAR) | 车规连接器护套 | LEAR E-Series | 36000/36000 | 36000 | ¥0.0550 |
+| 335 | `E26349600` | 李尔 (LEAR) | 车规连接器护套 | LEAR E-Series | 25200/25200 | 25200 | ¥0.0900 |
+| 336 | `E26574100` | 李尔 (LEAR) | 车规连接器护套 | LEAR E-Series | 24000/24000 | 24000 | ¥0.0900 |
+| 337 | `E26574300` | 李尔 (LEAR) | 车规连接器护套 | LEAR E-Series | 15000/15000 | 15000 | ¥0.0960 |
+| 338 | `26638201702` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 13500/13500 | 13500 | ¥0.6500 |
+| 339 | `E26574200` | 李尔 (LEAR) | 车规连接器护套 | LEAR E-Series | 6900/6900 | 6900 | ¥0.1500 |
+| 340 | `26594330185` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 4620/4620 | 4120 | ¥0.1400 |
+| 341 | `14480000001` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 4600/4600 | 4600 | ¥1.4000 |
+| 342 | `3202537M3` | 通用车规 / OEM配套 (Automotive Standard / OEM) | 通用车规与主机厂配套号 | Standard Automotive Interconnect | 6900/6900 | 200 | ¥0.2000 |
+| 343 | `E02064000` | 李尔 (LEAR) | 车规连接器护套 | LEAR E-Series | 184/184 | 184 | ¥2.7000 |
+| 344 | `709-113-516` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 709 Seal & Accessory Series | 5000/5000 | 5000 | ¥1.3000 |
+| 345 | `8240-4892` | 住友电装 (Sumitomo) | 车规精密压接端子 | Sumitomo 8240 Crimp Terminal Series | 4000/4000 | 1000 | ¥0.2300 |
+| 346 | `806-820-541` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 806 SealStar Series | 600/600 | 6000 | ¥16.5000 |
+| 347 | `955-007-001` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 955 Seal & Accessory Series | 112/112 | 31 | ¥20.0000 |
+| 348 | `6195-0030` | 住友电装 (Sumitomo) | 重载与高等级密封连接器 | Sumitomo 6195 Sealed Housing Series | 90/90 | 90 | ¥3.0000 |
+| 349 | `5-965908-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE MQS 0.63mm Terminal Series | 40000/40000 | 225000 | ¥0.3300 |
+| 350 | `282104-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE AMP Superseal 1.5 Series | 3000/3000 | 15000 | ¥1.0000 |
+| 351 | `E-5646` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 2400/2400 | 12000 | ¥2.6500 |
+| 352 | `6-928918-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE MQS 0.63mm Terminal Series | 39000/39000 | 39000 | ¥0.2700 |
+| 353 | `174263-7` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 1/1 | 4000 | ¥0.4300 |
+| 354 | `MG640322-5` | 韩国端子 (KET) | 车规连接器护套 | KET MG600000 Multi-Pole Housing Series | 21000/21000 | 21000 | ¥0.5000 |
+| 355 | `1-962915-1` | 泰科电子 (TE Connectivity) | 车规精密压接端子 | TE JPT / Timer Terminal Series | 3500/3500 | 10500 | ¥0.4700 |
+| 356 | `1928405528` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 1000/1000 | 65500 | ¥3.0000 |
+| 357 | `ST740482-3` | 韩国端子 (KET) | 车规精密压接端子 | KET ST700000 Crimp Terminal Series | 12000/12000 | 12000 | ¥0.0850 |
+| 358 | `1928406305` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 1181/1181 | 1181 | ¥17.0000 |
+| 359 | `1928405069` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 1120/1120 | 1120 | ¥2.4000 |
+| 360 | `1473244-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 3600/3600 | 12000 | ¥15.5000 |
+| 361 | `1-1718643-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 2000/2000 | 2000 | ¥1.7600 |
+| 362 | `174984-2` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE Econoseal / Multilock Housing Series | 4000/4000 | 2000 | ¥1.8000 |
+| 363 | `26637201702` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 60000/60000 | 60000 | ¥0.4600 |
+| 364 | `1534093-1` | 泰科电子 (TE Connectivity) | 车规连接器护套 | TE AMP MCP / MQS Housing Series | 2500/2500 | 2500 | ¥1.3000 |
+| 365 | `805-199-521` | 赫斯曼 (HIRSCHMANN) | 重载与高等级密封连接器 | HIRSCHMANN 805 SealStar Series | 1500/1500 | 1500 | ¥3.0000 |
+| 366 | `17202000000` | 李尔 (LEAR) | 车规连接器护套 | LEAR 17000 Housing Series | 228/228 | 2280 | ¥5.2000 |
+| 367 | `28167201184` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 15000/15000 | 150000 | ¥0.6000 |
+| 368 | `1928499395` | 博世 (BOSCH) | 车规精密压接端子 | BOSCH 192849 Precision Terminal Series | 152000/152000 | 136000 | ¥0.6000 |
+| 369 | `1928404656` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 500/500 | 500 | ¥7.8000 |
+| 370 | `1703838-1` | 泰科电子 (TE Connectivity) | 重载与高等级密封连接器 | TE HDSCS Heavy-Duty Sealed Series | 18000/18000 | 106000 | ¥1.6000 |
+| 371 | `28499000001` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 3000/3000 | 3000 | ¥3.3000 |
+| 372 | `1928300529` | 博世 (BOSCH) | 防水栓、盲堵与锁止附件 | BOSCH 192830 Single Wire Seal Series | 1500/1500 | 1500 | ¥8.4000 |
+| 373 | `26316201179` | 李尔 (LEAR) | 车规精密压接端子 | LEAR 26000 / 28000 Terminal Series | 27000/27000 | 27000 | ¥0.5000 |
+| 374 | `14947568613` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 9000/9000 | 9000 | ¥3.6000 |
+| 375 | `14946568613` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 13200/13200 | 13200 | ¥3.6000 |
+| 376 | `14948568501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 6600/6600 | 6600 | ¥3.6000 |
+| 377 | `14956562621` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 15000/15000 | 15000 | ¥0.5200 |
+| 378 | `14475562501` | 李尔 (LEAR) | 车规连接器护套 | LEAR 14000 Housing Series | 7500/7500 | 7500 | ¥1.3000 |
+| 379 | `PPI0000453` | 通用车规 / OEM配套 (Automotive Standard / OEM) | 通用车规与主机厂配套号 | OEM Harness Cross-Reference | 36000/36000 | 36000 | ¥0.1500 |
+| 380 | `19654000001` | 李尔 (LEAR) | 车规连接器护套 | LEAR 19000 Housing Series | 3500/3500 | 35000 | ¥2.7500 |
+| 381 | `1928404655` | 博世 (BOSCH) | 车规连接器护套 | BOSCH 192840 Compact / Jetronic Series | 3000/3000 | 3000 | ¥8.5000 |
+| 382 | `772-352-506` | 赫斯曼 (HIRSCHMANN) | 防水栓、盲堵与锁止附件 | HIRSCHMANN 772 Seal & Accessory Series | 15000/15000 | 15000 | ¥0.9000 |
+| 383 | `1928300530` | 博世 (BOSCH) | 防水栓、盲堵与锁止附件 | BOSCH 192830 Single Wire Seal Series | 1000/1000 | 6000 | ¥7.9000 |

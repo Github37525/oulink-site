@@ -1,0 +1,482 @@
+{
+  "manifest_version": "2.0.0",
+  "generated_at": "2026-11-21T18:06:00+08:00",
+  "company": {
+    "name_zh": "上海欧连电子科技有限公司",
+    "short_name_zh": "欧连电子",
+    "name_en": "Ou-Link Electronics",
+    "full_name_en": "Shanghai Ou-Link Electronics Technology Co., Ltd."
+  },
+  "design_governance": {
+    "vi_standard": "Official Ou-Link Electronics Brand Identity Sheet (v2026 Slanted 3D Concentric Connector Chain-Link)",
+    "legacy_green_palette_deprecated": true,
+    "all_typography_outlined_to_paths": true,
+    "embedded_raster_images": 0,
+    "zero_fabricated_certificates_or_seals": true
+  },
+  "official_vi_palette": {
+    "sampling_method": "Python Pillow pixel-level median RGB sampling from official VI specification sheet swatches",
+    "colors": {
+      "deep_navy": {
+        "hex": "#092143",
+        "rgb": [9, 33, 67],
+        "name_zh": "深海军蓝",
+        "name_en": "Deep Navy",
+        "role": "核心品牌主色、深色区块底色、主标题及标准字主色"
+      },
+      "cyber_blue": {
+        "hex": "#02B0EE",
+        "rgb": [2, 176, 238],
+        "name_zh": "赛博青蓝",
+        "name_en": "Cyber Blue",
+        "role": "双高能强调色之一（象征车载高速高频数据连接）、交互高亮与工程校验标识"
+      },
+      "volt_orange": {
+        "hex": "#FE6A08",
+        "rgb": [254, 106, 8],
+        "name_zh": "电光橙",
+        "name_en": "Volt Orange",
+        "role": "双高能强调色之一（象征车载高压电力连接与端子触点）、核心CTA与关键指标点缀"
+      },
+      "slate_gray": {
+        "hex": "#617282",
+        "rgb": [97, 114, 130],
+        "name_zh": "板岩灰",
+        "name_en": "Slate Gray",
+        "role": "精密工业中性色、英文斜体副标、技术参数与次级正文"
+      },
+      "engineering_ice_blue": {
+        "hex": "#A8CFEE",
+        "rgb": [168, 207, 238],
+        "name_zh": "工程制图浅蓝",
+        "name_en": "Engineering Ice Blue",
+        "role": "CAD几何制图辅助圆、公差微网格、卡片精致描边与深底副标色"
+      },
+      "canvas_gray_blue": {
+        "hex": "#EFF3F7",
+        "rgb": [239, 243, 247],
+        "name_zh": "浅灰蓝制图底色",
+        "name_en": "Canvas Gray-Blue",
+        "role": "页面全局精密工业画布底色"
+      },
+      "muted_panel_gray": {
+        "hex": "#EDF0F4",
+        "rgb": [237, 240, 244],
+        "name_zh": "工业浅灰面板色",
+        "name_en": "Muted Industrial Surface",
+        "role": "次级技术参数表头、筛选栏与单色标识背景"
+      },
+      "card_white": {
+        "hex": "#FFFFFF",
+        "rgb": [255, 255, 255],
+        "name_zh": "纯白卡片表面",
+        "name_en": "Pure Card White",
+        "role": "主内容规格卡、连接器品牌卡片与顶栏背景"
+      }
+    }
+  },
+  "corporate_brand_assets": [
+    {
+      "id": "oulink-logo",
+      "public_path": "/assets/brand/oulink-logo.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brand/oulink-logo.svg",
+      "name_zh": "欧连电子标准横版标识（浅底主版）",
+      "name_en": "Ou-Link Electronics Primary Horizontal Logo",
+      "viewBox": "0 0 360 108",
+      "width": 360,
+      "height": 108,
+      "recommended_aspect_ratio": "10:3",
+      "recommended_render_height_px": 40,
+      "usage": "白色或浅灰蓝顶栏（Header）、浅底宣传物料首选主标识"
+    },
+    {
+      "id": "oulink-logo-dark",
+      "public_path": "/assets/brand/oulink-logo-dark.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brand/oulink-logo-dark.svg",
+      "name_zh": "欧连电子反白横版标识（深海军蓝底专用）",
+      "name_en": "Ou-Link Electronics Reversed Logo for Dark Navy Backgrounds",
+      "viewBox": "0 0 360 108",
+      "width": 360,
+      "height": 108,
+      "recommended_aspect_ratio": "10:3",
+      "recommended_render_height_px": 40,
+      "usage": "深海军蓝（#092143）页脚（Footer）及深色Banner区块专用"
+    },
+    {
+      "id": "oulink-logo-mono",
+      "public_path": "/assets/brand/oulink-logo-mono.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brand/oulink-logo-mono.svg",
+      "name_zh": "欧连电子单色工业版标识",
+      "name_en": "Ou-Link Electronics Monochrome Industrial Logo",
+      "viewBox": "0 0 360 108",
+      "width": 360,
+      "height": 108,
+      "recommended_aspect_ratio": "10:3",
+      "usage": "技术规格书PDF、单色印刷、出库检验单水印与工业铭牌"
+    },
+    {
+      "id": "oulink-mark",
+      "public_path": "/assets/brand/oulink-mark.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brand/oulink-mark.svg",
+      "name_zh": "欧连电子3D精密链环独立徽标（含CAD几何辅助线）",
+      "name_en": "Ou-Link Slanted 3D Connector Chain-Link Emblem",
+      "viewBox": "0 0 120 120",
+      "width": 120,
+      "height": 120,
+      "recommended_aspect_ratio": "1:1",
+      "usage": "品牌视觉焦点、关于我们VI展示、移动端紧凑徽标及社交头像"
+    },
+    {
+      "id": "favicon",
+      "public_path": "/assets/brand/favicon.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brand/favicon.svg",
+      "name_zh": "欧连电子浏览器高对比度图标",
+      "name_en": "Ou-Link High-Contrast Favicon",
+      "viewBox": "0 0 64 64",
+      "width": 64,
+      "height": 64,
+      "recommended_aspect_ratio": "1:1",
+      "usage": "浏览器Tab图标（深海军蓝圆角底座确保在亮/暗黑系统主题下均清晰锐利）"
+    }
+  ],
+  "partner_brands_standard": {
+    "uniform_viewBox": "0 0 240 80",
+    "uniform_width": 240,
+    "uniform_height": 80,
+    "recommended_aspect_ratio": "3:1",
+    "safe_optical_zone": "Centered within 196x46 optical bounding box, transparent background, strictly proportional scaling (zero distortion)",
+    "total_original_site_brands_covered": 17,
+    "total_svg_files": 19
+  },
+  "partner_brand_assets": [
+    {
+      "slug": "lear",
+      "public_path": "/assets/brands/lear.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/lear.svg",
+      "name_en": "LEAR",
+      "full_name_en": "Lear Corporation (Lear Terminals & Connectors)",
+      "name_zh": "李尔",
+      "partnership_tier": "authorized_distributor",
+      "partnership_label_zh": "授权经销商",
+      "catalog_sku_count": 107,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "hirschmann",
+      "public_path": "/assets/brands/hirschmann.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/hirschmann.svg",
+      "name_en": "HIRSCHMANN AUTOMOTIVE",
+      "full_name_en": "Hirschmann Automotive GmbH",
+      "name_zh": "赫斯曼",
+      "legacy_typos_corrected": true,
+      "partnership_tier": "authorized_distributor",
+      "partnership_label_zh": "授权经销商",
+      "catalog_sku_count": 38,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "amphenol",
+      "public_path": "/assets/brands/amphenol.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/amphenol.svg",
+      "name_en": "Amphenol",
+      "full_name_en": "Amphenol Corporation (Amphenol Precision / Sine Systems)",
+      "name_zh": "安费诺",
+      "partnership_tier": "authorized_distributor",
+      "partnership_label_zh": "授权经销商（精密连接）",
+      "catalog_sku_count": 3,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "rosenberger",
+      "public_path": "/assets/brands/rosenberger.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/rosenberger.svg",
+      "name_en": "Rosenberger",
+      "full_name_en": "Rosenberger Hochfrequenztechnik GmbH & Co. KG",
+      "name_zh": "罗森伯格",
+      "legacy_typos_corrected": true,
+      "partnership_tier": "authorized_distributor",
+      "partnership_label_zh": "授权经销商（高速高频车载连接）",
+      "catalog_sku_count": 0,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "bosch",
+      "public_path": "/assets/brands/bosch.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/bosch.svg",
+      "name_en": "BOSCH",
+      "full_name_en": "Robert Bosch GmbH",
+      "name_zh": "博世",
+      "partnership_tier": "authorized_distributor",
+      "partnership_label_zh": "授权经销商",
+      "catalog_sku_count": 33,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "te-connectivity",
+      "public_path": "/assets/brands/te-connectivity.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/te-connectivity.svg",
+      "name_en": "TE Connectivity",
+      "full_name_en": "TE Connectivity Ltd. (AMP / Tyco Electronics)",
+      "name_zh": "泰科电子",
+      "partnership_tier": "oem_partner",
+      "partnership_label_zh": "核心经销与工程配套品牌",
+      "catalog_sku_count": 175,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "molex",
+      "public_path": "/assets/brands/molex.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/molex.svg",
+      "name_en": "Molex",
+      "full_name_en": "Molex, LLC",
+      "name_zh": "莫仕",
+      "partnership_tier": "oem_partner",
+      "partnership_label_zh": "原厂合作伙伴",
+      "catalog_sku_count": 5,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "mta",
+      "public_path": "/assets/brands/mta.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/mta.svg",
+      "name_en": "MTA",
+      "full_name_en": "MTA S.p.A.",
+      "name_zh": "意大利美达（MTA）",
+      "partnership_tier": "oem_partner",
+      "partnership_label_zh": "原厂合作伙伴",
+      "catalog_sku_count": 3,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "aptiv-delphi",
+      "public_path": "/assets/brands/aptiv-delphi.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/aptiv-delphi.svg",
+      "alternate_paths": {
+        "aptiv_only": "/assets/brands/aptiv.svg",
+        "delphi_heritage": "/assets/brands/delphi.svg"
+      },
+      "name_en": "Aptiv (Delphi)",
+      "full_name_en": "Aptiv PLC (formerly Delphi Automotive Systems)",
+      "name_zh": "安波福（原德尔福）",
+      "partnership_tier": "oem_partner",
+      "partnership_label_zh": "经销与供应链配套品牌",
+      "catalog_sku_count": 3,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "yazaki",
+      "public_path": "/assets/brands/yazaki.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/yazaki.svg",
+      "name_en": "YAZAKI",
+      "full_name_en": "Yazaki Corporation",
+      "name_zh": "矢崎",
+      "partnership_tier": "oem_partner",
+      "partnership_label_zh": "经销与供应链配套品牌",
+      "catalog_sku_count": 2,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "sumitomo",
+      "public_path": "/assets/brands/sumitomo.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/sumitomo.svg",
+      "name_en": "Sumitomo",
+      "full_name_en": "Sumitomo Wiring Systems, Ltd. (SWS)",
+      "name_zh": "住友电装",
+      "partnership_tier": "oem_partner",
+      "partnership_label_zh": "经销与供应链配套品牌",
+      "catalog_sku_count": 2,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "jst",
+      "public_path": "/assets/brands/jst.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/jst.svg",
+      "name_en": "JST",
+      "full_name_en": "J.S.T. Mfg. Co., Ltd.",
+      "name_zh": "日本压着端子（JST）",
+      "partnership_tier": "oem_partner",
+      "partnership_label_zh": "经销与供应链配套品牌",
+      "catalog_sku_count": 0,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "ket",
+      "public_path": "/assets/brands/ket.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/ket.svg",
+      "name_en": "KET",
+      "full_name_en": "Korea Electric Terminal Co., Ltd.",
+      "name_zh": "韩国端子工业（KET）",
+      "partnership_tier": "oem_partner",
+      "partnership_label_zh": "经销与供应链配套品牌",
+      "catalog_sku_count": 3,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "kostal",
+      "public_path": "/assets/brands/kostal.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/kostal.svg",
+      "name_en": "KOSTAL",
+      "full_name_en": "KOSTAL Kontakt Systeme GmbH",
+      "name_zh": "科世达",
+      "partnership_tier": "oem_partner",
+      "partnership_label_zh": "经销与供应链配套品牌",
+      "catalog_sku_count": 1,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "fci",
+      "public_path": "/assets/brands/fci.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/fci.svg",
+      "name_en": "FCI",
+      "full_name_en": "FCI Automotive (Amphenol FCI)",
+      "name_zh": "法马通连接器（FCI）",
+      "partnership_tier": "oem_partner",
+      "partnership_label_zh": "经销与供应链配套品牌",
+      "catalog_sku_count": 1,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "deutsch",
+      "public_path": "/assets/brands/deutsch.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/deutsch.svg",
+      "name_en": "DEUTSCH",
+      "full_name_en": "DEUTSCH Industrial & Automotive Connectors",
+      "name_zh": "德驰",
+      "partnership_tier": "oem_partner",
+      "partnership_label_zh": "经销与供应链配套品牌",
+      "catalog_sku_count": 1,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "itt",
+      "public_path": "/assets/brands/itt.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/itt.svg",
+      "name_en": "ITT Cannon",
+      "full_name_en": "ITT Cannon / ITT Inc.",
+      "name_zh": "埃梯梯科能（ITT）",
+      "partnership_tier": "oem_partner",
+      "partnership_label_zh": "经销与供应链配套品牌",
+      "catalog_sku_count": 1,
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    }
+  ],
+  "standalone_heritage_aliases": [
+    {
+      "slug": "aptiv",
+      "public_path": "/assets/brands/aptiv.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/aptiv.svg",
+      "name_en": "Aptiv",
+      "name_zh": "安波福",
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    },
+    {
+      "slug": "delphi",
+      "public_path": "/assets/brands/delphi.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/brands/delphi.svg",
+      "name_en": "Delphi",
+      "name_zh": "德尔福",
+      "viewBox": "0 0 240 80",
+      "recommended_aspect_ratio": "3:1"
+    }
+  ],
+  "quality_assurance_assets": [
+    {
+      "id": "channel-admission",
+      "public_path": "/assets/quality/channel-admission.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/quality/channel-admission.svg",
+      "name_zh": "01 原厂与授权渠道准入核验",
+      "name_en": "Authorized Channel Admission",
+      "viewBox": "0 0 120 120",
+      "recommended_aspect_ratio": "1:1",
+      "usage": "五道品控工序第1步：严控原厂与一级授权分销准入"
+    },
+    {
+      "id": "iqc-inspection",
+      "public_path": "/assets/quality/iqc-inspection.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/quality/iqc-inspection.svg",
+      "name_zh": "02 IQC 来料公差与端子针脚抽检",
+      "name_en": "IQC Dimensional & Pin Inspection",
+      "viewBox": "0 0 120 120",
+      "recommended_aspect_ratio": "1:1",
+      "usage": "五道品控工序第2步：护套锁扣外观、键位编码与插针共面度抽检"
+    },
+    {
+      "id": "batch-traceability",
+      "public_path": "/assets/quality/batch-traceability.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/quality/batch-traceability.svg",
+      "name_zh": "03 原厂最小包装与批次号溯源",
+      "name_en": "Original Lot & Date Code Traceability",
+      "viewBox": "0 0 120 120",
+      "recommended_aspect_ratio": "1:1",
+      "usage": "五道品控工序第3步：核验原厂SPQ标签、DataMatrix条码、Lot No.与Date Code"
+    },
+    {
+      "id": "esd-storage-compliance",
+      "public_path": "/assets/quality/esd-storage-compliance.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/quality/esd-storage-compliance.svg",
+      "name_zh": "04 防潮防静电受控仓储管理",
+      "name_en": "MSL & ESD Controlled Warehousing",
+      "viewBox": "0 0 120 120",
+      "recommended_aspect_ratio": "1:1",
+      "usage": "五道品控工序第4步：镀金/镀锡精密端子防氧化、恒温防潮与静电防护"
+    },
+    {
+      "id": "automotive-harness-standard",
+      "public_path": "/assets/quality/automotive-harness-standard.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/quality/automotive-harness-standard.svg",
+      "name_zh": "05 汽车级连接器与线束压接工艺支持",
+      "name_en": "Automotive Crimp & Harness Engineering Support",
+      "viewBox": "0 0 120 120",
+      "recommended_aspect_ratio": "1:1",
+      "usage": "线束厂加工应用支持：B-Crimp压接翼剖面公差、CPA/TPA二次锁止与选型替代"
+    },
+    {
+      "id": "rohs-environmental",
+      "public_path": "/assets/quality/rohs-environmental.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/quality/rohs-environmental.svg",
+      "name_zh": "06 汽车材料环保合规体系（RoHS/REACH/ELV）",
+      "name_en": "Automotive Material Environmental Compliance",
+      "viewBox": "0 0 120 120",
+      "recommended_aspect_ratio": "1:1",
+      "usage": "车载连接器材料无铅无卤与环保物质管控说明图标（不含任何伪造认证章）"
+    },
+    {
+      "id": "quality-pipeline-diagram",
+      "public_path": "/assets/quality/quality-pipeline-diagram.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/quality/quality-pipeline-diagram.svg",
+      "name_zh": "五步原厂正品溯源与品控闭环全景工程图解",
+      "name_en": "5-Stage Authentic Traceability & QC Pipeline Diagram",
+      "viewBox": "0 0 960 220",
+      "recommended_aspect_ratio": "48:11",
+      "usage": "/quality 品质管控页顶部或核心区宽幅工程流程图解"
+    },
+    {
+      "id": "verified-credential-slot",
+      "public_path": "/assets/quality/verified-credential-slot.svg",
+      "file_path": "e:/官网/oulink-site/public/assets/quality/verified-credential-slot.svg",
+      "name_zh": "真实资质待归档规范占位框（零假章诚实占位）",
+      "name_en": "Configurable Official Document Archive Slot",
+      "viewBox": "0 0 320 420",
+      "recommended_aspect_ratio": "16:21",
+      "usage": "彻底替换原站不实模板证书：当真实营业执照/代理授权书扫描件尚未上传时（verified: false），提供严谨诚实的工程档案预留视觉框"
+    }
+  ]
+}

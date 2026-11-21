@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="汽车级连接与压接工艺规范 Automotive Crimp &amp; Connector Engineering">
+  <title>汽车级连接与压接工艺规范 Automotive Crimp &amp; Connector Engineering</title>
+  <rect x="6" y="6" width="108" height="108" rx="18" fill="#F8FAFC" stroke="#A8CFEE" stroke-width="1.5"/>
+  <circle cx="60" cy="62" r="38" fill="none" stroke="#A8CFEE" stroke-width="1" stroke-dasharray="3 3" opacity="0.65"/>
+  <line x1="60" y1="14" x2="60" y2="110" stroke="#A8CFEE" stroke-width="0.8" stroke-dasharray="2 3" opacity="0.45"/>
+  <line x1="14" y1="62" x2="106" y2="62" stroke="#A8CFEE" stroke-width="0.8" stroke-dasharray="2 3" opacity="0.45"/>
+  <path d="M18.88 16.45 Q19.97 16.45 20.59 17.23 Q21.32 18.16 21.32 20.29 Q21.32 22.43 20.58 23.36 Q19.97 24.13 18.88 24.13 Q17.78 24.13 17.11 23.28 Q16.44 22.44 16.44 20.28 Q16.44 18.16 17.18 17.22 Q17.79 16.45 18.88 16.45 Z M18.88 17.65 Q18.62 17.65 18.41 17.81 Q18.21 17.98 18.10 18.41 Q17.95 18.97 17.95 20.29 Q17.95 21.62 18.08 22.11 Q18.21 22.61 18.42 22.77 Q18.62 22.93 18.88 22.93 Q19.14 22.93 19.35 22.77 Q19.55 22.60 19.67 22.17 Q19.81 21.62 19.81 20.29 Q19.81 18.97 19.68 18.48 Q19.55 17.98 19.35 17.81 Q19.14 17.65 18.88 17.65 Z M23.11 22.07 L24.54 21.92 Q24.60 22.41 24.91 22.69 Q25.21 22.97 25.60 22.97 Q26.05 22.97 26.37 22.61 Q26.68 22.24 26.68 21.50 Q26.68 20.81 26.37 20.46 Q26.06 20.12 25.56 20.12 Q24.94 20.12 24.45 20.67 L23.28 20.50 L24.02 16.59 L27.83 16.59 L27.83 17.93 L25.11 17.93 L24.89 19.21 Q25.37 18.97 25.87 18.97 Q26.83 18.97 27.49 19.67 Q28.16 20.36 28.16 21.48 Q28.16 22.41 27.62 23.13 Q26.89 24.13 25.59 24.13 Q24.55 24.13 23.89 23.57 Q23.23 23.01 23.11 22.07 Z" fill="#617282" opacity="0.85"/>
+  <!-- Precision B-Crimp Terminal Cross-Section Wings Wrapping Wire Core -->
+  <path d="M38 64 C38 44 57 43 60 54 C63 43 82 44 82 64 C82 79 71 85 60 85 C49 85 38 79 38 64 Z" fill="#FFFFFF" stroke="#092143" stroke-width="3.4" stroke-linejoin="round"/>
+  <path d="M44 64 C44 50 57 49 60 57 C63 49 76 50 76 64 C76 75 68 79 60 79 C52 79 44 75 44 64 Z" fill="none" stroke="#02B0EE" stroke-width="2.2"/>
+  <circle cx="60" cy="65" r="3.4" fill="#FE6A08"/>
+  <circle cx="53" cy="65" r="3.4" fill="#FE6A08"/>
+  <circle cx="67" cy="65" r="3.4" fill="#FE6A08"/>
+  <circle cx="56.5" cy="59" r="3.4" fill="#FE6A08"/>
+  <circle cx="63.5" cy="59" r="3.4" fill="#FE6A08"/>
+  <circle cx="56.5" cy="71" r="3.4" fill="#FE6A08"/>
+  <circle cx="63.5" cy="71" r="3.4" fill="#FE6A08"/>
+  <!-- Connector Housing Latch / CPA Lock Top Indicator -->
+  <path d="M45 34 H75 L79 40 H41 Z" fill="#092143"/>
+  <rect x="55" y="29" width="10" height="5" rx="1" fill="#FE6A08"/>
+</svg>
