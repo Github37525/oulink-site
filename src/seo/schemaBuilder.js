@@ -1,6 +1,20 @@
 import { routeHref } from "../routing.js";
 import { VERIFIED_COMPANY_FACTS } from "../content/claimLedger.js";
 
+function resolveRouteFaqs(localeContent, route) {
+  if (route === "solutions") {
+    const pageFaqs = localeContent.solutions?.faqs || localeContent.solutionsPage?.faqs;
+    if (Array.isArray(pageFaqs) && pageFaqs.length > 0) return pageFaqs;
+    return Array.isArray(localeContent.faqs) ? localeContent.faqs : [];
+  }
+  if (route === "quality") {
+    const pageFaqs = localeContent.quality?.faqs || localeContent.qualityPage?.faqs;
+    if (Array.isArray(pageFaqs) && pageFaqs.length > 0) return pageFaqs;
+    return Array.isArray(localeContent.faqs) ? localeContent.faqs : [];
+  }
+  return [];
+}
+
 export function buildStructuredData({
   locale = "zh",
   route = "home",
@@ -71,10 +85,10 @@ export function buildStructuredData({
     ],
     knowsAbout: [
       "Automotive Connectors",
-      "Wire Harness Supply Chain",
-      "Connector Pin-to-Pin Localization",
-      "Forward and Reverse Connector Engineering",
-      "Automotive Crimp Terminals and Seals",
+      "Wire Harness BOM Kitting",
+      "Connector Pin-to-Pin Cross-Reference",
+      "Forward and Reverse Connector Tooling",
+      "Automotive Crimp Terminals and Wire Seals",
       "FAKRA and HSD High-Speed Automotive Interconnects",
     ],
   };
@@ -105,7 +119,7 @@ export function buildStructuredData({
     {
       "@type": "ListItem",
       position: 1,
-      name: localeContent.nav.home,
+      name: localeContent.breadcrumbs?.home || localeContent.nav.home,
       item: homeHref,
     },
   ];
@@ -114,7 +128,10 @@ export function buildStructuredData({
     breadcrumbItems.push({
       "@type": "ListItem",
       position: 2,
-      name: localeContent.nav[route] || routeMeta.title,
+      name:
+        localeContent.breadcrumbs?.[route] ||
+        localeContent.nav[route] ||
+        routeMeta.title,
       item: pageUrl || pagePath,
     });
   }
@@ -131,8 +148,8 @@ export function buildStructuredData({
       "@type": "ItemList",
       name:
         safeLocale === "zh"
-          ? "上海欧连电子在库汽车连接器代表型号目录"
-          : "Ou-Link Electronics In-Stock Automotive Connector MPN Catalog",
+          ? "上海欧连电子常备汽车连接器代表料号目录"
+          : "Ou-Link Electronics Standing Automotive Connector MPN Directory",
       numberOfItems: featuredProducts.length,
       itemListElement: featuredProducts.slice(0, 24).map((prod, idx) => ({
         "@type": "ListItem",
@@ -161,14 +178,14 @@ export function buildStructuredData({
     });
   }
 
-  if (
-    (route === "home" || route === "solutions" || route === "quality") &&
-    Array.isArray(localeContent.faqs) &&
-    localeContent.faqs.length > 0
-  ) {
+  const routeFaqs = resolveRouteFaqs(localeContent, route).filter(
+    (faq) => faq && typeof faq.q === "string" && faq.q.trim() && typeof faq.a === "string" && faq.a.trim()
+  );
+
+  if ((route === "solutions" || route === "quality") && routeFaqs.length > 0) {
     graph.push({
       "@type": "FAQPage",
-      mainEntity: localeContent.faqs.map((faq) => ({
+      mainEntity: routeFaqs.map((faq) => ({
         "@type": "Question",
         name: faq.q,
         acceptedAnswer: {

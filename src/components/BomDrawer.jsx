@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { X, Trash2, ArrowRight, Copy, Check, ShoppingBag } from "lucide-react";
+import { X, Trash2, ArrowRight, Copy, Check } from "lucide-react";
 import { routeHref } from "../routing.js";
 
 export function BomDrawer({
@@ -14,6 +14,7 @@ export function BomDrawer({
   onClearBom,
   onNavigate,
   drawerCopy,
+  stickyCopy,
 }) {
   const [copied, setCopied] = useState(false);
 
@@ -42,49 +43,74 @@ export function BomDrawer({
   };
 
   const handleGoContact = (event) => {
-    if (onNavigate) {
+    if (
+      onNavigate &&
+      event.button === 0 &&
+      !event.metaKey &&
+      !event.ctrlKey &&
+      !event.shiftKey &&
+      !event.altKey
+    ) {
       event.preventDefault();
-      onClose();
+      onClose?.();
       onNavigate(contactHref);
     } else {
-      onClose();
+      onClose?.();
     }
   };
 
+  const countTemplate =
+    stickyCopy?.selectedCountTemplate ||
+    (locale === "zh" ? "已加入 {count} 个料号" : "{count} MPNs selected");
+  const selectedSummaryLabel = countTemplate.replace("{count}", String(bomItems.length));
+  const submitLabel = stickyCopy?.submitAction || drawerCopy?.proceedToContact || "查看 BOM 并询价 →";
+  const clearLabel = stickyCopy?.clearText || drawerCopy?.clearAll || "清空";
+  const previewMpns = bomItems
+    .slice(0, 4)
+    .map((item) => item.mpn)
+    .join(" · ");
+  const extraCount = bomItems.length > 4 ? ` +${bomItems.length - 4}` : "";
+
   return (
     <>
-      {/* Non-blocking Floating BOM Bar when items exist and not already on Contact page */}
       {bomItems.length > 0 && route !== "contact" && !isOpen ? (
-        <div className="floating-bom-bar" role="region" aria-label={drawerCopy.title}>
-          <button
-            type="button"
-            onClick={onOpen}
-            style={{
-              background: "transparent",
-              border: "none",
-              color: "#ffffff",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              cursor: "pointer",
-              fontWeight: 700,
-              fontSize: 13.5,
-            }}
-          >
-            <ShoppingBag size={16} color="var(--ou-volt-orange)" aria-hidden="true" />
-            <span>
-              BOM: <strong className="mpn-code">{bomItems.length}</strong> SKU
-            </span>
-          </button>
-          <a
-            href={contactHref}
-            className="btn-volt"
-            style={{ minHeight: 36, padding: "4px 14px", fontSize: 13 }}
-            onClick={handleGoContact}
-          >
-            <span>{drawerCopy.proceedToContact}</span>
-            <ArrowRight size={14} aria-hidden="true" />
-          </a>
+        <div className="sticky-bom-bar" role="region" aria-label={drawerCopy.title}>
+          <div className="ou-container sticky-bom-inner">
+            <div className="sticky-bom-left">
+              <button
+                type="button"
+                className="sticky-bom-summary-btn"
+                onClick={onOpen}
+              >
+                <span className="sticky-bom-check" aria-hidden="true">
+                  <Check size={12} strokeWidth={2.6} />
+                </span>
+                <strong>{selectedSummaryLabel}</strong>
+              </button>
+              <span className="sticky-bom-sep" aria-hidden="true">|</span>
+              <span className="sticky-bom-preview mpn-code">
+                {previewMpns}
+                {extraCount}
+              </span>
+            </div>
+
+            <div className="sticky-bom-actions">
+              <button
+                type="button"
+                className="sticky-bom-clear"
+                onClick={onClearBom}
+              >
+                {clearLabel}
+              </button>
+              <a
+                href={contactHref}
+                className="btn-light-on-dark"
+                onClick={handleGoContact}
+              >
+                <span>{submitLabel}</span>
+              </a>
+            </div>
+          </div>
         </div>
       ) : null}
 
@@ -103,26 +129,13 @@ export function BomDrawer({
           >
             <div className="bom-drawer-header">
               <div>
-                <h2 style={{ margin: 0, fontSize: 18 }}>{drawerCopy.title}</h2>
-                <span style={{ fontSize: 12, color: "var(--ou-ice-blue)" }}>
-                  {drawerCopy.subtitle}
-                </span>
+                <h2>{drawerCopy.title}</h2>
+                <span>{drawerCopy.subtitle}</span>
               </div>
               <button
                 type="button"
+                className="bom-drawer-close"
                 onClick={onClose}
-                style={{
-                  background: "rgba(255,255,255,0.1)",
-                  border: "1px solid rgba(255,255,255,0.25)",
-                  color: "#ffffff",
-                  width: 36,
-                  height: 36,
-                  borderRadius: 6,
-                  cursor: "pointer",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
                 aria-label="Close"
               >
                 <X size={18} aria-hidden="true" />
@@ -131,22 +144,16 @@ export function BomDrawer({
 
             <div className="bom-drawer-body">
               {bomItems.length === 0 ? (
-                <p style={{ color: "var(--text-muted)", fontSize: 14, lineHeight: 1.6 }}>
-                  {drawerCopy.emptyText}
-                </p>
+                <p className="bom-drawer-empty">{drawerCopy.emptyText}</p>
               ) : (
-                <div>
+                <div className="bom-drawer-list">
                   {bomItems.map((item) => (
                     <div key={item.mpn} className="attached-bom-item">
-                      <div style={{ minWidth: 0, flex: "1 1 160px" }}>
-                        <strong className="mpn-code" style={{ display: "block", color: "var(--ou-navy)" }}>
-                          {item.mpn}
-                        </strong>
-                        <span style={{ fontSize: 12, color: "var(--text-muted)" }}>
-                          {item.brand}
-                        </span>
+                      <div className="attached-bom-info">
+                        <strong className="mpn-code">{item.mpn}</strong>
+                        <span>{item.brand}</span>
                       </div>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <div className="attached-bom-controls">
                         <input
                           type="number"
                           min="1"
@@ -157,22 +164,11 @@ export function BomDrawer({
                         />
                         <button
                           type="button"
+                          className="icon-outline-btn"
                           onClick={() => onRemoveItem(item.mpn)}
                           aria-label={`${drawerCopy.removeLabel} ${item.mpn}`}
-                          style={{
-                            background: "transparent",
-                            border: "1px solid var(--border-subtle)",
-                            borderRadius: 4,
-                            width: 34,
-                            height: 34,
-                            cursor: "pointer",
-                            color: "var(--text-muted)",
-                            display: "inline-flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
                         >
-                          <Trash2 size={15} aria-hidden="true" />
+                          <Trash2 size={14} aria-hidden="true" />
                         </button>
                       </div>
                     </div>
@@ -185,27 +181,25 @@ export function BomDrawer({
               <div className="bom-drawer-footer">
                 <a
                   href={contactHref}
-                  className="btn-volt"
+                  className="btn-primary"
                   style={{ width: "100%" }}
                   onClick={handleGoContact}
                 >
                   <span>{drawerCopy.proceedToContact}</span>
-                  <ArrowRight size={15} aria-hidden="true" />
+                  <ArrowRight size={14} aria-hidden="true" />
                 </a>
-                <div style={{ display: "flex", gap: 8 }}>
+                <div className="bom-drawer-subactions">
                   <button
                     type="button"
-                    className="btn-navy-outline"
-                    style={{ flex: 1, minHeight: 38, fontSize: 13 }}
+                    className="btn-outline"
                     onClick={handleCopyBom}
                   >
-                    {copied ? <Check size={14} aria-hidden="true" /> : <Copy size={14} aria-hidden="true" />}
+                    {copied ? <Check size={13} aria-hidden="true" /> : <Copy size={13} aria-hidden="true" />}
                     <span>{copied ? drawerCopy.copied : drawerCopy.copyList}</span>
                   </button>
                   <button
                     type="button"
-                    className="btn-navy-outline"
-                    style={{ minHeight: 38, fontSize: 13 }}
+                    className="btn-outline"
                     onClick={onClearBom}
                   >
                     {drawerCopy.clearAll}

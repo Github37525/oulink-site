@@ -1,0 +1,563 @@
+{
+  "version": "2.6.0",
+  "designSystem": "Ou-Link Image 2.6 Industrial Editorial Catalog",
+  "antiAiGuidelines": [
+    "彻底废除旧版赛博蓝 (#02B0EE)、深海军蓝 (#092143)、电光橙 (#FE6A08) 与冷蓝灰画布 (#EFF3F7)",
+    "严禁大圆角悬浮卡片矩阵、彩色渐变横幅、彩色圆底图标徽章 (icon-in-colored-box)",
+    "圆角收敛至 2px-4px 工业微倒角，大量采用 Editorial Grid + 1px Hairline (#E2E1DD) 上下细分割线列表",
+    "核心配图全面使用 /assets/editorial/*.jpg 真实工业摄影实拍图，角落可配极克制的半透明/浅色小角标"
+  ],
+  "palette": {
+    "brandForestPrimary": {
+      "hex": "#084732",
+      "rgb": "rgb(8, 71, 50)",
+      "cssVar": "--color-primary",
+      "role": "主品牌深森林绿（顶栏『BOM 询价』实心按钮、主 CTA 按钮、激活态指示线、复选框选中色）",
+      "sampledFrom": "6 张设计稿顶栏及主 CTA 实心按钮像素中位数 (#05422D ~ #0A422F)"
+    },
+    "brandForestHover": {
+      "hex": "#053626",
+      "rgb": "rgb(5, 54, 38)",
+      "cssVar": "--color-primary-hover",
+      "role": "主按钮悬停/按压加深态深森林绿"
+    },
+    "brandWordmarkGreen": {
+      "hex": "#0E5A36",
+      "rgb": "rgb(14, 90, 54)",
+      "cssVar": "--color-brand-wordmark",
+      "role": "官方 Logo 标准字深翠绿与局部品牌文字强调色"
+    },
+    "bandDarkForest": {
+      "hex": "#0B4330",
+      "rgb": "rgb(11, 67, 48)",
+      "cssVar": "--color-band-dark",
+      "role": "通栏深森林绿数据带（首页 13+ 能力条带、产品页吸底已选 BOM 栏、工程页定制开发三步横幅）",
+      "sampledFrom": "首页通栏 (#0E4833) 与工程方案深绿横幅 (#0B422F) 像素中位数"
+    },
+    "footerDeepGreen": {
+      "hex": "#09382B",
+      "rgb": "rgb(9, 56, 43)",
+      "cssVar": "--color-footer-bg",
+      "role": "全局通栏深墨绿页脚底色（搭配 oulink-logo-dark.svg 暖白反白标准字）",
+      "sampledFrom": "首页深森林墨绿页脚 (#08382C) 实测中位数（备选深松墨色 #1B2B28）"
+    },
+    "canvasWarmPaper": {
+      "hex": "#F6F5F1",
+      "rgb": "rgb(246, 245, 241)",
+      "cssVar": "--color-bg-canvas",
+      "role": "全站主画布暖纸白/浅米灰背景色（取代旧版 rgb(239, 243, 247) #EFF3F7）",
+      "sampledFrom": "首页 (#F6F5F1, 17.2%)、产品页 (#F5F4F0/#F6F5F1)、工程页 (#F5F4F0)、关于页 (#F7F6F2, 25.0%) 综合中位数"
+    },
+    "surfaceWhite": {
+      "hex": "#FFFFFF",
+      "rgb": "rgb(255, 255, 255)",
+      "cssVar": "--color-surface",
+      "role": "全局顶栏 Header 底色、搜索输入框、纯白数据表底与品牌矩阵白卡面"
+    },
+    "surfaceWarmCard": {
+      "hex": "#FAF9F7",
+      "rgb": "rgb(250, 249, 247)",
+      "cssVar": "--color-surface-elevated",
+      "role": "微暖纸白卡片与面板底色（品控核验卡、联系页表单外框面板）",
+      "sampledFrom": "品控页 (#FAF9F7) 与联系页 (#F9F8F6) 实测值"
+    },
+    "surfaceWarmAlt": {
+      "hex": "#F1EFEA",
+      "rgb": "rgb(241, 239, 234)",
+      "cssVar": "--color-bg-alt",
+      "role": "交替区块浅暖米灰底色（联系页底部『询价前准备好三项信息』、工程页资料准备框）",
+      "sampledFrom": "联系页底部面板 (#F1F0EC) 与工程页交替底 (#F4F1EC)"
+    },
+    "ctaSageTint": {
+      "hex": "#EAECE7",
+      "rgb": "rgb(234, 236, 231)",
+      "cssVar": "--color-bg-cta-strip",
+      "role": "页面底部克制的浅灰绿 CTA 通栏横条底色",
+      "sampledFrom": "关于欧连底部 CTA 横幅 (#EBEDE8 / #EAECE7)"
+    },
+    "selectedRowMint": {
+      "hex": "#E6EDE5",
+      "rgb": "rgb(230, 237, 229)",
+      "cssVar": "--color-row-selected",
+      "role": "产品料号表已勾选/已加入 BOM 行的浅绿高亮底色",
+      "sampledFrom": "产品页表格选中行 18,719 像素精确中位数 (#E6EDE5)"
+    },
+    "accentGold": {
+      "hex": "#C4A34C",
+      "rgb": "rgb(196, 163, 76)",
+      "cssVar": "--color-accent-gold",
+      "role": "浅色画布上的暖金/琥珀色点缀（产品页『383』大数字、关于页『2012』、01/02 序号、章节顶部金色短横线）",
+      "sampledFrom": "产品页 383 (#C7A64A) 与关于页 2012 (#C4A34C) 实测中位数"
+    },
+    "accentGoldDeep": {
+      "hex": "#A88634",
+      "rgb": "rgb(168, 134, 52)",
+      "cssVar": "--color-accent-gold-text",
+      "role": "浅底小号金色文字与竖线装饰（更高对比度琥珀金）",
+      "sampledFrom": "工程方案页金色 UI 标签实测值 (#B3903B / #A08029)"
+    },
+    "accentGoldOnDark": {
+      "hex": "#E7C96C",
+      "rgb": "rgb(231, 201, 108)",
+      "cssVar": "--color-accent-gold-bright",
+      "role": "深森林绿底上的亮香槟金（首页深绿通栏『13+』核心年限数字）",
+      "sampledFrom": "首页深绿通栏 13+ 像素实测值 (#E7C96C ~ #F2CE72)"
+    },
+    "borderHairline": {
+      "hex": "#E2E1DD",
+      "rgb": "rgb(226, 225, 221)",
+      "cssVar": "--color-border-hairline",
+      "role": "全站核心 1px 工业细分割线（Header 底边、Editorial 列表上下细线、表格行分割线）",
+      "sampledFrom": "全站 1px 水平细线实测中位数 (#E1E0DC ~ #E6E5E1)"
+    },
+    "borderStrong": {
+      "hex": "#CECCC6",
+      "rgb": "rgb(206, 204, 198)",
+      "cssVar": "--color-border-strong",
+      "role": "输入框、筛选器、次按钮与线框卡片边界色"
+    },
+    "textPrimary": {
+      "hex": "#192623",
+      "rgb": "rgb(25, 38, 35)",
+      "cssVar": "--color-text-primary",
+      "role": "H1/H2/H3 主标题与核心料号深松墨色",
+      "sampledFrom": "各页 H1 核心笔画实测值 (#19221F ~ #1D2F2D)"
+    },
+    "textBody": {
+      "hex": "#3F4644",
+      "rgb": "rgb(63, 70, 68)",
+      "cssVar": "--color-text-body",
+      "role": "正文段落与列表主文本色"
+    },
+    "textSecondary": {
+      "hex": "#666A67",
+      "rgb": "rgb(102, 106, 103)",
+      "cssVar": "--color-text-secondary",
+      "role": "副标题、表头字段名、面包屑与辅助说明文字色"
+    },
+    "textMuted": {
+      "hex": "#858884",
+      "rgb": "rgb(133, 136, 132)",
+      "cssVar": "--color-text-muted",
+      "role": "免责声明小字、占位符与弱化元数据色"
+    },
+    "textOnDark": {
+      "hex": "#F7F6F2",
+      "rgb": "rgb(247, 246, 242)",
+      "cssVar": "--color-text-on-dark",
+      "role": "深森林绿条带、主按钮与页脚上的暖白文字色"
+    }
+  },
+  "geometry": {
+    "borderRadiusSm": "2px",
+    "borderRadiusMd": "4px",
+    "hairlineWidth": "1px",
+    "shadowPolicy": "去重阴影，仅允许下拉浮层或吸底栏使用极克制的 0 4px 16px rgba(25, 38, 35, 0.08)"
+  },
+  "brandAssets": [
+    {
+      "publicPath": "/assets/brand/oulink-logo.svg",
+      "width": 360,
+      "height": 106,
+      "aspectRatio": 3.396,
+      "usage": "全局白底顶栏 Header 主 Logo（左官方绿金飞龙椭圆图形标 + 右『欧连电子 / Ou-Link Electronics』深绿标准字，保持 siteContent.brand.logoPrimary 路径不变）"
+    },
+    {
+      "publicPath": "/assets/brand/oulink-logo-dark.svg",
+      "width": 360,
+      "height": 106,
+      "aspectRatio": 3.396,
+      "usage": "深森林绿页脚 Footer 专用反白 Logo（左提亮绿金官方图形标 + 右 #F7F6F2 暖白标准字）"
+    },
+    {
+      "publicPath": "/assets/brand/oulink-logo-mono.svg",
+      "width": 360,
+      "height": 106,
+      "aspectRatio": 3.396,
+      "usage": "单色深森林绿 (#084732) 组合标（单色印刷/水印备用）"
+    },
+    {
+      "publicPath": "/assets/brand/oulink-mark.svg",
+      "width": 128,
+      "height": 128,
+      "aspectRatio": 1.0,
+      "usage": "独立官方绿金椭圆飞翼图形标"
+    },
+    {
+      "publicPath": "/assets/brand/oulink-logo-hd.png",
+      "width": 1080,
+      "height": 318,
+      "aspectRatio": 3.396,
+      "usage": "超高清 3x 透明底官方横向组合 PNG（供 OG/Schema 或高分屏下载引用）"
+    },
+    {
+      "publicPath": "/favicon.svg",
+      "width": 64,
+      "height": 64,
+      "aspectRatio": 1.0,
+      "usage": "浏览器标签页官方绿金图形标 Favicon"
+    }
+  ],
+  "editorialAssets": [
+    {
+      "file": "home-hero-connector.jpg",
+      "publicPath": "/assets/editorial/home-hero-connector.jpg",
+      "sourcePage": "home",
+      "sourceCropBox": [
+        177,
+        29,
+        337,
+        197
+      ],
+      "width": 480,
+      "height": 504,
+      "aspectRatio": 0.952,
+      "aspectRatioLabel": "480:504 (~0.95:1)",
+      "fileSizeBytes": 41968,
+      "recommendedCaptionBadgeZh": "产品示意",
+      "usage": "首页 Hero 右侧：汽车连接器护套、精密金属端子与防水密封栓组合实拍"
+    },
+    {
+      "file": "cat-housing.jpg",
+      "publicPath": "/assets/editorial/cat-housing.jpg",
+      "sourcePage": "products",
+      "sourceCropBox": [
+        17,
+        840,
+        119,
+        906
+      ],
+      "width": 306,
+      "height": 198,
+      "aspectRatio": 1.545,
+      "aspectRatioLabel": "306:198 (~1.54:1)",
+      "fileSizeBytes": 14085,
+      "recommendedCaptionBadgeZh": "护套示意",
+      "usage": "首页与产品页器件分类卡：多极汽车连接器护套特写实拍"
+    },
+    {
+      "file": "cat-terminal.jpg",
+      "publicPath": "/assets/editorial/cat-terminal.jpg",
+      "sourcePage": "products",
+      "sourceCropBox": [
+        128,
+        840,
+        226,
+        906
+      ],
+      "width": 294,
+      "height": 198,
+      "aspectRatio": 1.485,
+      "aspectRatioLabel": "294:198 (~1.49:1)",
+      "fileSizeBytes": 12292,
+      "recommendedCaptionBadgeZh": "端子示意",
+      "usage": "首页与产品页器件分类卡：精密冲压/车制金属端子特写实拍"
+    },
+    {
+      "file": "cat-seal.jpg",
+      "publicPath": "/assets/editorial/cat-seal.jpg",
+      "sourcePage": "products",
+      "sourceCropBox": [
+        236,
+        840,
+        333,
+        906
+      ],
+      "width": 291,
+      "height": 198,
+      "aspectRatio": 1.47,
+      "aspectRatioLabel": "291:198 (~1.47:1)",
+      "fileSizeBytes": 12497,
+      "recommendedCaptionBadgeZh": "密封件示意",
+      "usage": "产品页与分类配套卡：硅胶橙红多棱防水密封栓/密封圈特写实拍"
+    },
+    {
+      "file": "cat-lock.jpg",
+      "publicPath": "/assets/editorial/cat-lock.jpg",
+      "sourcePage": "products",
+      "sourceCropBox": [
+        343,
+        840,
+        440,
+        906
+      ],
+      "width": 291,
+      "height": 198,
+      "aspectRatio": 1.47,
+      "aspectRatioLabel": "291:198 (~1.47:1)",
+      "fileSizeBytes": 9671,
+      "recommendedCaptionBadgeZh": "锁止件示意",
+      "usage": "产品页底部配套卡：CPA/TPA 灰色二次锁止卡扣附件特写实拍"
+    },
+    {
+      "file": "cat-seal-lock.jpg",
+      "publicPath": "/assets/editorial/cat-seal-lock.jpg",
+      "sourcePage": "home",
+      "sourceCropBox": [
+        176,
+        641,
+        245,
+        709
+      ],
+      "width": 207,
+      "height": 204,
+      "aspectRatio": 1.015,
+      "aspectRatioLabel": "207:204 (~1.01:1)",
+      "fileSizeBytes": 9092,
+      "recommendedCaptionBadgeZh": "附件示意",
+      "usage": "首页器件分类第 3 卡备选：密封栓与锁止附件组合特写实拍"
+    },
+    {
+      "file": "cat-heavy.jpg",
+      "publicPath": "/assets/editorial/cat-heavy.jpg",
+      "sourcePage": "home",
+      "sourceCropBox": [
+        252,
+        641,
+        326,
+        709
+      ],
+      "width": 222,
+      "height": 204,
+      "aspectRatio": 1.088,
+      "aspectRatioLabel": "222:204 (~1.09:1)",
+      "fileSizeBytes": 10116,
+      "recommendedCaptionBadgeZh": "重载连接器示意",
+      "usage": "首页器件分类第 4 卡：高防护重载/大电流连接器特写实拍"
+    },
+    {
+      "file": "home-harness.jpg",
+      "publicPath": "/assets/editorial/home-harness.jpg",
+      "sourcePage": "home",
+      "sourceCropBox": [
+        11,
+        760,
+        182,
+        849
+      ],
+      "width": 513,
+      "height": 267,
+      "aspectRatio": 1.921,
+      "aspectRatioLabel": "513:267 (~1.92:1)",
+      "fileSizeBytes": 34780,
+      "recommendedCaptionBadgeZh": "线束示意",
+      "usage": "首页工程协同区左侧：整车多分支线束总成与连接器接口实拍"
+    },
+    {
+      "file": "products-hero.jpg",
+      "publicPath": "/assets/editorial/products-hero.jpg",
+      "sourcePage": "products",
+      "sourceCropBox": [
+        246,
+        41,
+        455,
+        154
+      ],
+      "width": 627,
+      "height": 339,
+      "aspectRatio": 1.85,
+      "aspectRatioLabel": "627:339 (~1.85:1)",
+      "fileSizeBytes": 42254,
+      "recommendedCaptionBadgeZh": "产品示意",
+      "usage": "产品与料号库页 Hero 右侧：带线束 6 孔黄芯防水护套与端子实拍"
+    },
+    {
+      "file": "solutions-hero.jpg",
+      "publicPath": "/assets/editorial/solutions-hero.jpg",
+      "sourcePage": "solutions",
+      "sourceCropBox": [
+        160,
+        31,
+        374,
+        221
+      ],
+      "width": 642,
+      "height": 570,
+      "aspectRatio": 1.126,
+      "aspectRatioLabel": "642:570 (~1.13:1)",
+      "fileSizeBytes": 69034,
+      "recommendedCaptionBadgeZh": "工程示意",
+      "usage": "工程方案页 Hero 右侧：汽车线束连接器总成与工程卡尺实拍"
+    },
+    {
+      "file": "solutions-bom-kit.jpg",
+      "publicPath": "/assets/editorial/solutions-bom-kit.jpg",
+      "sourcePage": "solutions",
+      "sourceCropBox": [
+        12,
+        324,
+        235,
+        434
+      ],
+      "width": 669,
+      "height": 330,
+      "aspectRatio": 2.027,
+      "aspectRatioLabel": "669:330 (~2.03:1)",
+      "fileSizeBytes": 36396,
+      "recommendedCaptionBadgeZh": "齐套示意",
+      "usage": "工程方案页 01 齐套配单左侧：护套、端子、密封栓与锁止件四件套分解实拍"
+    },
+    {
+      "file": "solutions-caliper.jpg",
+      "publicPath": "/assets/editorial/solutions-caliper.jpg",
+      "sourcePage": "solutions",
+      "sourceCropBox": [
+        138,
+        518,
+        364,
+        653
+      ],
+      "width": 678,
+      "height": 405,
+      "aspectRatio": 1.674,
+      "aspectRatioLabel": "678:405 (~1.67:1)",
+      "fileSizeBytes": 51833,
+      "recommendedCaptionBadgeZh": "测绘示意",
+      "usage": "工程方案页 02 国产替代右侧：黑白连接器样件与数显游标卡尺尺寸测绘实拍"
+    },
+    {
+      "file": "solutions-system-latch.jpg",
+      "publicPath": "/assets/editorial/solutions-system-latch.jpg",
+      "sourcePage": "solutions",
+      "sourceCropBox": [
+        213,
+        793,
+        364,
+        900
+      ],
+      "width": 453,
+      "height": 321,
+      "aspectRatio": 1.411,
+      "aspectRatioLabel": "453:321 (~1.41:1)",
+      "fileSizeBytes": 26330,
+      "recommendedCaptionBadgeZh": "产品示意",
+      "usage": "工程方案页整车系统互连右侧：带红色 CPA 二次锁扣的车规级连接器实拍"
+    },
+    {
+      "file": "quality-hero-lot.jpg",
+      "publicPath": "/assets/editorial/quality-hero-lot.jpg",
+      "sourcePage": "quality",
+      "sourceCropBox": [
+        7,
+        135,
+        228,
+        358
+      ],
+      "width": 619,
+      "height": 624,
+      "aspectRatio": 0.992,
+      "aspectRatioLabel": "619:624 (~0.99:1)",
+      "fileSizeBytes": 80819,
+      "recommendedCaptionBadgeZh": "包装与记录示意",
+      "usage": "品控溯源页左上主图：防潮自封袋批次条码标签、金属端子与扫码枪实拍"
+    },
+    {
+      "file": "quality-iqc-loupe.jpg",
+      "publicPath": "/assets/editorial/quality-iqc-loupe.jpg",
+      "sourcePage": "quality",
+      "sourceCropBox": [
+        205,
+        453,
+        378,
+        508
+      ],
+      "width": 519,
+      "height": 165,
+      "aspectRatio": 3.145,
+      "aspectRatioLabel": "519:165 (~3.15:1)",
+      "fileSizeBytes": 16612,
+      "recommendedCaptionBadgeZh": "检验示意",
+      "usage": "品控溯源页工序 02 来料外观核验：光学放大镜检视精密端子实拍"
+    },
+    {
+      "file": "quality-warehouse.jpg",
+      "publicPath": "/assets/editorial/quality-warehouse.jpg",
+      "sourcePage": "quality",
+      "sourceCropBox": [
+        205,
+        555,
+        378,
+        610
+      ],
+      "width": 519,
+      "height": 165,
+      "aspectRatio": 3.145,
+      "aspectRatioLabel": "519:165 (~3.15:1)",
+      "fileSizeBytes": 17956,
+      "recommendedCaptionBadgeZh": "仓储示意",
+      "usage": "品控溯源页工序 04 仓储防护管理：标准化货架与分批周转箱实拍"
+    },
+    {
+      "file": "quality-barcode-scan.jpg",
+      "publicPath": "/assets/editorial/quality-barcode-scan.jpg",
+      "sourcePage": "quality",
+      "sourceCropBox": [
+        205,
+        617,
+        378,
+        672
+      ],
+      "width": 519,
+      "height": 165,
+      "aspectRatio": 3.145,
+      "aspectRatioLabel": "519:165 (~3.15:1)",
+      "fileSizeBytes": 18470,
+      "recommendedCaptionBadgeZh": "复核示意",
+      "usage": "品控溯源页工序 05 出库扫码复核：防护手套操作红光激光扫码枪实拍"
+    },
+    {
+      "file": "about-workbench-wide.jpg",
+      "publicPath": "/assets/editorial/about-workbench-wide.jpg",
+      "sourcePage": "about",
+      "sourceCropBox": [
+        11,
+        208,
+        409,
+        382
+      ],
+      "width": 1194,
+      "height": 522,
+      "aspectRatio": 2.287,
+      "aspectRatioLabel": "1194:522 (~2.29:1)",
+      "fileSizeBytes": 122729,
+      "recommendedCaptionBadgeZh": "场景示意",
+      "usage": "关于欧连页宽幅主视觉：灰色工程台面上的多品牌连接器、端子卷盘、线束与图纸全景实拍"
+    },
+    {
+      "file": "contact-hero-connector.jpg",
+      "publicPath": "/assets/editorial/contact-hero-connector.jpg",
+      "sourcePage": "contact",
+      "sourceCropBox": [
+        228,
+        42,
+        455,
+        188
+      ],
+      "width": 681,
+      "height": 438,
+      "aspectRatio": 1.555,
+      "aspectRatioLabel": "681:438 (~1.55:1)",
+      "fileSizeBytes": 55419,
+      "recommendedCaptionBadgeZh": "产品示意",
+      "usage": "BOM 询价与联系页 Hero 右侧：米白内芯 6 孔连接器护套、端子与红密封栓实拍"
+    },
+    {
+      "file": "contact-sidebar-connector.jpg",
+      "publicPath": "/assets/editorial/contact-sidebar-connector.jpg",
+      "sourcePage": "contact",
+      "sourceCropBox": [
+        315,
+        522,
+        440,
+        640
+      ],
+      "width": 375,
+      "height": 354,
+      "aspectRatio": 1.059,
+      "aspectRatioLabel": "375:354 (~1.06:1)",
+      "fileSizeBytes": 28234,
+      "recommendedCaptionBadgeZh": "产品示意",
+      "usage": "BOM 询价与联系页右侧栏配图：精密连接器与端子实物特写"
+    }
+  ]
+}

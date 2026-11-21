@@ -4,11 +4,12 @@ import { routeHref } from "../routing.js";
 
 export function MpnSearchEngine({
   locale = "zh",
-  mode = "hero", // "hero" shows inline dropdown results; "catalog" drives main table directly
+  mode = "hero",
   query = "",
   onQueryChange,
   searchResults = null,
   mpnCopy,
+  catalogCopy = null,
   bomItems = [],
   onAddBom,
   onRequestCustomMpn,
@@ -16,7 +17,9 @@ export function MpnSearchEngine({
   inputRef,
 }) {
   const isInBom = (mpn) => bomItems.some((entry) => entry.mpn === mpn);
-  const catalogUrl = `${routeHref(locale, "products")}${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : ""}`;
+  const catalogUrl = `${routeHref(locale, "products")}${
+    query.trim() ? `?q=${encodeURIComponent(query.trim())}` : ""
+  }`;
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -25,12 +28,25 @@ export function MpnSearchEngine({
     }
   };
 
-  return (
-    <div className="mpn-engine-card">
-      <div className="mpn-engine-header">
-        <span className="mpn-engine-badge">{mpnCopy.badge}</span>
-      </div>
+  const placeholderText =
+    mode === "catalog" && catalogCopy?.searchPlaceholder
+      ? catalogCopy.searchPlaceholder
+      : mpnCopy.placeholder;
+  const submitButtonText =
+    mode === "catalog" && catalogCopy?.searchButton
+      ? catalogCopy.searchButton
+      : mpnCopy.buttonText;
+  const quickQueries =
+    mode === "catalog" && Array.isArray(catalogCopy?.recentQueries)
+      ? catalogCopy.recentQueries
+      : mpnCopy.hotQueries || [];
+  const quickLabel =
+    mode === "catalog" && catalogCopy?.recentLabel
+      ? `${catalogCopy.recentLabel}：`
+      : mpnCopy.hotLabel;
 
+  return (
+    <div className={`mpn-search-module is-${mode}`}>
       <form
         className="mpn-search-form"
         action={routeHref(locale, "products")}
@@ -39,15 +55,15 @@ export function MpnSearchEngine({
         onSubmit={handleSubmit}
       >
         <div className="mpn-input-wrap">
-          <Search size={18} className="mpn-search-icon" aria-hidden="true" />
+          <Search size={16} className="mpn-search-icon" aria-hidden="true" />
           <input
             ref={inputRef}
             type="search"
             name="q"
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
-            placeholder={mpnCopy.placeholder}
-            aria-label={mpnCopy.label}
+            placeholder={placeholderText}
+            aria-label={mpnCopy.label || placeholderText}
             autoComplete="off"
             className="mpn-search-input"
           />
@@ -58,28 +74,30 @@ export function MpnSearchEngine({
               onClick={() => onQueryChange("")}
               aria-label={mpnCopy.clearText}
             >
-              <X size={16} aria-hidden="true" />
+              <X size={14} aria-hidden="true" />
             </button>
           ) : null}
         </div>
-        <button type="submit" className="btn-volt" style={{ flexShrink: 0 }}>
-          <span>{mpnCopy.buttonText}</span>
+        <button type="submit" className="btn-primary mpn-submit-btn">
+          <span>{submitButtonText}</span>
         </button>
       </form>
 
-      <div className="mpn-hot-chips">
-        <span>{mpnCopy.hotLabel}</span>
-        {mpnCopy.hotQueries.map((sample) => (
-          <button
-            key={sample}
-            type="button"
-            className="mpn-chip-btn"
-            onClick={() => onQueryChange(sample)}
-          >
-            {sample}
-          </button>
-        ))}
-      </div>
+      {mode === "catalog" && quickQueries.length > 0 ? (
+        <div className="mpn-recent-row">
+          <span className="mpn-recent-label">{quickLabel}</span>
+          {quickQueries.map((sample) => (
+            <button
+              key={sample}
+              type="button"
+              className="mpn-recent-chip"
+              onClick={() => onQueryChange(sample)}
+            >
+              {sample}
+            </button>
+          ))}
+        </div>
+      ) : null}
 
       {mode === "hero" && query.trim().length > 0 && searchResults ? (
         <div className="mpn-inline-results" aria-live="polite">
@@ -87,28 +105,27 @@ export function MpnSearchEngine({
             <>
               <div className="mpn-results-bar">
                 <span>
-                  {mpnCopy.resultCountPrefix}:{" "}
-                  <strong className="mpn-code">{searchResults.total}</strong> SKU
+                  {mpnCopy.resultCountPrefix}：{" "}
+                  <strong className="mpn-code">{searchResults.total}</strong>
                 </span>
                 <a
                   href={catalogUrl}
+                  className="editorial-text-link"
                   onClick={(event) => {
                     if (onNavigate) {
                       event.preventDefault();
                       onNavigate(catalogUrl);
                     }
                   }}
-                  style={{ color: "var(--ou-cyber-dark)", display: "inline-flex", alignItems: "center", gap: 4 }}
                 >
                   <span>{mpnCopy.viewAllText}</span>
-                  <ArrowRight size={14} aria-hidden="true" />
                 </a>
               </div>
               <div className="mpn-result-list">
                 {searchResults.items.slice(0, 6).map((item) => {
                   const added = isInBom(item.mpn);
                   return (
-                    <div key={item.id} className="mpn-result-row">
+                    <div key={item.id} className={`mpn-result-row${added ? " is-selected" : ""}`}>
                       <div className="mpn-result-main">
                         <span className="mpn-result-code">{item.mpn}</span>
                         <span className="mpn-result-brand">
@@ -119,15 +136,15 @@ export function MpnSearchEngine({
                         </span>
                       </div>
                       <div className="mpn-result-actions">
-                        <span className="tabular-num" style={{ fontSize: 12.5, color: "var(--text-muted)" }}>
-                          {item.stockQty.toLocaleString()} PCS · ¥{Number(item.priceCny).toFixed(4)}
+                        <span className="tabular-num mpn-result-price">
+                          {Number(item.stockQty).toLocaleString()} PCS
                         </span>
                         <button
                           type="button"
                           className={`add-bom-btn${added ? " is-added" : ""}`}
                           onClick={() => onAddBom(item)}
                         >
-                          {added ? <Check size={14} aria-hidden="true" /> : <Plus size={14} aria-hidden="true" />}
+                          {added ? <Check size={13} aria-hidden="true" /> : <Plus size={13} aria-hidden="true" />}
                           <span>{added ? mpnCopy.addedBomText : mpnCopy.addBomText}</span>
                         </button>
                       </div>
@@ -139,16 +156,16 @@ export function MpnSearchEngine({
           ) : (
             <div className="mpn-no-match-box">
               <h3>
-                {mpnCopy.noMatchTitle}: <span className="mpn-code">&ldquo;{query.trim()}&rdquo;</span>
+                {mpnCopy.noMatchTitle}：<span className="mpn-code">&ldquo;{query.trim()}&rdquo;</span>
               </h3>
               <p>{mpnCopy.noMatchBody}</p>
               <button
                 type="button"
-                className="btn-volt"
+                className="btn-primary"
                 onClick={() => onRequestCustomMpn(query.trim())}
               >
                 <span>{mpnCopy.noMatchAction}</span>
-                <ArrowRight size={15} aria-hidden="true" />
+                <ArrowRight size={14} aria-hidden="true" />
               </button>
             </div>
           )}

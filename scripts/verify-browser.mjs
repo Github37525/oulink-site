@@ -250,6 +250,42 @@ async function main() {
               .filter((img) => !img.complete || img.naturalWidth <= 0)
               .map((img) => img.getAttribute("src") || "(empty src)");
 
+            // Image 2.6 /assets/editorial/ real industrial photography completeness check
+            const editorialImgs = imgs.filter((img) => (img.getAttribute("src") || "").includes("/assets/editorial/"));
+            const brokenEditorialImages = editorialImgs
+              .filter((img) => !img.complete || img.naturalWidth <= 0 || img.naturalHeight <= 0)
+              .map((img) => img.getAttribute("src") || "(empty src)");
+            const editorialPaths = editorialImgs.map((img) => img.getAttribute("src") || "");
+
+            // Legacy flat SVG illustration & cyber/navy palette leak check
+            const legacyFlatIllustrations = imgs
+              .filter((img) => (img.getAttribute("src") || "").includes("/assets/quality/"))
+              .map((img) => img.getAttribute("src") || "");
+
+            const forbiddenRgb = new Set([
+              "rgb(2, 176, 238)",   // legacy cyber blue #02B0EE
+              "rgb(9, 33, 67)",     // legacy navy #092143
+              "rgb(254, 106, 8)",   // legacy electric orange #FE6A08
+              "rgb(239, 243, 247)", // legacy cold canvas #EFF3F7
+            ]);
+            const legacyPaletteLeaks = [];
+            for (const [label, el] of [
+              ["html", docEl],
+              ["body", document.body],
+              ["shell", shellEl],
+              ["header", document.querySelector("header")],
+              ["footer", document.querySelector("footer")],
+            ]) {
+              if (!el) continue;
+              const cs = getComputedStyle(el);
+              for (const prop of ["backgroundColor", "color", "borderTopColor", "borderBottomColor"]) {
+                const val = cs[prop];
+                if (forbiddenRgb.has(val)) {
+                  legacyPaletteLeaks.push(`${label}.${prop}=${val}`);
+                }
+              }
+            }
+
             // Partner brand SVGs distortion check
             const brandImgs = imgs.filter((img) => (img.getAttribute("src") || "").includes("/assets/brands/"));
             const distortedBrands = [];
@@ -307,6 +343,11 @@ async function main() {
               shellBg,
               totalImages: imgs.length,
               brokenImages,
+              editorialImgCount: editorialImgs.length,
+              editorialPaths,
+              brokenEditorialImages,
+              legacyFlatIllustrations,
+              legacyPaletteLeaks,
               brandSvgCount: brandImgs.length,
               distortedBrands,
               clippedCards,
@@ -335,17 +376,36 @@ async function main() {
               `Horizontal overflow detected: scrollWidth(${record.scrollWidth}) > innerWidth(${record.innerWidth})`
             );
             assert.deepEqual(record.brokenImages, [], `Broken images: ${record.brokenImages.join(", ")}`);
+            assert.ok(
+              record.editorialImgCount >= 1,
+              `Page ${routePath} must display at least 1 /assets/editorial/*.jpg photograph, found ${record.editorialImgCount}`
+            );
+            assert.deepEqual(
+              record.brokenEditorialImages,
+              [],
+              `Broken /assets/editorial/ images: ${record.brokenEditorialImages.join(", ")}`
+            );
+            assert.deepEqual(
+              record.legacyFlatIllustrations,
+              [],
+              `Legacy flat SVG illustrations still referenced: ${record.legacyFlatIllustrations.join(", ")}`
+            );
+            assert.deepEqual(
+              record.legacyPaletteLeaks,
+              [],
+              `Legacy cyber-blue / navy palette leaked: ${record.legacyPaletteLeaks.join(", ")}`
+            );
             assert.deepEqual(record.distortedBrands, [], `Distorted brand SVGs: ${record.distortedBrands.join("; ")}`);
             assert.deepEqual(record.clippedCards, [], `Clipped card containers: ${record.clippedCards.join("; ")}`);
             assert.equal(record.jsDeadLinks, 0, `Found ${record.jsDeadLinks} javascript: dead link(s)`);
             assert.deepEqual(record.runtimeErrors, [], `Runtime errors: ${record.runtimeErrors.join(" | ")}`);
             assert.deepEqual(record.failedAssets, [], `Failed assets: ${record.failedAssets.join(", ")}`);
 
-            const canvasMatchesVi = [record.bodyBg, record.htmlBg, record.shellBg].includes("rgb(239, 243, 247)");
+            const canvasMatchesVi = [record.bodyBg, record.htmlBg, record.shellBg].includes("rgb(246, 245, 241)");
             assert.equal(
               canvasMatchesVi,
               true,
-              `Main canvas background must match Official VI #EFF3F7 rgb(239, 243, 247), got body=${record.bodyBg}, shell=${record.shellBg}`
+              `Main canvas background must match Image 2.6 warm paper #F6F5F1 rgb(246, 245, 241), got body=${record.bodyBg}, html=${record.htmlBg}, shell=${record.shellBg}`
             );
 
             if (route === "home") {
@@ -359,8 +419,8 @@ async function main() {
           }
 
           // Capture key desktop & mobile screenshots to qa/
-          if (vp.width === 1440 && ["home", "products", "solutions", "quality", "about"].includes(route)) {
-            if (locale === "zh" || route === "home" || route === "products") {
+          if (vp.width === 1440 && ["home", "products", "solutions", "quality", "about", "contact"].includes(route)) {
+            if (locale === "zh" || route === "home" || route === "products" || route === "contact") {
               await page.screenshot({
                 path: path.join(qaDir, `${locale}-${route}-1440.png`),
                 fullPage: true,
@@ -538,14 +598,44 @@ async function main() {
           const res404En = await page.goto(`${baseURL}/en/non-existent-connector-route`);
           assert.equal(res404En?.status(), 404, "Unknown /en/* route must return HTTP 404");
 
+          // Step D: Verify all 20 /assets/editorial/*.jpg photographs decode cleanly with naturalWidth > 0
+          await page.goto(`${baseURL}/zh`, { waitUntil: "domcontentloaded" });
+          const specJson = JSON.parse(await readFile(path.join(rootDir, "docs", "image26-design-spec.json"), "utf8"));
+          const expectedEditorialPaths = (specJson.editorialAssets || []).map((a) => a.publicPath);
+          assert.ok(
+            expectedEditorialPaths.length >= 20,
+            `Expected >= 20 editorial assets in docs/image26-design-spec.json, got ${expectedEditorialPaths.length}`
+          );
+          const editorialDecodeCheck = await page.evaluate(async (paths) => {
+            const results = [];
+            for (const src of paths) {
+              const probe = await new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve({ src, ok: img.naturalWidth > 0 && img.naturalHeight > 0, w: img.naturalWidth, h: img.naturalHeight });
+                img.onerror = () => resolve({ src, ok: false, w: 0, h: 0 });
+                img.src = src;
+              });
+              results.push(probe);
+            }
+            return results;
+          }, expectedEditorialPaths);
+          const failedEditorialProbes = editorialDecodeCheck.filter((r) => !r.ok).map((r) => r.src);
+          assert.deepEqual(
+            failedEditorialProbes,
+            [],
+            `Editorial photographs failed browser decode: ${failedEditorialProbes.join(", ")}`
+          );
+
           interactionChecks.searchAndBomFlow = {
             passed: true,
             heroFuzzySearch368500Matched: true,
             fuzzySearch368500Matched: true,
             bomAutoFilled1928404745: true,
             hasInInputValues: contactBomState.hasInInputValues,
+            contactBomScreenshot: "qa/zh-contact-bom-1440.png",
             honest503FallbackVerified: true,
             real404Verified: true,
+            editorialAssetsDecodedCount: editorialDecodeCheck.length,
           };
         } catch (err) {
           interactionChecks.searchAndBomFlow = { passed: false, error: err.message };

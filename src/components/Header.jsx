@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Menu, X, Search, ShoppingBag, Globe, PhoneCall } from "lucide-react";
-import { routeHref, routeKeys, switchLocaleHref } from "../routing.js";
+import { Menu, X, PhoneCall } from "lucide-react";
+import { routeHref, switchLocaleHref } from "../routing.js";
+
+const PRIMARY_NAV_KEYS = ["home", "products", "solutions", "quality", "about"];
 
 export function Header({
   locale = "zh",
@@ -11,12 +13,10 @@ export function Header({
   localeContent,
   bomCount = 0,
   onNavigate,
-  onOpenBom,
   onTriggerSearch,
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const otherLocale = locale === "zh" ? "en" : "zh";
-  const allNavRoutes = ["home", ...routeKeys];
 
   useEffect(() => {
     setMenuOpen(false);
@@ -66,6 +66,10 @@ export function Header({
   };
 
   const switchHref = switchLocaleHref(pathname, otherLocale);
+  const contactHref = routeHref(locale, "contact");
+  const ctaLabel = localeContent.headerCta || localeContent.nav.contact;
+  const zhLabel = localeContent.localePair?.zh || "中";
+  const enLabel = localeContent.localePair?.en || "EN";
 
   return (
     <header className="site-header">
@@ -78,13 +82,13 @@ export function Header({
           <img
             src={brand.logoPrimary}
             alt={locale === "zh" ? brand.fullNameZh : brand.fullNameEn}
-            width="133"
-            height="40"
+            width="150"
+            height="44"
           />
         </a>
 
         <nav className="desktop-nav" aria-label={localeContent.accessibility.navigation}>
-          {allNavRoutes.map((key) => {
+          {PRIMARY_NAV_KEYS.map((key) => {
             const href = routeHref(locale, key);
             const isCurrent = route === key;
             return (
@@ -102,44 +106,56 @@ export function Header({
         </nav>
 
         <div className="header-actions">
-          <button
-            type="button"
-            className="header-icon-btn header-search-shortcut"
-            onClick={onTriggerSearch}
-            aria-label={localeContent.accessibility.searchTrigger}
-          >
-            <Search size={15} aria-hidden="true" />
-            <span>MPN</span>
-            <kbd className="kbd-hint">/</kbd>
-          </button>
-
-          <button
-            type="button"
-            className="bom-trigger-btn"
-            onClick={onOpenBom}
-            aria-label={`${localeContent.accessibility.bomTrigger} (${bomCount})`}
-          >
-            <ShoppingBag size={15} aria-hidden="true" />
-            <span className="bom-trigger-text">BOM</span>
-            <span className="bom-count-badge">{bomCount}</span>
-          </button>
-
           <a
-            href={switchHref}
-            className="locale-switch-link"
-            aria-label={localeContent.localeSwitchAria}
-            onClick={handleLinkClick(switchHref)}
+            href={contactHref}
+            className={`btn-primary header-cta-btn${route === "contact" ? " is-current" : ""}`}
+            aria-current={route === "contact" ? "page" : undefined}
+            onClick={handleLinkClick(contactHref)}
           >
-            <Globe size={14} aria-hidden="true" style={{ marginRight: 4 }} />
-            <span>{localeContent.localeLabel}</span>
+            <span>{ctaLabel}</span>
+            {bomCount > 0 ? <span className="header-bom-count">{bomCount}</span> : null}
           </a>
+
+          <div className="locale-toggle-pair" role="group" aria-label={localeContent.localeSwitchAria}>
+            {locale === "zh" ? (
+              <>
+                <span className="locale-active">{zhLabel}</span>
+                <span className="locale-sep" aria-hidden="true">/</span>
+                <a
+                  href={switchHref}
+                  className="locale-switch-link"
+                  aria-label={localeContent.localeSwitchAria}
+                  onClick={handleLinkClick(switchHref)}
+                >
+                  {enLabel}
+                </a>
+              </>
+            ) : (
+              <>
+                <a
+                  href={switchHref}
+                  className="locale-switch-link"
+                  aria-label={localeContent.localeSwitchAria}
+                  onClick={handleLinkClick(switchHref)}
+                >
+                  {zhLabel}
+                </a>
+                <span className="locale-sep" aria-hidden="true">/</span>
+                <span className="locale-active">{enLabel}</span>
+              </>
+            )}
+          </div>
 
           <button
             type="button"
             className="mobile-menu-btn"
             aria-expanded={menuOpen}
             aria-controls="mobile-nav-drawer"
-            aria-label={localeContent.accessibility.mobileMenuOpen}
+            aria-label={
+              menuOpen
+                ? localeContent.accessibility.mobileMenuClose || localeContent.accessibility.mobileMenuOpen
+                : localeContent.accessibility.mobileMenuOpen
+            }
             onClick={() => setMenuOpen((prev) => !prev)}
           >
             {menuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
@@ -147,10 +163,10 @@ export function Header({
         </div>
       </div>
 
-      {menuOpen && (
+      {menuOpen ? (
         <div id="mobile-nav-drawer" className="mobile-nav-drawer">
           <nav className="mobile-nav-list" aria-label={localeContent.accessibility.navigation}>
-            {allNavRoutes.map((key) => {
+            {[...PRIMARY_NAV_KEYS, "contact"].map((key) => {
               const href = routeHref(locale, key);
               const isCurrent = route === key;
               return (
@@ -161,20 +177,25 @@ export function Header({
                   aria-current={isCurrent ? "page" : undefined}
                   onClick={handleLinkClick(href)}
                 >
-                  <span>{localeContent.nav[key]}</span>
+                  <span>{key === "contact" ? ctaLabel : localeContent.nav[key]}</span>
+                  {key === "contact" && bomCount > 0 ? (
+                    <span className="mpn-code">({bomCount})</span>
+                  ) : null}
                 </a>
               );
             })}
           </nav>
           <div className="mobile-nav-meta">
-            <a href={`tel:${contact.salesPhone}`} style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-              <PhoneCall size={14} aria-hidden="true" />
-              <span className="mpn-code">{contact.salesPhone}</span>
+            <a href={`tel:${contact.phone}`} className="mobile-meta-item">
+              <PhoneCall size={13} aria-hidden="true" />
+              <span className="mpn-code">{contact.phone} / {contact.salesPhone}</span>
             </a>
-            <span>{contact.email}</span>
+            <a href={`mailto:${contact.email}`} className="mpn-code mobile-meta-item">
+              {contact.email}
+            </a>
           </div>
         </div>
-      )}
+      ) : null}
     </header>
   );
 }

@@ -1,45 +1,46 @@
 :root {
-  /* === 1. Official VI Core Brand Palette (Pixel-Sampled Swatches) === */
-  --ou-navy: #092143;          /* Deep Navy: primary brand color, dark plates, primary headings */
-  --ou-navy-deep: #05152C;     /* Deepest Navy: footer nameplate & technical status bar */
-  --ou-navy-hover: #123361;    /* Deep Navy hover state */
+  /* === 1. Ou-Link Image 2.6 Industrial Editorial Palette (Pixel-Sampled) === */
+  --color-primary: #084732;              /* Deep Forest Green: primary CTA, active underline, checkboxes */
+  --color-primary-hover: #053626;        /* Deep Forest Green hover / active state */
+  --color-brand-wordmark: #0E5A36;       /* Official wordmark emerald green */
+  --color-band-dark: #0B4330;            /* Full-bleed dark forest band (13+ stats strip, sticky BOM bar, 3-step banner) */
+  --color-footer-bg: #09382B;            /* Deep pine-forest footer surface */
 
-  --ou-cyber-blue: #02B0EE;    /* Cyber Blue: high-frequency/high-speed data interconnect accent */
-  --ou-cyber-dark: #0082B3;    /* Accessible dark cyan for text badges on light backgrounds */
-  --ou-cyber-tint: rgba(2, 176, 238, 0.10);
+  /* === 2. Warm Paper & Editorial Surfaces === */
+  --color-bg-canvas: #F6F5F1;            /* rgb(246, 245, 241) Warm paper main canvas */
+  --color-surface: #FFFFFF;              /* Crisp white header, inputs, data table & brand cells */
+  --color-surface-elevated: #FAF9F7;     /* Soft warm card & verification sheet surface */
+  --color-bg-alt: #F1EFEA;               /* Alternating warm stone-beige section / prep box */
+  --color-bg-cta-strip: #EAECE7;         /* Restrained sage-stone bottom CTA strip */
+  --color-row-selected: #E6EDE5;         /* Soft sage-mint highlight for BOM-selected table rows */
 
-  --ou-volt-orange: #FE6A08;   /* Volt Orange: high-voltage power accent, core RFQ CTA & focus ring */
-  --ou-volt-hover: #E05A00;    /* Volt Orange hover state */
-  --ou-volt-tint: rgba(254, 106, 8, 0.10);
+  /* === 3. Warm Gold & Amber Editorial Accents === */
+  --color-accent-gold: #C4A34C;          /* Warm brass gold: 383, 2012, 01-05 numerals, section top rule */
+  --color-accent-gold-text: #A88634;     /* High-contrast amber gold for labels & vertical ticks on light bg */
+  --color-accent-gold-bright: #E7C96C;   /* Bright champagne gold for 13+ on dark forest band */
 
-  --ou-slate: #617282;         /* Slate Gray: neutral engineering caption & metadata */
-  --ou-ice-blue: #A8CFEE;      /* Engineering Ice Blue: CAD construction arcs, micro-grid & hairline highlight */
+  /* === 4. 1px Industrial Hairlines & Control Borders === */
+  --color-border-hairline: #E2E1DD;      /* 1px primary editorial divider & table row hairline */
+  --color-border-strong: #CECCC6;        /* Input controls, secondary outline buttons, filter borders */
 
-  /* === 2. Surface Hierarchy === */
-  --bg-canvas: #EFF3F7;        /* Official Canvas Gray-Blue global drafting background */
-  --bg-muted: #EDF0F4;         /* Secondary industrial muted panel */
-  --bg-card: #FFFFFF;          /* Pure white specification sheet card */
+  /* === 5. Ink Typography Hierarchy === */
+  --color-text-primary: #192623;         /* Deep pine-charcoal headings & MPN codes */
+  --color-text-body: #3F4644;            /* Body copy & editorial list descriptions */
+  --color-text-secondary: #666A67;       /* Subtitles, table headers, breadcrumbs, metadata */
+  --color-text-muted: #858884;           /* Disclaimers, placeholders, footnotes */
+  --color-text-on-dark: #F7F6F2;         /* Warm off-white text on deep forest surfaces */
 
-  /* === 3. Typography & Hairline Tolerance Borders === */
-  --text-primary: #092143;     /* Primary text (>13:1 AAA contrast on white/canvas) */
-  --text-body: #2B3B4E;        /* Extended technical copy color */
-  --text-muted: #617282;       /* Secondary parameter labels */
-  --text-on-dark: #F7FAFC;     /* Reversed text on Deep Navy surfaces */
+  /* === 6. Typography Stacks === */
+  --font-display: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+  --font-sans: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+  --font-mono: "IBM Plex Mono", "JetBrains Mono", "Cascadia Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 
-  --border-subtle: #DCE4EE;    /* 1px standard card tolerance line */
-  --border-strong: #B8C9DC;    /* Table rule & form control border */
-
-  /* === 4. Industrial Typography Stacks === */
-  --font-display: "Barlow", "DIN Alternate", "Bahnschrift", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", sans-serif;
-  --font-sans: "Plus Jakarta Sans", "HarmonyOS Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", sans-serif;
-  --font-mono: "JetBrains Mono", "IBM Plex Mono", "Cascadia Mono", "Consolas", "Courier New", monospace;
-
-  /* === 5. Crisp Industrial Geometry & Elevation === */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --shadow-card: 0 1px 3px rgba(9, 33, 67, 0.05), 0 8px 24px rgba(9, 33, 67, 0.04);
-  --shadow-elevated: 0 14px 36px rgba(9, 33, 67, 0.12);
-  --header-height: 72px;
-  --container-max: 1320px;
+  /* === 7. Restrained Industrial Geometry === */
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --shadow-dropdown: 0 6px 20px rgba(25, 38, 35, 0.08);
+  --shadow-sticky: 0 -2px 14px rgba(25, 38, 35, 0.12);
+  --header-height: 70px;
+  --container-max: 1240px;
 }

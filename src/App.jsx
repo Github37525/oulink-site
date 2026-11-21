@@ -1,5 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, CheckCircle2, Copy, Mail, PhoneCall, Trash2, MapPin, Briefcase } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  CheckCircle2,
+  Copy,
+  Mail,
+  PhoneCall,
+  Plus,
+  Trash2,
+} from "lucide-react";
 import { siteContent } from "./content/siteContent.js";
 import {
   BRANDS,
@@ -19,15 +28,17 @@ import { FaqAccordion } from "./components/FaqAccordion.jsx";
 
 const BOM_STORAGE_KEY = "oulink_bom_v1";
 
-function formatBomSummaryText(bomItems, manualBomText, locale = "zh") {
+function serializeRowsToText(rows, manualPasteText = "", locale = "zh") {
   const lines = [];
-  if (bomItems.length > 0) {
-    for (const item of bomItems) {
-      lines.push(`${item.mpn}  |  ${item.brand || "-"}  |  ${item.qty} PCS`);
-    }
+  for (const row of rows) {
+    const mpn = String(row.mpn || "").trim();
+    if (!mpn) continue;
+    const qty = row.qty ? `${row.qty} PCS` : "-";
+    const extra = row.leadTime || row.brand || "";
+    lines.push(extra ? `${mpn}  |  ${qty}  |  ${extra}` : `${mpn}  |  ${qty}`);
   }
-  if (manualBomText && manualBomText.trim()) {
-    lines.push(manualBomText.trim());
+  if (manualPasteText && manualPasteText.trim()) {
+    lines.push(manualPasteText.trim());
   }
   if (lines.length === 0) {
     return locale === "zh" ? "（待补充具体连接器料号）" : "(Connector MPNs to be specified)";
@@ -50,28 +61,38 @@ export function App({
   const [catalogQuery, setCatalogQuery] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [catalogSort, setCatalogSort] = useState("mpn");
   const [catalogPage, setCatalogPage] = useState(1);
+  const [brandsExpanded, setBrandsExpanded] = useState(false);
 
   const [bomItems, setBomItems] = useState([]);
   const [bomDrawerOpen, setBomDrawerOpen] = useState(false);
 
-  // RFQ Form states
+  // Solutions role tab state
+  const [activeRoleId, setActiveRoleId] = useState("wire-harness");
+
+  // Contact / BOM 01 & 02 states
+  const [bomTab, setBomTab] = useState("manual"); // "manual" | "paste"
+  const [sampleUntouched, setSampleUntouched] = useState(true);
+  const [manualRows, setManualRows] = useState(() => [
+    { id: "sample-1", mpn: "368500-1", qty: 2400, leadTime: "现货 / 2周内" },
+    { id: "sample-2", mpn: "1928404745", qty: 500, leadTime: "现货核实" },
+  ]);
+
   const [rfqName, setRfqName] = useState("");
   const [rfqCompany, setRfqCompany] = useState("");
   const [rfqContact, setRfqContact] = useState("");
   const [rfqCustomerType, setRfqCustomerType] = useState("harness");
-  const [rfqInquiryType, setRfqInquiryType] = useState("bom");
+  const [selectedFocuses, setSelectedFocuses] = useState(["spot"]);
   const [rfqBomText, setRfqBomText] = useState("");
-  const [rfqBomTextTouched, setRfqBomTextTouched] = useState(false);
   const [rfqMessage, setRfqMessage] = useState("");
   const [rfqConsent, setRfqConsent] = useState(true);
   const [rfqHoneypot, setRfqHoneypot] = useState("");
-  const [rfqStatus, setRfqStatus] = useState("idle"); // idle | submitting | validation_error | success | fallback
+  const [rfqStatus, setRfqStatus] = useState("idle");
   const [copiedFallback, setCopiedFallback] = useState(false);
 
   const searchInputRef = useRef(null);
 
-  // Sync pathname prop changes (e.g. SSR or controlled tests)
   useEffect(() => {
     setCurrentPath(initialPathname);
   }, [initialPathname]);
@@ -81,7 +102,23 @@ export function App({
   const brand = activeContent.brand;
   const contact = activeContent.contact;
 
-  // Rebuild catalog API dynamically so config-only mutations immediately reflect
+  // Keep sample rows localized if still untouched and no real BOM items selected
+  useEffect(() => {
+    if (sampleUntouched && bomItems.length === 0) {
+      const configuredSamples = localeContent.contact?.bomSection?.sampleRows;
+      if (Array.isArray(configuredSamples) && configuredSamples.length > 0) {
+        setManualRows(
+          configuredSamples.map((r, idx) => ({
+            id: `sample-${idx + 1}`,
+            mpn: r.mpn,
+            qty: r.qty,
+            leadTime: r.leadTime || "",
+          }))
+        );
+      }
+    }
+  }, [locale, localeContent, sampleUntouched, bomItems.length]);
+
   const catalogApi = useMemo(
     () => createCatalogApi(activeProducts, activeBrands),
     [activeProducts, activeBrands]
@@ -141,6 +178,7 @@ export function App({
                 ? "待核实 / 替代寻源"
                 : "Sourcing / Cross-Ref",
             qty: matched?.moq || 100,
+            leadTime: locale === "zh" ? "现货核实" : "Stock check",
           },
         ];
         try {
@@ -166,27 +204,17 @@ export function App({
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
-  // Keep RFQ textarea automatically populated with selected BOM items unless manually edited
-  useEffect(() => {
-    if (!rfqBomTextTouched) {
-      if (bomItems.length > 0) {
-        const autoLines = bomItems
-          .map((item) => `${item.mpn}\t${item.qty} PCS\t(${item.brand || "OEM"})`)
-          .join("\n");
-        setRfqBomText(autoLines);
-      } else {
-        setRfqBomText("");
-      }
-    }
-  }, [bomItems, rfqBomTextTouched]);
-
   // Update document title & html lang on client-side SPA navigation
   useEffect(() => {
     if (typeof document === "undefined") return;
     document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
     const meta =
       route === "notFound"
-        ? { title: `${localeContent.notFound.title} — ${locale === "zh" ? brand.fullNameZh : brand.fullNameEn}` }
+        ? {
+            title: `${localeContent.notFound.title} — ${
+              locale === "zh" ? brand.fullNameZh : brand.fullNameEn
+            }`,
+          }
         : localeContent.routes[route] || localeContent.routes.home;
     if (meta?.title) {
       document.title = meta.title;
@@ -205,7 +233,6 @@ export function App({
   const handleAddBom = (product) => {
     const existing = bomItems.find((entry) => entry.mpn === product.mpn);
     if (existing) {
-      setBomDrawerOpen(false);
       return;
     }
     const next = [
@@ -214,15 +241,82 @@ export function App({
         mpn: product.mpn,
         brand: locale === "zh" ? product.brandNameZh : product.brandNameEn,
         qty: product.moq || product.spq || 100,
+        leadTime: locale === "zh" ? "现货核实" : "Stock check",
       },
     ];
     persistBom(next);
   };
 
+  const handleToggleBom = (product) => {
+    const exists = bomItems.some((entry) => entry.mpn === product.mpn);
+    if (exists) {
+      persistBom(bomItems.filter((entry) => entry.mpn !== product.mpn));
+    } else {
+      handleAddBom(product);
+    }
+  };
+
   const handleUpdateBomQty = (mpn, rawVal) => {
     const parsed = Number.parseInt(String(rawVal), 10);
-    const qty = Number.isFinite(parsed) && parsed > 0 ? Math.min(parsed, 9_999_999) : 1;
+    const qty = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
     persistBom(bomItems.map((item) => (item.mpn === mpn ? { ...item, qty } : item)));
+  };
+
+  const handleUpdateBomField = (idx, field, value) => {
+    if (bomItems.length > 0) {
+      const next = bomItems.map((item, i) => {
+        if (i !== idx) return item;
+        if (field === "qty") {
+          const parsed = Number.parseInt(String(value), 10);
+          return { ...item, qty: Number.isFinite(parsed) && parsed > 0 ? parsed : 1 };
+        }
+        return { ...item, [field]: value };
+      });
+      persistBom(next);
+    } else {
+      setSampleUntouched(false);
+      setManualRows((prev) =>
+        prev.map((row, i) => {
+          if (i !== idx) return row;
+          if (field === "qty") {
+            const parsed = Number.parseInt(String(value), 10);
+            return { ...row, qty: Number.isFinite(parsed) && parsed > 0 ? parsed : 1 };
+          }
+          return { ...row, [field]: value };
+        })
+      );
+    }
+  };
+
+  const handleAddContactRow = () => {
+    const defaultLead = locale === "zh" ? "现货核实" : "Stock check";
+    if (bomItems.length > 0) {
+      persistBom([
+        ...bomItems,
+        { mpn: "", brand: "", qty: 100, leadTime: defaultLead },
+      ]);
+    } else {
+      setSampleUntouched(false);
+      setManualRows((prev) => [
+        ...prev,
+        { id: `row-${Date.now()}`, mpn: "", qty: 100, leadTime: defaultLead },
+      ]);
+    }
+  };
+
+  const handleRemoveContactRow = (idx) => {
+    if (bomItems.length > 0) {
+      const next = bomItems.filter((_, i) => i !== idx);
+      persistBom(next);
+    } else {
+      setSampleUntouched(false);
+      setManualRows((prev) => {
+        const filtered = prev.filter((_, i) => i !== idx);
+        return filtered.length > 0
+          ? filtered
+          : [{ id: `row-${Date.now()}`, mpn: "", qty: 100, leadTime: "" }];
+      });
+    }
   };
 
   const handleRemoveBomItem = (mpn) => {
@@ -245,8 +339,36 @@ export function App({
     if (b !== null) setSelectedBrand(b);
     else if (url.pathname.endsWith("/products") && !url.search) setSelectedBrand("all");
     if (c !== null) setSelectedCategory(c);
+    else if (url.pathname.endsWith("/products") && !url.search) setSelectedCategory("all");
     setCatalogPage(1);
-    window.scrollTo({ top: 0, behavior: "instant" });
+
+    if (url.hash) {
+      setTimeout(() => {
+        const target = document.querySelector(url.hash);
+        if (target) target.scrollIntoView({ behavior: "smooth" });
+      }, 40);
+    } else {
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+  };
+
+  const handleInlineLink = (href) => (event) => {
+    if (
+      event.button === 0 &&
+      !event.metaKey &&
+      !event.ctrlKey &&
+      !event.shiftKey &&
+      !event.altKey
+    ) {
+      if (href.startsWith("#")) {
+        event.preventDefault();
+        const el = document.querySelector(href);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+      event.preventDefault();
+      navigateTo(href);
+    }
   };
 
   const handleRequestCustomMpn = (mpnString) => {
@@ -256,13 +378,14 @@ export function App({
         ...bomItems,
         {
           mpn: cleanMpn,
-          brand: locale === "zh" ? "定制寻源 / 国产替代评估" : "Custom Sourcing / Cross-Ref",
+          brand: locale === "zh" ? "定制寻源 / 替代评估" : "Custom Sourcing / Cross-Ref",
           qty: 100,
+          leadTime: locale === "zh" ? "待评估" : "TBD",
         },
       ];
       persistBom(next);
     }
-    setRfqInquiryType("cross_ref");
+    setSelectedFocuses(["cross_ref"]);
     navigateTo(routeHref(locale, "contact"));
   };
 
@@ -276,26 +399,61 @@ export function App({
     }
   };
 
+  const toggleFocusChip = (val) => {
+    setSelectedFocuses((prev) => {
+      if (prev.includes(val)) {
+        return prev.length > 1 ? prev.filter((x) => x !== val) : prev;
+      }
+      return [...prev, val];
+    });
+  };
+
   // Search computations
   const heroSearchResults = useMemo(() => {
     if (!heroQuery.trim()) return null;
     return catalogApi.searchProducts(heroQuery, { page: 1, pageSize: 8 });
   }, [catalogApi, heroQuery]);
 
-  const featuredProducts = useMemo(
-    () => catalogApi.getFeaturedProducts(12),
-    [catalogApi]
-  );
+  const standingStockItems = useMemo(() => {
+    const preferredMpns = localeContent.homeSections?.standingStockSection?.featuredMpns || [];
+    const resolved = [];
+    const seen = new Set();
+    for (const mpn of preferredMpns) {
+      const hit = catalogApi.getProductByMpn(mpn);
+      if (hit && !seen.has(hit.id)) {
+        seen.add(hit.id);
+        resolved.push(hit);
+      }
+    }
+    if (resolved.length < 5) {
+      for (const fallbackItem of catalogApi.getFeaturedProducts(8)) {
+        if (!seen.has(fallbackItem.id)) {
+          seen.add(fallbackItem.id);
+          resolved.push(fallbackItem);
+        }
+        if (resolved.length >= 6) break;
+      }
+    }
+    return resolved.slice(0, 6);
+  }, [catalogApi, localeContent]);
+
+  const mappedSortKey =
+    catalogSort === "stock_desc"
+      ? "stock-desc"
+      : catalogSort === "price_asc"
+        ? "price-asc"
+        : "";
 
   const catalogResult = useMemo(
     () =>
       catalogApi.searchProducts(catalogQuery, {
         brandId: selectedBrand,
         categoryId: selectedCategory,
+        sortBy: mappedSortKey,
         page: catalogPage,
-        pageSize: 24,
+        pageSize: 20,
       }),
-    [catalogApi, catalogQuery, selectedBrand, selectedCategory, catalogPage]
+    [catalogApi, catalogQuery, selectedBrand, selectedCategory, mappedSortKey, catalogPage]
   );
 
   const activeBrandObj =
@@ -303,16 +461,34 @@ export function App({
       ? brandMap.get(String(selectedBrand).toLowerCase())
       : null;
 
+  // Active BOM rows displayed on /contact
+  const activeContactRows = bomItems.length > 0 ? bomItems : manualRows;
+  const nonEmptyContactRows = activeContactRows.filter((r) => String(r.mpn || "").trim().length > 0);
+  const effectiveBomText = useMemo(
+    () => serializeRowsToText(nonEmptyContactRows, bomTab === "paste" ? rfqBomText : "", locale),
+    [nonEmptyContactRows, bomTab, rfqBomText, locale]
+  );
+
+  const primaryInquiryType = selectedFocuses[0] || "bom";
+
   const handleRfqSubmit = async (event) => {
     event.preventDefault();
     const hasBomOrNotes =
-      bomItems.length > 0 || rfqBomText.trim().length >= 3 || rfqMessage.trim().length >= 5;
+      nonEmptyContactRows.length > 0 ||
+      rfqBomText.trim().length >= 3 ||
+      rfqMessage.trim().length >= 5;
     if (!rfqName.trim() || rfqContact.trim().length < 5 || !hasBomOrNotes || !rfqConsent) {
       setRfqStatus("validation_error");
       return;
     }
 
     setRfqStatus("submitting");
+    const submittedItems = nonEmptyContactRows.map((r) => ({
+      mpn: String(r.mpn || "").trim(),
+      qty: Number(r.qty) || 100,
+      brand: r.brand || r.leadTime || "",
+    }));
+
     try {
       const res = await fetch("/api/inquiry", {
         method: "POST",
@@ -322,10 +498,13 @@ export function App({
           company: rfqCompany.trim(),
           contact: rfqContact.trim(),
           customerType: rfqCustomerType,
-          inquiryType: rfqInquiryType,
-          bomItems,
-          bomText: rfqBomText.trim(),
-          message: rfqMessage.trim(),
+          inquiryType: primaryInquiryType,
+          bomItems: submittedItems,
+          bomText: effectiveBomText,
+          message:
+            selectedFocuses.length > 0
+              ? `[${selectedFocuses.join(", ")}] ${rfqMessage.trim()}`.trim()
+              : rfqMessage.trim(),
           consent: rfqConsent,
           website: rfqHoneypot,
           locale,
@@ -348,23 +527,25 @@ export function App({
         ? `【上海欧连电子 BOM 询价单】`
         : `[Ou-Link Electronics BOM RFQ]`,
       `${locale === "zh" ? "联系人" : "Contact"}: ${rfqName || "-"} (${rfqCompany || "-"})`,
-      `${locale === "zh" ? "联络方式" : "Reply-To"}: ${rfqContact || "-"}`,
-      `${locale === "zh" ? "需求类型" : "Category"}: ${rfqInquiryType}`,
-      `--- BOM MPNs ---`,
-      formatBomSummaryText(bomItems, rfqBomTextTouched ? rfqBomText : "", locale),
-      `--- Notes ---`,
-      rfqMessage || "-",
+      `${locale === "zh" ? "电话/邮箱" : "Phone/Email"}: ${rfqContact || "-"}`,
+      `--- BOM ---`,
+      effectiveBomText,
     ];
+    if (rfqMessage.trim()) {
+      summaryLines.push(`--- Notes ---`, rfqMessage.trim());
+    }
     return summaryLines.join("\n");
-  }, [locale, rfqName, rfqCompany, rfqContact, rfqInquiryType, bomItems, rfqBomText, rfqBomTextTouched, rfqMessage]);
+  }, [locale, rfqName, rfqCompany, rfqContact, effectiveBomText, rfqMessage]);
 
   const mailtoHref = useMemo(() => {
     const subject =
       locale === "zh"
-        ? `[BOM询价] ${rfqCompany || rfqName || "汽车连接器询价"}`
-        : `[BOM RFQ] ${rfqCompany || rfqName || "Automotive Connector Inquiry"}`;
-    return `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(formattedRfqSummary)}`;
-  }, [locale, rfqCompany, rfqName, contact.email, formattedRfqSummary]);
+        ? `[官网 BOM 询价] ${rfqCompany || rfqName || "汽车连接器配单需求"}`
+        : `[Website BOM RFQ] ${rfqCompany || rfqName || "Automotive Connector Inquiry"}`;
+    return `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+      formattedRfqSummary
+    )}`;
+  }, [locale, contact.email, rfqCompany, rfqName, formattedRfqSummary]);
 
   const handleCopyFallback = async () => {
     try {
@@ -376,25 +557,32 @@ export function App({
     }
   };
 
-  const handleInlineLink = (href) => (event) => {
+  // Sidebar brand list expansion logic
+  const visibleSidebarBrands = useMemo(() => {
+    const all = catalogApi.brands;
+    if (brandsExpanded || all.length <= 8) return all;
+    const top8 = all.slice(0, 8);
     if (
-      event.button === 0 &&
-      !event.metaKey &&
-      !event.ctrlKey &&
-      !event.shiftKey &&
-      !event.altKey
+      selectedBrand !== "all" &&
+      !top8.some((b) => b.slug.toLowerCase() === String(selectedBrand).toLowerCase())
     ) {
-      event.preventDefault();
-      navigateTo(href);
+      return all;
     }
-  };
+    return top8;
+  }, [catalogApi.brands, brandsExpanded, selectedBrand]);
 
-  const heroTitleText = localeContent.heroTitle || localeContent.hero.title;
-  const heroSubtitleText = localeContent.heroBody || localeContent.hero.subtitle;
+  const solutionsCopy = localeContent.solutions;
+  const activeRoleTab =
+    solutionsCopy?.roleTabs?.find((t) => t.id === activeRoleId) ||
+    solutionsCopy?.roleTabs?.[0];
+
+  const aboutCopy = localeContent.about;
+  const contactCopy = localeContent.contact;
+  const productsCopy = localeContent.productsPage;
 
   return (
-    <div className="app-shell" data-route={route}>
-      <a href="#main" className="skip-link">
+    <div className="site-shell">
+      <a href="#main-content" className="skip-link">
         {localeContent.accessibility.skip}
       </a>
 
@@ -407,49 +595,371 @@ export function App({
         localeContent={localeContent}
         bomCount={bomItems.length}
         onNavigate={navigateTo}
-        onOpenBom={() => setBomDrawerOpen(true)}
         onTriggerSearch={handleTriggerSearch}
       />
 
-      <main id="main" data-route={route} tabIndex={-1}>
+      <main id="main-content">
+        {/* =================================================================
+            PAGE 1: HOME (/zh, /en)
+        ================================================================= */}
         {route === "home" && (
           <>
-            {/* 1. Precision CAD Blueprint Hero + Instant MPN Engine */}
-            <section className="hero-section blueprint-surface">
-              <div className="ou-container">
-                <div className="hero-grid">
-                  <div>
-                    <div className="eyebrow-tag">{localeContent.hero.eyebrow}</div>
-                    <div className="hero-heading">
-                      <h1>{heroTitleText}</h1>
-                    </div>
-                    <p className="hero-lead">{heroSubtitleText}</p>
+            {/* 1. Editorial Split Hero */}
+            <section className="editorial-hero is-home-hero">
+              <div className="ou-container hero-split-grid">
+                <div className="hero-copy-col">
+                  <div className="editorial-eyebrow-tick">
+                    <span>{localeContent.hero.eyebrow}</span>
+                  </div>
+                  <h1>{localeContent.hero.title}</h1>
+                  <p className="hero-lead">{localeContent.hero.subtitle}</p>
 
-                    <div className="hero-cta-row">
+                  <div className="hero-cta-row">
+                    <a
+                      href="#authorized-brands"
+                      className="btn-primary"
+                      onClick={handleInlineLink("#authorized-brands")}
+                    >
+                      <span>{localeContent.hero.primaryCta}</span>
+                    </a>
+                    <a
+                      href={routeHref(locale, "contact")}
+                      className="btn-outline"
+                      onClick={handleInlineLink(routeHref(locale, "contact"))}
+                    >
+                      <span>{localeContent.hero.secondaryCta}</span>
+                    </a>
+                  </div>
+
+                  <MpnSearchEngine
+                    locale={locale}
+                    mode="hero"
+                    query={heroQuery}
+                    onQueryChange={setHeroQuery}
+                    searchResults={heroSearchResults}
+                    mpnCopy={localeContent.mpnSearch}
+                    bomItems={bomItems}
+                    onAddBom={handleAddBom}
+                    onRequestCustomMpn={handleRequestCustomMpn}
+                    onNavigate={navigateTo}
+                    inputRef={searchInputRef}
+                  />
+                </div>
+
+                <div className="hero-media-col">
+                  <div className="editorial-photo-frame is-home-hero-photo">
+                    <img
+                      src={localeContent.hero.imagePath}
+                      alt={localeContent.hero.title}
+                      width="480"
+                      height="504"
+                    />
+                    {localeContent.hero.imageBadge ? (
+                      <span className="photo-corner-badge">
+                        {localeContent.hero.imageBadge}
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 2. Deep Forest Green Full-Bleed Capability Strip (13+ Years + 4 Pillars) */}
+            {localeContent.hero.statsStrip ? (
+              <section className="forest-stats-band">
+                <div className="ou-container forest-stats-grid">
+                  <div className="forest-years-cell">
+                    <div className="forest-years-num-line">
+                      <strong className="forest-gold-num mpn-code">
+                        {localeContent.hero.statsStrip.yearsValue}
+                      </strong>
+                      {localeContent.hero.statsStrip.yearsUnit ? (
+                        <span className="forest-years-unit">
+                          {localeContent.hero.statsStrip.yearsUnit}
+                        </span>
+                      ) : null}
+                    </div>
+                    <span className="forest-years-caption">
+                      {localeContent.hero.statsStrip.yearsLabel}
+                    </span>
+                  </div>
+
+                  {localeContent.hero.statsStrip.items.map((item, idx) => (
+                    <div key={idx} className="forest-capability-cell">
+                      <strong>{item.title}</strong>
+                      <span>{item.desc}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+
+            {/* 3. Brand Matrix (5 Authorized + 12 Partner = 17 Partner Brand SVGs) */}
+            <section id="authorized-brands" className="ou-section">
+              <div className="ou-container">
+                <BrandMatrix
+                  locale={locale}
+                  brands={catalogApi.brands}
+                  brandCopy={localeContent.brandMatrix}
+                  onSelectBrand={(slug, targetHref) => {
+                    setSelectedBrand(slug);
+                    navigateTo(targetHref);
+                  }}
+                  onNavigate={navigateTo}
+                />
+              </div>
+            </section>
+
+            {/* 4. Component Categories (4 Real Photography Cards) */}
+            {localeContent.homeSections?.categoriesSection ? (
+              <section className="ou-section is-bordered-top">
+                <div className="ou-container">
+                  <div className="editorial-section-head">
+                    <div>
+                      <span className="gold-top-rule" aria-hidden="true" />
+                      <h2>{localeContent.homeSections.categoriesSection.title}</h2>
+                    </div>
+                    <a
+                      href={routeHref(locale, "products")}
+                      className="editorial-text-link"
+                      onClick={handleInlineLink(routeHref(locale, "products"))}
+                    >
+                      {localeContent.homeSections.categoriesSection.actionText}
+                    </a>
+                  </div>
+
+                  <div className="category-editorial-grid">
+                    {localeContent.homeSections.categoriesSection.cards.map((cat) => {
+                      const catHref = `${routeHref(locale, "products")}?category=${encodeURIComponent(
+                        cat.categoryId
+                      )}`;
+                      return (
+                        <a
+                          key={cat.categoryId}
+                          href={catHref}
+                          className="category-editorial-item"
+                          onClick={handleInlineLink(catHref)}
+                        >
+                          <div className="editorial-photo-frame is-category-photo">
+                            <img
+                              src={cat.imagePath}
+                              alt={cat.title}
+                              width="306"
+                              height="198"
+                            />
+                            {cat.imageBadge ? (
+                              <span className="photo-corner-badge is-mini">
+                                {cat.imageBadge}
+                              </span>
+                            ) : null}
+                          </div>
+                          <div className="category-item-body">
+                            <h3>{cat.title}</h3>
+                            <p>{cat.desc}</p>
+                            <span className="category-item-link">
+                              {cat.actionText ||
+                                localeContent.homeSections.categoriesSection.cardAction}
+                            </span>
+                          </div>
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              </section>
+            ) : null}
+
+            {/* 5. Engineering Synergy Split (Left Harness Photo + Right 3 Points & Audiences) */}
+            {localeContent.homeSections?.engineeringSection ? (
+              <section className="ou-section ou-section-warm">
+                <div className="ou-container engineering-home-split">
+                  <div className="editorial-photo-frame is-harness-photo">
+                    <img
+                      src={localeContent.homeSections.engineeringSection.imagePath}
+                      alt={localeContent.homeSections.engineeringSection.title}
+                      width="513"
+                      height="267"
+                    />
+                    {localeContent.homeSections.engineeringSection.imageBadge ? (
+                      <span className="photo-corner-badge">
+                        {localeContent.homeSections.engineeringSection.imageBadge}
+                      </span>
+                    ) : null}
+                  </div>
+
+                  <div className="engineering-home-copy">
+                    <span className="gold-top-rule" aria-hidden="true" />
+                    <h2>{localeContent.homeSections.engineeringSection.title}</h2>
+                    <p className="engineering-home-lead">
+                      {localeContent.homeSections.engineeringSection.subtitle}
+                    </p>
+
+                    <ul className="editorial-check-list">
+                      {localeContent.homeSections.engineeringSection.points.map((pt, idx) => (
+                        <li key={idx}>
+                          <Check size={15} className="check-icon-forest" aria-hidden="true" />
+                          <div>
+                            <strong>{pt.title}</strong>
+                            <span>{pt.desc}</span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="engineering-home-action">
                       <a
-                        href={routeHref(locale, "products")}
-                        className="btn-volt"
-                        onClick={handleInlineLink(routeHref(locale, "products"))}
+                        href={routeHref(locale, "solutions")}
+                        className="editorial-text-link is-strong"
+                        onClick={handleInlineLink(routeHref(locale, "solutions"))}
                       >
-                        <span>{localeContent.hero.primaryCta}</span>
-                        <ArrowRight size={16} aria-hidden="true" />
-                      </a>
-                      <a
-                        href={routeHref(locale, "contact")}
-                        className="btn-navy-outline"
-                        onClick={handleInlineLink(routeHref(locale, "contact"))}
-                      >
-                        <span>{localeContent.hero.secondaryCta}</span>
+                        {localeContent.homeSections.engineeringSection.actionText}
                       </a>
                     </div>
+
+                    <div className="audiences-hairline-bar">
+                      {localeContent.homeSections.engineeringSection.audiencesLine}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            ) : null}
+
+            {/* 6. Standing Stock Quick Entry (Left Intro + Right Compact MPN Table) */}
+            {localeContent.homeSections?.standingStockSection ? (
+              <section className="ou-section">
+                <div className="ou-container standing-stock-split">
+                  <div className="standing-stock-intro">
+                    <span className="gold-top-rule" aria-hidden="true" />
+                    <h2>{localeContent.homeSections.standingStockSection.title}</h2>
+                    <p>{localeContent.homeSections.standingStockSection.subtitle}</p>
+                    <a
+                      href={routeHref(locale, "products")}
+                      className="editorial-text-link is-strong"
+                      onClick={handleInlineLink(routeHref(locale, "products"))}
+                    >
+                      {localeContent.homeSections.standingStockSection.actionText}
+                    </a>
+                  </div>
+
+                  <div className="standing-stock-table-wrap">
+                    <div className="table-scroll-wrap">
+                      <table className="compact-mpn-table">
+                        <thead>
+                          <tr>
+                            <th scope="col">
+                              {localeContent.homeSections.standingStockSection.tableHeaders.mpn}
+                            </th>
+                            <th scope="col">
+                              {localeContent.homeSections.standingStockSection.tableHeaders.brand}
+                            </th>
+                            <th scope="col">
+                              {localeContent.homeSections.standingStockSection.tableHeaders.category}
+                            </th>
+                            <th scope="col" className="num-col">
+                              {localeContent.homeSections.standingStockSection.tableHeaders.action}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {standingStockItems.map((item) => {
+                            const added = bomItems.some((b) => b.mpn === item.mpn);
+                            return (
+                              <tr key={item.id} className={added ? "is-selected" : undefined}>
+                                <td className="mpn-code compact-mpn-primary">{item.mpn}</td>
+                                <td>{locale === "zh" ? item.brandNameZh : item.brandNameEn}</td>
+                                <td className="compact-cat-col">
+                                  {locale === "zh" ? item.categoryZh : item.categoryEn}
+                                </td>
+                                <td className="num-col">
+                                  <button
+                                    type="button"
+                                    className={`add-bom-btn is-sm${added ? " is-added" : ""}`}
+                                    onClick={() => handleToggleBom(item)}
+                                  >
+                                    {added ? (
+                                      <Check size={12} aria-hidden="true" />
+                                    ) : (
+                                      <Plus size={12} aria-hidden="true" />
+                                    )}
+                                    <span>
+                                      {added
+                                        ? localeContent.homeSections.standingStockSection.addedBomText
+                                        : localeContent.homeSections.standingStockSection.addBomText}
+                                    </span>
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                    <p className="compact-table-disclaimer">
+                      {localeContent.homeSections.standingStockSection.disclaimer}
+                    </p>
+                  </div>
+                </div>
+              </section>
+            ) : null}
+
+            {/* 7. Bottom Sage-Stone CTA Strip */}
+            {localeContent.homeSections?.bottomCta ? (
+              <section className="bottom-cta-strip">
+                <div className="ou-container bottom-cta-inner">
+                  <div className="bottom-cta-copy">
+                    {localeContent.homeSections.bottomCta.eyebrow ? (
+                      <span className="bottom-cta-eyebrow">
+                        {localeContent.homeSections.bottomCta.eyebrow}
+                      </span>
+                    ) : null}
+                    <h2>{localeContent.homeSections.bottomCta.title}</h2>
+                  </div>
+                  <a
+                    href={routeHref(locale, "contact")}
+                    className="btn-primary"
+                    onClick={handleInlineLink(routeHref(locale, "contact"))}
+                  >
+                    <span>{localeContent.homeSections.bottomCta.buttonText}</span>
+                  </a>
+                </div>
+              </section>
+            ) : null}
+          </>
+        )}
+
+        {/* =================================================================
+            PAGE 2: PRODUCTS & MPN DIRECTORY (/zh/products, /en/products)
+        ================================================================= */}
+        {route === "products" && (
+          <>
+            <section className="editorial-hero is-subpage-hero">
+              <div className="ou-container">
+                <nav className="breadcrumb-bar" aria-label="Breadcrumb">
+                  <a
+                    href={routeHref(locale, "home")}
+                    onClick={handleInlineLink(routeHref(locale, "home"))}
+                  >
+                    {localeContent.breadcrumbs?.home || localeContent.nav.home}
+                  </a>
+                  <span aria-hidden="true">/</span>
+                  <span>{localeContent.breadcrumbs?.products || localeContent.nav.products}</span>
+                </nav>
+
+                <div className="subpage-hero-split">
+                  <div className="subpage-hero-copy">
+                    <h1>{productsCopy.heading}</h1>
+                    <p className="hero-lead">{productsCopy.lead}</p>
 
                     <MpnSearchEngine
                       locale={locale}
-                      mode="hero"
-                      query={heroQuery}
-                      onQueryChange={setHeroQuery}
-                      searchResults={heroSearchResults}
+                      mode="catalog"
+                      query={catalogQuery}
+                      onQueryChange={(val) => {
+                        setCatalogQuery(val);
+                        setCatalogPage(1);
+                      }}
                       mpnCopy={localeContent.mpnSearch}
+                      catalogCopy={productsCopy}
                       bomItems={bomItems}
                       onAddBom={handleAddBom}
                       onRequestCustomMpn={handleRequestCustomMpn}
@@ -458,882 +968,1440 @@ export function App({
                     />
                   </div>
 
-                  {/* Right CAD Specification & Core Pillars Panel (Replaces Blurry Truncated Legacy Banner) */}
-                  <aside className="cad-spec-panel" aria-label={locale === "zh" ? "欧连核心工程指标" : "Ou-Link Core Metrics"}>
-                    <div className="cad-panel-header">
-                      <span>SPEC // OU-LINK-2012-SH</span>
-                      <span>TOLERANCE: ZERO-COUNTERFEIT</span>
+                  <div className="subpage-hero-media">
+                    <div className="editorial-photo-frame is-products-hero-photo">
+                      <img
+                        src={productsCopy.heroImagePath}
+                        alt={productsCopy.heading}
+                        width="627"
+                        height="339"
+                      />
+                      {productsCopy.heroImageBadge ? (
+                        <span className="photo-corner-badge">
+                          {productsCopy.heroImageBadge}
+                        </span>
+                      ) : null}
                     </div>
-
-                    <div className="cad-metrics-grid">
-                      {localeContent.hero.metrics.map((m) => (
-                        <div key={m.code} className="cad-metric-box">
-                          <span className="cad-metric-code">{m.code}</span>
-                          <span className="cad-metric-value">{m.value}</span>
-                          <span className="cad-metric-label">{m.label}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="cad-pillars-list">
-                      {localeContent.hero.pillars.map((pillar) => (
-                        <div key={pillar.code} className="cad-pillar-item">
-                          <span className="cad-pillar-code">{pillar.code}</span>
-                          <strong className="cad-pillar-title">{pillar.title}</strong>
-                          <p className="cad-pillar-desc">{pillar.desc}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </aside>
+                  </div>
                 </div>
               </div>
             </section>
 
-            {/* 2. 17 Global Automotive Brands Vector Matrix */}
-            <section className="ou-section">
-              <div className="ou-container">
-                <div className="section-header">
-                  <div className="eyebrow-tag">{localeContent.brandMatrix.eyebrow}</div>
-                  <h2>{localeContent.brandMatrix.title}</h2>
-                  <p>{localeContent.brandMatrix.subtitle}</p>
-                </div>
+            <section className="ou-section is-catalog-body">
+              <div className="ou-container catalog-layout-grid">
+                {/* Left Sidebar Filter */}
+                <aside className="catalog-sidebar" aria-label={productsCopy.sidebar?.filterTitle}>
+                  <div className="sidebar-header-row">
+                    <strong>{productsCopy.sidebar?.filterTitle}</strong>
+                    <button
+                      type="button"
+                      className="sidebar-reset-btn"
+                      onClick={() => {
+                        setCatalogQuery("");
+                        setSelectedBrand("all");
+                        setSelectedCategory("all");
+                        setCatalogSort("mpn");
+                        setCatalogPage(1);
+                      }}
+                    >
+                      {productsCopy.sidebar?.resetButton}
+                    </button>
+                  </div>
 
-                <BrandMatrix
-                  locale={locale}
-                  brands={catalogApi.brands}
-                  brandCopy={localeContent.brandMatrix}
-                  onNavigate={navigateTo}
-                />
-              </div>
-            </section>
-
-            {/* 3. Server-Rendered Representative In-Stock Connector Spec Sheet */}
-            <section className="ou-section ou-section-alt">
-              <div className="ou-container">
-                <div className="section-header">
-                  <div className="eyebrow-tag">{localeContent.homeSections.featuredCatalogEyebrow}</div>
-                  <h2>{localeContent.homeSections.featuredCatalogTitle}</h2>
-                  <p>{localeContent.homeSections.featuredCatalogSubtitle}</p>
-                </div>
-
-                <ProductSpecTable
-                  locale={locale}
-                  items={featuredProducts}
-                  brandMap={brandMap}
-                  tableCopy={localeContent.productsPage}
-                  mpnCopy={localeContent.mpnSearch}
-                  bomItems={bomItems}
-                  onAddBom={handleAddBom}
-                  onRequestCustomMpn={handleRequestCustomMpn}
-                />
-
-                <div style={{ marginTop: 20, display: "flex", justifyContent: "flex-end" }}>
-                  <a
-                    href={routeHref(locale, "products")}
-                    className="btn-navy-outline"
-                    onClick={handleInlineLink(routeHref(locale, "products"))}
-                  >
-                    <span>{localeContent.brandMatrix.allBrandsAction}</span>
-                    <ArrowRight size={15} aria-hidden="true" />
-                  </a>
-                </div>
-              </div>
-            </section>
-
-            {/* 4. Four Manufacturing & Supply Chain Capabilities Overview */}
-            <section className="ou-section">
-              <div className="ou-container">
-                <div className="section-header">
-                  <div className="eyebrow-tag">{localeContent.homeSections.solutionsEyebrow}</div>
-                  <h2>{localeContent.homeSections.solutionsTitle}</h2>
-                </div>
-
-                <div className="pillars-grid-2x2">
-                  {localeContent.solutions.pillars.map((pillar) => (
-                    <article key={pillar.id} className="solution-card">
-                      <span className="solution-code">{pillar.code}</span>
-                      <span className="solution-audience">{pillar.audience}</span>
-                      <h3>{pillar.title}</h3>
-                      <p>{pillar.summary}</p>
-                      <ul className="deliverables-list">
-                        {pillar.deliverables.map((d, i) => (
-                          <li key={i}>{d}</li>
-                        ))}
-                      </ul>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* 5. Crawlable Engineering & Procurement FAQs */}
-            <section className="ou-section ou-section-alt">
-              <div className="ou-container">
-                <div className="section-header">
-                  <div className="eyebrow-tag">{localeContent.homeSections.faqEyebrow}</div>
-                  <h2>{localeContent.homeSections.faqTitle}</h2>
-                </div>
-                <FaqAccordion faqs={localeContent.faqs} />
-              </div>
-            </section>
-          </>
-        )}
-
-        {route === "products" && (
-          <>
-            <section className="page-hero blueprint-surface">
-              <div className="ou-container">
-                <nav className="breadcrumb-bar" aria-label="Breadcrumb">
-                  <a href={routeHref(locale, "home")} onClick={handleInlineLink(routeHref(locale, "home"))}>
-                    {localeContent.nav.home}
-                  </a>
-                  <span>/</span>
-                  <span>{localeContent.nav.products}</span>
-                </nav>
-                <div className="eyebrow-tag">{localeContent.productsPage.eyebrow}</div>
-                <h1>{localeContent.productsPage.heading}</h1>
-                <p className="page-lead">{localeContent.productsPage.lead}</p>
-
-                <MpnSearchEngine
-                  locale={locale}
-                  mode="catalog"
-                  query={catalogQuery}
-                  onQueryChange={(val) => {
-                    setCatalogQuery(val);
-                    setCatalogPage(1);
-                  }}
-                  mpnCopy={localeContent.mpnSearch}
-                  bomItems={bomItems}
-                  onAddBom={handleAddBom}
-                  onRequestCustomMpn={handleRequestCustomMpn}
-                  onNavigate={navigateTo}
-                  inputRef={searchInputRef}
-                />
-              </div>
-            </section>
-
-            <section className="ou-section">
-              <div className="ou-container">
-                <div className="catalog-filter-panel">
-                  <div style={{ marginBottom: 14 }}>
-                    <span className="filter-group-label">{localeContent.productsPage.allBrandsLabel}</span>
-                    <div className="filter-pills-row">
-                      <button
-                        type="button"
-                        className={`filter-pill-btn${selectedBrand === "all" ? " is-active" : ""}`}
-                        onClick={() => {
-                          setSelectedBrand("all");
-                          setCatalogPage(1);
-                        }}
-                      >
-                        {localeContent.productsPage.allBrandsLabel} ({catalogApi.stats.totalSkus})
-                      </button>
-                      {catalogApi.brands.map((b) => (
+                  <div className="sidebar-filter-group">
+                    <h2 className="sidebar-group-title">{productsCopy.sidebar?.brandTitle}</h2>
+                    <ul className="sidebar-check-list">
+                      <li>
                         <button
-                          key={b.id}
                           type="button"
-                          className={`filter-pill-btn${selectedBrand === b.slug ? " is-active" : ""}`}
+                          className={`sidebar-filter-item${
+                            selectedBrand === "all" ? " is-active" : ""
+                          }`}
                           onClick={() => {
-                            setSelectedBrand(b.slug);
+                            setSelectedBrand("all");
                             setCatalogPage(1);
                           }}
                         >
-                          <span>{locale === "zh" ? b.nameZh : b.nameEn}</span>
-                          <span className="tabular-num" style={{ opacity: 0.78 }}>
-                            ({b.skuCount})
+                          <span className="filter-box-indicator" aria-hidden="true" />
+                          <span className="filter-item-name">{productsCopy.allBrandsLabel}</span>
+                          <span className="filter-item-count tabular-num">
+                            {catalogApi.stats.totalSkus}
                           </span>
                         </button>
-                      ))}
-                    </div>
-                  </div>
+                      </li>
+                      {visibleSidebarBrands.map((b) => {
+                        const isActive =
+                          String(selectedBrand).toLowerCase() === String(b.slug).toLowerCase();
+                        return (
+                          <li key={b.id}>
+                            <button
+                              type="button"
+                              className={`sidebar-filter-item${isActive ? " is-active" : ""}`}
+                              onClick={() => {
+                                setSelectedBrand(isActive ? "all" : b.slug);
+                                setCatalogPage(1);
+                              }}
+                            >
+                              <span className="filter-box-indicator" aria-hidden="true" />
+                              <span className="filter-item-name">
+                                {locale === "zh" ? b.nameZh : b.nameEn}
+                              </span>
+                              <span className="filter-item-count tabular-num">{b.skuCount}</span>
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
 
-                  <div>
-                    <span className="filter-group-label">{localeContent.productsPage.allCategoriesLabel}</span>
-                    <div className="filter-pills-row">
+                    {catalogApi.brands.length > 8 ? (
                       <button
                         type="button"
-                        className={`filter-pill-btn${selectedCategory === "all" ? " is-active" : ""}`}
-                        onClick={() => {
-                          setSelectedCategory("all");
-                          setCatalogPage(1);
-                        }}
+                        className="sidebar-expand-btn"
+                        onClick={() => setBrandsExpanded((prev) => !prev)}
                       >
-                        {localeContent.productsPage.allCategoriesLabel}
+                        {brandsExpanded
+                          ? productsCopy.sidebar?.collapseBrandsText
+                          : productsCopy.sidebar?.expandBrandsText}
                       </button>
-                      {(PRODUCT_CATEGORIES || catalogApi.categories).map((cat) => (
+                    ) : null}
+                  </div>
+
+                  <div className="sidebar-filter-group">
+                    <h2 className="sidebar-group-title">{productsCopy.sidebar?.categoryTitle}</h2>
+                    <ul className="sidebar-check-list">
+                      <li>
                         <button
-                          key={cat.id}
                           type="button"
-                          className={`filter-pill-btn${selectedCategory === cat.id ? " is-active" : ""}`}
+                          className={`sidebar-filter-item${
+                            selectedCategory === "all" ? " is-active" : ""
+                          }`}
                           onClick={() => {
-                            setSelectedCategory(cat.id);
+                            setSelectedCategory("all");
                             setCatalogPage(1);
                           }}
                         >
-                          <span>{locale === "zh" ? cat.nameZh : cat.nameEn}</span>
+                          <span className="filter-box-indicator" aria-hidden="true" />
+                          <span className="filter-item-name">
+                            {productsCopy.allCategoriesLabel}
+                          </span>
                         </button>
-                      ))}
-                    </div>
+                      </li>
+                      {(PRODUCT_CATEGORIES || catalogApi.categories).map((cat) => {
+                        const isActive = selectedCategory === cat.id;
+                        return (
+                          <li key={cat.id}>
+                            <button
+                              type="button"
+                              className={`sidebar-filter-item${isActive ? " is-active" : ""}`}
+                              onClick={() => {
+                                setSelectedCategory(isActive ? "all" : cat.id);
+                                setCatalogPage(1);
+                              }}
+                            >
+                              <span className="filter-box-indicator" aria-hidden="true" />
+                              <span className="filter-item-name">
+                                {locale === "zh" ? cat.nameZh : cat.nameEn}
+                              </span>
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </div>
-                </div>
 
-                <ProductSpecTable
-                  locale={locale}
-                  items={catalogResult.items}
-                  brandMap={brandMap}
-                  tableCopy={localeContent.productsPage}
-                  mpnCopy={localeContent.mpnSearch}
-                  bomItems={bomItems}
-                  onAddBom={handleAddBom}
-                  onRequestCustomMpn={handleRequestCustomMpn}
-                  activeQuery={catalogQuery}
-                  activeBrandName={
-                    activeBrandObj
-                      ? locale === "zh"
-                        ? `${activeBrandObj.nameZh} (${activeBrandObj.nameEn})`
-                        : activeBrandObj.nameEn
-                      : ""
-                  }
-                  pagination={{
-                    page: catalogResult.page,
-                    totalPages: catalogResult.totalPages,
-                    total: catalogResult.total,
-                    onPageChange: (nextP) => {
-                      setCatalogPage(nextP);
-                      window.scrollTo({ top: 280, behavior: "smooth" });
-                    },
-                  }}
-                />
+                  <div className="sidebar-support-box">
+                    <span>{productsCopy.sidebar?.supportPromptTitle}</span>
+                    <button
+                      type="button"
+                      className="editorial-text-link is-button"
+                      onClick={() => handleRequestCustomMpn(catalogQuery)}
+                    >
+                      {productsCopy.sidebar?.supportPromptAction}
+                    </button>
+                  </div>
+                </aside>
 
-                <p style={{ marginTop: 14, fontSize: 12.5, color: "var(--text-muted)" }}>
-                  {localeContent.productsPage.ssrNote}
-                </p>
-              </div>
-            </section>
-          </>
-        )}
+                {/* Right Main Catalog Data Sheet */}
+                <div className="catalog-main-col">
+                  <div className="catalog-toolbar">
+                    <div className="catalog-count-display">
+                      <strong className="gold-count-num mpn-code">{catalogResult.total}</strong>
+                      <span>{productsCopy.countUnit}</span>
+                      {activeBrandObj ? (
+                        <span className="active-filter-tag">
+                          {locale === "zh" ? activeBrandObj.nameZh : activeBrandObj.nameEn}
+                        </span>
+                      ) : null}
+                    </div>
 
-        {route === "solutions" && (
-          <>
-            <section className="page-hero blueprint-surface">
-              <div className="ou-container">
-                <nav className="breadcrumb-bar" aria-label="Breadcrumb">
-                  <a href={routeHref(locale, "home")} onClick={handleInlineLink(routeHref(locale, "home"))}>
-                    {localeContent.nav.home}
-                  </a>
-                  <span>/</span>
-                  <span>{localeContent.nav.solutions}</span>
-                </nav>
-                <div className="eyebrow-tag">{localeContent.solutions.eyebrow}</div>
-                <h1>{localeContent.solutions.heading}</h1>
-                <p className="page-lead">{localeContent.solutions.lead}</p>
-              </div>
-            </section>
-
-            <section className="ou-section">
-              <div className="ou-container">
-                <div className="pillars-grid-2x2">
-                  {localeContent.solutions.pillars.map((pillar) => (
-                    <article key={pillar.id} className="solution-card">
-                      <span className="solution-code">{pillar.code}</span>
-                      <span className="solution-audience">{pillar.audience}</span>
-                      <h2>{pillar.title}</h2>
-                      <p>{pillar.summary}</p>
-                      <ul className="deliverables-list">
-                        {pillar.deliverables.map((d, i) => (
-                          <li key={i}>{d}</li>
-                        ))}
-                      </ul>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            <section className="ou-section ou-section-alt">
-              <div className="ou-container">
-                <div className="section-header">
-                  <h2>{localeContent.solutions.matrixTitle}</h2>
-                  <p>{localeContent.solutions.matrixSubtitle}</p>
-                </div>
-
-                <div className="spec-table-card">
-                  <table className="subsystem-table">
-                    <thead>
-                      <tr>
-                        <th scope="col">{localeContent.solutions.matrixHeaders.subsystem}</th>
-                        <th scope="col">{localeContent.solutions.matrixHeaders.environment}</th>
-                        <th scope="col">{localeContent.solutions.matrixHeaders.brands}</th>
-                        <th scope="col">{localeContent.solutions.matrixHeaders.support}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {localeContent.solutions.subsystemMatrix.map((row, idx) => (
-                        <tr key={idx}>
-                          <td data-label={localeContent.solutions.matrixHeaders.subsystem}>
-                            <strong style={{ color: "var(--ou-navy)" }}>{row.subsystem}</strong>
-                          </td>
-                          <td data-label={localeContent.solutions.matrixHeaders.environment}>
-                            {row.environment}
-                          </td>
-                          <td data-label={localeContent.solutions.matrixHeaders.brands}>
-                            {row.brands}
-                          </td>
-                          <td data-label={localeContent.solutions.matrixHeaders.support}>
-                            {row.support}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </section>
-
-            <section className="ou-section">
-              <div className="ou-container">
-                <div className="section-header">
-                  <div className="eyebrow-tag">{localeContent.homeSections.faqEyebrow}</div>
-                  <h2>{localeContent.homeSections.faqTitle}</h2>
-                </div>
-                <FaqAccordion faqs={localeContent.faqs} />
-              </div>
-            </section>
-          </>
-        )}
-
-        {route === "quality" && (
-          <>
-            <section className="page-hero blueprint-surface">
-              <div className="ou-container">
-                <nav className="breadcrumb-bar" aria-label="Breadcrumb">
-                  <a href={routeHref(locale, "home")} onClick={handleInlineLink(routeHref(locale, "home"))}>
-                    {localeContent.nav.home}
-                  </a>
-                  <span>/</span>
-                  <span>{localeContent.nav.quality}</span>
-                </nav>
-                <div className="eyebrow-tag">{localeContent.quality.eyebrow}</div>
-                <h1>{localeContent.quality.heading}</h1>
-                <p className="page-lead">{localeContent.quality.lead}</p>
-              </div>
-            </section>
-
-            <section className="ou-section">
-              <div className="ou-container">
-                <QualityPipeline qualityCopy={localeContent.quality} />
-              </div>
-            </section>
-
-            <section className="ou-section ou-section-alt">
-              <div className="ou-container">
-                <div className="section-header">
-                  <div className="eyebrow-tag">{localeContent.homeSections.faqEyebrow}</div>
-                  <h2>{localeContent.homeSections.faqTitle}</h2>
-                </div>
-                <FaqAccordion faqs={localeContent.faqs} />
-              </div>
-            </section>
-          </>
-        )}
-
-        {route === "about" && (
-          <>
-            <section className="page-hero blueprint-surface">
-              <div className="ou-container">
-                <nav className="breadcrumb-bar" aria-label="Breadcrumb">
-                  <a href={routeHref(locale, "home")} onClick={handleInlineLink(routeHref(locale, "home"))}>
-                    {localeContent.nav.home}
-                  </a>
-                  <span>/</span>
-                  <span>{localeContent.nav.about}</span>
-                </nav>
-                <div className="eyebrow-tag">{localeContent.about.eyebrow}</div>
-                <h1>{localeContent.about.heading}</h1>
-                <p className="page-lead">{localeContent.about.lead}</p>
-              </div>
-            </section>
-
-            <section className="ou-section">
-              <div className="ou-container">
-                <div className="about-story-grid">
-                  <div className="contact-info-card">
-                    {localeContent.about.storyParagraphs.map((para, idx) => (
-                      <p
-                        key={idx}
-                        style={{
-                          fontSize: 15.5,
-                          lineHeight: 1.72,
-                          color: "var(--text-body)",
-                          margin: idx === 0 ? "0 0 16px" : 0,
+                    <div className="catalog-sort-wrap">
+                      <select
+                        className="catalog-sort-select"
+                        aria-label={productsCopy.sortLabel}
+                        value={catalogSort}
+                        onChange={(e) => {
+                          setCatalogSort(e.target.value);
+                          setCatalogPage(1);
                         }}
                       >
-                        {para}
-                      </p>
-                    ))}
-
-                    <div
-                      style={{
-                        marginTop: 24,
-                        paddingTop: 20,
-                        borderTop: "1px solid var(--border-subtle)",
-                      }}
-                    >
-                      <h2 style={{ fontSize: 18, margin: "0 0 12px", color: "var(--ou-navy)" }}>
-                        {localeContent.about.headquartersTitle}
-                      </h2>
-                      <p style={{ margin: "0 0 6px", fontSize: 14.5, display: "flex", alignItems: "center", gap: 8 }}>
-                        <MapPin size={16} color="var(--ou-volt-orange)" aria-hidden="true" />
-                        <span>{locale === "zh" ? contact.addressZh : contact.addressEn}</span>
-                      </p>
-                      <p className="mpn-code" style={{ margin: 0, fontSize: 13.5, color: "var(--text-muted)" }}>
-                        Tel: {contact.phone} / {contact.salesPhone} · {contact.email}
-                      </p>
+                        {(productsCopy.sortOptions || []).map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
 
-                  <div className="milestone-list">
-                    {localeContent.about.milestones.map((ms) => (
-                      <div key={ms.year} className="milestone-item">
-                        <span className="milestone-year">{ms.year}</span>
-                        <h3 style={{ margin: "4px 0 6px", fontSize: 16, color: "var(--ou-navy)" }}>
-                          {ms.title}
-                        </h3>
-                        <p style={{ margin: 0, fontSize: 13.5, color: "var(--text-body)" }}>
-                          {ms.detail}
-                        </p>
+                  <ProductSpecTable
+                    locale={locale}
+                    items={catalogResult.items}
+                    tableCopy={productsCopy}
+                    mpnCopy={localeContent.mpnSearch}
+                    bomItems={bomItems}
+                    onAddBom={handleAddBom}
+                    onToggleBom={handleToggleBom}
+                    onRequestCustomMpn={handleRequestCustomMpn}
+                    activeQuery={catalogQuery}
+                    activeBrandName={
+                      activeBrandObj
+                        ? locale === "zh"
+                          ? activeBrandObj.nameZh
+                          : activeBrandObj.nameEn
+                        : ""
+                    }
+                    pagination={{
+                      page: catalogResult.page,
+                      totalPages: catalogResult.totalPages,
+                      total: catalogResult.total,
+                      onPageChange: (nextP) => {
+                        setCatalogPage(nextP);
+                        window.scrollTo({ top: 240, behavior: "smooth" });
+                      },
+                    }}
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* Bottom Kitting Showcase (4 Photography Cards) */}
+            {productsCopy.kittingSection ? (
+              <section className="ou-section ou-section-warm">
+                <div className="ou-container">
+                  <div className="editorial-section-head">
+                    <div>
+                      <span className="gold-top-rule" aria-hidden="true" />
+                      <h2>{productsCopy.kittingSection.title}</h2>
+                      {productsCopy.kittingSection.subtitle ? (
+                        <p>{productsCopy.kittingSection.subtitle}</p>
+                      ) : null}
+                    </div>
+                    <a
+                      href={routeHref(locale, "contact")}
+                      className="editorial-text-link"
+                      onClick={handleInlineLink(routeHref(locale, "contact"))}
+                    >
+                      {productsCopy.kittingSection.actionText}
+                    </a>
+                  </div>
+
+                  <div className="category-editorial-grid">
+                    {productsCopy.kittingSection.items.map((kit) => (
+                      <div key={kit.id} className="category-editorial-item is-static">
+                        <div className="editorial-photo-frame is-category-photo">
+                          <img
+                            src={kit.imagePath}
+                            alt={kit.title}
+                            width="294"
+                            height="198"
+                          />
+                          {kit.imageBadge ? (
+                            <span className="photo-corner-badge is-mini">{kit.imageBadge}</span>
+                          ) : null}
+                        </div>
+                        <div className="category-item-body">
+                          <h3>{kit.title}</h3>
+                          <p>{kit.desc}</p>
+                        </div>
                       </div>
                     ))}
+                  </div>
+                </div>
+              </section>
+            ) : null}
+          </>
+        )}
+
+        {/* =================================================================
+            PAGE 3: ENGINEERING SOLUTIONS (/zh/solutions, /en/solutions)
+        ================================================================= */}
+        {route === "solutions" && (
+          <>
+            <section className="editorial-hero is-subpage-hero">
+              <div className="ou-container">
+                <nav className="breadcrumb-bar" aria-label="Breadcrumb">
+                  <a
+                    href={routeHref(locale, "home")}
+                    onClick={handleInlineLink(routeHref(locale, "home"))}
+                  >
+                    {localeContent.breadcrumbs?.home || localeContent.nav.home}
+                  </a>
+                  <span aria-hidden="true">/</span>
+                  <span>{localeContent.breadcrumbs?.solutions || localeContent.nav.solutions}</span>
+                </nav>
+
+                <div className="subpage-hero-split">
+                  <div className="subpage-hero-copy">
+                    <div className="editorial-eyebrow-tick">
+                      <span>{solutionsCopy.eyebrow}</span>
+                    </div>
+                    <h1>{solutionsCopy.heading}</h1>
+                    <p className="hero-lead">{solutionsCopy.lead}</p>
+
+                    <div className="hero-cta-row">
+                      <a
+                        href={routeHref(locale, "contact")}
+                        className="btn-primary"
+                        onClick={handleInlineLink(routeHref(locale, "contact"))}
+                      >
+                        <span>{solutionsCopy.primaryCta}</span>
+                      </a>
+                      <a
+                        href="#prep-checklist"
+                        className="btn-outline"
+                        onClick={handleInlineLink("#prep-checklist")}
+                      >
+                        <span>{solutionsCopy.secondaryCta}</span>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="subpage-hero-media">
+                    <div className="editorial-photo-frame is-solutions-hero-photo">
+                      <img
+                        src={solutionsCopy.heroImagePath}
+                        alt={solutionsCopy.heading}
+                        width="642"
+                        height="570"
+                      />
+                      {solutionsCopy.heroImageBadge ? (
+                        <span className="photo-corner-badge">{solutionsCopy.heroImageBadge}</span>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               </div>
             </section>
 
-            <section className="ou-section ou-section-alt">
+            {/* Industry Role Switcher Tabs */}
+            {Array.isArray(solutionsCopy.roleTabs) && solutionsCopy.roleTabs.length > 0 ? (
+              <section className="role-tabs-band">
+                <div className="ou-container">
+                  <div className="role-tabs-bar" role="tablist">
+                    {solutionsCopy.roleTabs.map((tab) => {
+                      const isActive = tab.id === activeRoleTab?.id;
+                      return (
+                        <button
+                          key={tab.id}
+                          type="button"
+                          role="tab"
+                          aria-selected={isActive}
+                          className={`role-tab-btn${isActive ? " is-active" : ""}`}
+                          onClick={() => setActiveRoleId(tab.id)}
+                        >
+                          {tab.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {activeRoleTab ? (
+                    <div className="role-tab-panel" role="tabpanel">
+                      <div className="role-panel-main">
+                        <h2>{activeRoleTab.title}</h2>
+                        <p>{activeRoleTab.summary}</p>
+                      </div>
+                      <ul className="role-panel-points">
+                        {activeRoleTab.highlights.map((pt, i) => (
+                          <li key={i}>
+                            <Check size={14} className="check-icon-forest" aria-hidden="true" />
+                            <span>{pt}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                </div>
+              </section>
+            ) : null}
+
+            {/* 01. Full BOM Kitting (Left 4-Part Kit Photo + Right 3 Hairline Rows) */}
+            {solutionsCopy.section01 ? (
+              <section className="ou-section">
+                <div className="ou-container solutions-split-row">
+                  <div className="solutions-media-block">
+                    <div className="editorial-photo-frame">
+                      <img
+                        src={solutionsCopy.section01.imagePath}
+                        alt={solutionsCopy.section01.title}
+                        width="669"
+                        height="330"
+                      />
+                      {solutionsCopy.section01.imageBadge ? (
+                        <span className="photo-corner-badge">
+                          {solutionsCopy.section01.imageBadge}
+                        </span>
+                      ) : null}
+                    </div>
+                    {Array.isArray(solutionsCopy.section01.partTags) ? (
+                      <div className="kit-part-tags">
+                        {solutionsCopy.section01.partTags.map((tag, idx) => (
+                          <span key={idx} className="kit-part-tag">
+                            <span className="mpn-code">0{idx + 1}</span> {tag}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+
+                  <div className="solutions-editorial-col">
+                    <div className="solutions-num-heading">
+                      <span className="editorial-big-num mpn-code">
+                        {solutionsCopy.section01.num}
+                      </span>
+                      <span className="editorial-eyebrow-gold">
+                        {solutionsCopy.section01.eyebrow}
+                      </span>
+                    </div>
+                    <h2>{solutionsCopy.section01.title}</h2>
+
+                    <div className="editorial-kv-rows">
+                      {solutionsCopy.section01.rows.map((row, idx) => (
+                        <div key={idx} className="editorial-kv-row">
+                          <span className="kv-row-tag">{row.label}</span>
+                          <div className="kv-row-content">
+                            <strong>{row.title}</strong>
+                            <p>{row.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            ) : null}
+
+            {/* 02. Domestic Replacement & Reverse/Forward Engineering (Left 5-Check List + Right Caliper Photo) */}
+            {solutionsCopy.section02 ? (
+              <section className="ou-section ou-section-warm">
+                <div className="ou-container solutions-split-row is-reversed">
+                  <div className="solutions-editorial-col">
+                    <div className="solutions-num-heading">
+                      <span className="editorial-big-num mpn-code">
+                        {solutionsCopy.section02.num}
+                      </span>
+                      <span className="editorial-eyebrow-gold">
+                        {solutionsCopy.section02.eyebrow}
+                      </span>
+                    </div>
+                    <h2>{solutionsCopy.section02.title}</h2>
+                    {solutionsCopy.section02.subtitle ? (
+                      <p className="solutions-sub-note">{solutionsCopy.section02.subtitle}</p>
+                    ) : null}
+
+                    <ul className="solutions-verify-checklist">
+                      {solutionsCopy.section02.checklist.map((item, idx) => (
+                        <li key={idx}>
+                          <Check size={15} className="check-icon-forest" aria-hidden="true" />
+                          <div>
+                            <strong>{item.title}</strong>
+                            <span>{item.desc}</span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="solutions-media-block">
+                    <div className="editorial-photo-frame">
+                      <img
+                        src={solutionsCopy.section02.imagePath}
+                        alt={solutionsCopy.section02.title}
+                        width="678"
+                        height="405"
+                      />
+                      {solutionsCopy.section02.imageBadge ? (
+                        <span className="photo-corner-badge">
+                          {solutionsCopy.section02.imageBadge}
+                        </span>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            ) : null}
+
+            {/* Custom Tooling 3-Step Dark Forest Banner */}
+            {solutionsCopy.customDevBanner ? (
+              <section className="forest-dev-banner">
+                <div className="ou-container">
+                  <div className="forest-banner-head">
+                    <h2>{solutionsCopy.customDevBanner.title}</h2>
+                    {solutionsCopy.customDevBanner.footnote ? (
+                      <span>{solutionsCopy.customDevBanner.footnote}</span>
+                    ) : null}
+                  </div>
+
+                  <div className="forest-steps-grid">
+                    {solutionsCopy.customDevBanner.steps.map((st) => (
+                      <div key={st.step} className="forest-step-cell">
+                        <span className="forest-step-num mpn-code">{st.step}</span>
+                        <h3>{st.title}</h3>
+                        <p>{st.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            ) : null}
+
+            {/* Vehicle Subsystem Matrix (Semantic Hairline Table + Right Red Latch Connector Photo) */}
+            <section className="ou-section">
               <div className="ou-container">
-                <div className="section-header">
-                  <div className="eyebrow-tag">{localeContent.about.careersEyebrow}</div>
-                  <h2>{localeContent.about.careersTitle}</h2>
-                  <p>{localeContent.about.careersLead}</p>
+                <div className="editorial-section-head">
+                  <div>
+                    <span className="gold-top-rule" aria-hidden="true" />
+                    <h2>{solutionsCopy.matrixTitle}</h2>
+                    <p>{solutionsCopy.matrixSubtitle}</p>
+                  </div>
                 </div>
 
-                <div className="careers-grid">
-                  {localeContent.about.careers.map((job) => (
-                    <article key={job.id} className="career-card">
-                      <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "var(--ou-cyber-dark)", fontWeight: 700 }}>
-                        <Briefcase size={14} aria-hidden="true" />
-                        <span>{job.type}</span>
+                <div className="subsystem-editorial-split">
+                  <div className="table-scroll-wrap subsystem-table-wrap">
+                    <table className="subsystem-editorial-table">
+                      <thead>
+                        <tr>
+                          <th scope="col">{solutionsCopy.matrixHeaders.subsystem}</th>
+                          <th scope="col">{solutionsCopy.matrixHeaders.environment}</th>
+                          <th scope="col">{solutionsCopy.matrixHeaders.brands}</th>
+                          <th scope="col">{solutionsCopy.matrixHeaders.support}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {solutionsCopy.subsystemMatrix.map((row, idx) => (
+                          <tr key={idx}>
+                            <td>
+                              <strong>{row.subsystem}</strong>
+                            </td>
+                            <td>{row.environment}</td>
+                            <td>{row.brands}</td>
+                            <td>{row.support}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {solutionsCopy.matrixImagePath ? (
+                    <div className="subsystem-side-photo">
+                      <div className="editorial-photo-frame">
+                        <img
+                          src={solutionsCopy.matrixImagePath}
+                          alt={solutionsCopy.matrixTitle}
+                          width="453"
+                          height="321"
+                        />
+                        {solutionsCopy.matrixImageBadge ? (
+                          <span className="photo-corner-badge">
+                            {solutionsCopy.matrixImageBadge}
+                          </span>
+                        ) : null}
                       </div>
-                      <h3 style={{ margin: 0, fontSize: 17, color: "var(--ou-navy)" }}>{job.title}</h3>
-                      <p style={{ margin: 0, fontSize: 12.5, color: "var(--text-muted)" }}>
-                        <MapPin size={13} aria-hidden="true" style={{ verticalAlign: "-2px", marginRight: 4 }} />
-                        {job.location}
-                      </p>
-                      <p style={{ margin: 0, fontSize: 13.5, color: "var(--text-body)" }}>
-                        {job.responsibilities}
-                      </p>
-                      <p style={{ margin: "0 0 10px", fontSize: 13, color: "var(--text-muted)" }}>
-                        {job.requirements}
-                      </p>
-                      <a
-                        href={`mailto:${contact.email}?subject=${encodeURIComponent(`[Job Application] ${job.title}`)}`}
-                        className="btn-navy-outline"
-                        style={{ marginTop: "auto", minHeight: 38, fontSize: 13 }}
-                      >
-                        <Mail size={14} aria-hidden="true" />
-                        <span>{localeContent.about.applyAction}</span>
-                      </a>
-                    </article>
-                  ))}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            </section>
+
+            {/* Preparation Box & Engineering FAQs */}
+            <section id="prep-checklist" className="ou-section ou-section-warm">
+              <div className="ou-container">
+                {solutionsCopy.prepChecklist ? (
+                  <div className="prep-wireframe-box">
+                    <div className="prep-box-main">
+                      <h2>{solutionsCopy.prepChecklist.title}</h2>
+                      <div className="prep-items-inline">
+                        {solutionsCopy.prepChecklist.items.map((item, idx) => (
+                          <span key={idx} className="prep-inline-pill">
+                            <strong className="mpn-code">0{idx + 1}</strong>
+                            <span>{item}</span>
+                          </span>
+                        ))}
+                      </div>
+                      {solutionsCopy.prepChecklist.footnote ? (
+                        <p className="prep-footnote">{solutionsCopy.prepChecklist.footnote}</p>
+                      ) : null}
+                    </div>
+                    <a
+                      href={routeHref(locale, "contact")}
+                      className="btn-primary"
+                      onClick={handleInlineLink(routeHref(locale, "contact"))}
+                    >
+                      <span>{solutionsCopy.prepChecklist.buttonText}</span>
+                    </a>
+                  </div>
+                ) : null}
+
+                <div className="faq-section-wrap">
+                  <div className="editorial-section-head">
+                    <div>
+                      <span className="gold-top-rule" aria-hidden="true" />
+                      <h2>{solutionsCopy.faqTitle}</h2>
+                    </div>
+                  </div>
+                  <FaqAccordion faqs={solutionsCopy.faqs} />
                 </div>
               </div>
             </section>
           </>
         )}
 
-        {route === "contact" && (
+        {/* =================================================================
+            PAGE 4: QUALITY & TRACEABILITY (/zh/quality, /en/quality)
+        ================================================================= */}
+        {route === "quality" && (
           <>
-            <section className="page-hero blueprint-surface">
+            <section className="editorial-hero is-subpage-hero is-compact-hero">
               <div className="ou-container">
                 <nav className="breadcrumb-bar" aria-label="Breadcrumb">
-                  <a href={routeHref(locale, "home")} onClick={handleInlineLink(routeHref(locale, "home"))}>
-                    {localeContent.nav.home}
+                  <a
+                    href={routeHref(locale, "home")}
+                    onClick={handleInlineLink(routeHref(locale, "home"))}
+                  >
+                    {localeContent.breadcrumbs?.home || localeContent.nav.home}
                   </a>
-                  <span>/</span>
-                  <span>{localeContent.nav.contact}</span>
+                  <span aria-hidden="true">/</span>
+                  <span>{localeContent.breadcrumbs?.quality || localeContent.nav.quality}</span>
                 </nav>
-                <div className="eyebrow-tag">{localeContent.contact.eyebrow}</div>
-                <h1>{localeContent.contact.heading}</h1>
-                <p className="page-lead">{localeContent.contact.lead}</p>
+
+                <div className="quality-hero-header">
+                  <div>
+                    <div className="editorial-eyebrow-tick">
+                      <span>{localeContent.quality.eyebrow}</span>
+                    </div>
+                    <h1>{localeContent.quality.heading}</h1>
+                    <p className="hero-lead">{localeContent.quality.lead}</p>
+                  </div>
+                  <a
+                    href={routeHref(locale, "contact")}
+                    className="editorial-text-link is-strong"
+                    onClick={handleInlineLink(routeHref(locale, "contact"))}
+                  >
+                    {localeContent.quality.actionText}
+                  </a>
+                </div>
               </div>
             </section>
 
             <section className="ou-section">
               <div className="ou-container">
-                <div className="contact-layout-grid">
-                  {/* Direct Verified Shanghai Contact Card */}
-                  <aside className="contact-info-card">
-                    <h2 style={{ margin: "0 0 18px", fontSize: 20, color: "var(--ou-navy)" }}>
-                      {localeContent.contact.directChannelsTitle}
-                    </h2>
-                    <dl className="contact-dl">
-                      <div>
-                        <dt>{localeContent.contact.labels.salesPhone}</dt>
-                        <dd>
-                          <a href={`tel:${contact.salesPhone}`} className="mpn-code" style={{ color: "var(--ou-volt-orange)" }}>
-                            {contact.salesPhone}
+                <QualityPipeline
+                  locale={locale}
+                  qualityCopy={localeContent.quality}
+                  onNavigate={navigateTo}
+                />
+              </div>
+            </section>
+
+            <section className="ou-section ou-section-warm">
+              <div className="ou-container">
+                <div className="editorial-section-head">
+                  <div>
+                    <span className="gold-top-rule" aria-hidden="true" />
+                    <h2>{localeContent.quality.faqTitle}</h2>
+                  </div>
+                </div>
+                <FaqAccordion faqs={localeContent.quality.faqs} />
+              </div>
+            </section>
+          </>
+        )}
+
+        {/* =================================================================
+            PAGE 5: ABOUT OU-LINK (/zh/about, /en/about)
+        ================================================================= */}
+        {route === "about" && (
+          <>
+            <section className="editorial-hero is-about-hero">
+              <div className="ou-container">
+                <nav className="breadcrumb-bar" aria-label="Breadcrumb">
+                  <a
+                    href={routeHref(locale, "home")}
+                    onClick={handleInlineLink(routeHref(locale, "home"))}
+                  >
+                    {localeContent.breadcrumbs?.home || localeContent.nav.home}
+                  </a>
+                  <span aria-hidden="true">/</span>
+                  <span>{localeContent.breadcrumbs?.about || localeContent.nav.about}</span>
+                </nav>
+
+                <div className="about-hero-split">
+                  <div className="about-hero-main">
+                    <div className="editorial-eyebrow-tick">
+                      <span className="mpn-code">{aboutCopy.eyebrow}</span>
+                      <span>·</span>
+                      <span>{aboutCopy.companyFullName}</span>
+                    </div>
+                    <h1>{aboutCopy.heading}</h1>
+                    <p className="hero-lead">{aboutCopy.lead}</p>
+                  </div>
+
+                  <div className="about-year-monument">
+                    <strong className="about-gold-year mpn-code">{aboutCopy.foundedYear}</strong>
+                    <span>{aboutCopy.foundedCaption}</span>
+                  </div>
+                </div>
+
+                {/* Wide Workbench Panorama Photo */}
+                {aboutCopy.panoramaImagePath ? (
+                  <div className="editorial-photo-frame is-about-panorama">
+                    <img
+                      src={aboutCopy.panoramaImagePath}
+                      alt={aboutCopy.companyFullName}
+                      width="1194"
+                      height="522"
+                    />
+                    {aboutCopy.panoramaBadge ? (
+                      <span className="photo-corner-badge">{aboutCopy.panoramaBadge}</span>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+            </section>
+
+            {/* What We Do (Left Heading + Right 3 Hairline Rows) */}
+            {aboutCopy.whatWeDo ? (
+              <section className="ou-section">
+                <div className="ou-container about-what-split">
+                  <div className="about-what-head">
+                    <span className="gold-top-rule" aria-hidden="true" />
+                    <span className="editorial-eyebrow-gold">{aboutCopy.whatWeDo.eyebrow}</span>
+                    <h2>{aboutCopy.whatWeDo.title}</h2>
+                  </div>
+
+                  <div className="editorial-kv-rows">
+                    {aboutCopy.whatWeDo.rows.map((row) => (
+                      <div key={row.code} className="editorial-kv-row">
+                        <span className="editorial-step-num mpn-code">{row.code}</span>
+                        <div className="kv-row-content">
+                          <h3>{row.title}</h3>
+                          <p>{row.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            ) : null}
+
+            {/* Brand & Cooperation Scope Strip */}
+            {aboutCopy.brandScope ? (
+              <section className="ou-section ou-section-warm">
+                <div className="ou-container">
+                  <div className="brand-scope-sheet">
+                    <div className="brand-scope-top">
+                      <h2>{aboutCopy.brandScope.title}</h2>
+                      <a
+                        href={routeHref(locale, "products")}
+                        className="editorial-text-link"
+                        onClick={handleInlineLink(routeHref(locale, "products"))}
+                      >
+                        {localeContent.brandMatrix?.allBrandsAction}
+                      </a>
+                    </div>
+                    <p className="brand-scope-line">{aboutCopy.brandScope.allBrandsLine}</p>
+                    <p className="brand-scope-note">* {aboutCopy.brandScope.note}</p>
+                  </div>
+                </div>
+              </section>
+            ) : null}
+
+            {/* Industry Roles + Shanghai Minhang Operations Hub */}
+            <section className="ou-section">
+              <div className="ou-container about-dual-grid">
+                {aboutCopy.industryRoles ? (
+                  <div>
+                    <span className="gold-top-rule" aria-hidden="true" />
+                    <h2 className="about-col-heading">{aboutCopy.industryRoles.title}</h2>
+                    <div className="roles-hairline-list">
+                      {aboutCopy.industryRoles.items.map((item, idx) => (
+                        <div key={idx} className="role-hairline-row">
+                          <strong>{item.role}</strong>
+                          <span>{item.desc}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+
+                {aboutCopy.operationsHub ? (
+                  <div className="operations-hub-sheet">
+                    <div className="hub-sheet-top">
+                      <h2>{aboutCopy.operationsHub.title}</h2>
+                      <span className="hub-code mpn-code">
+                        {aboutCopy.operationsHub.locationCode}
+                      </span>
+                    </div>
+
+                    <dl className="hub-details-list">
+                      <div className="hub-detail-row">
+                        <dt>{aboutCopy.operationsHub.addressLabel}</dt>
+                        <dd>{aboutCopy.operationsHub.address}</dd>
+                      </div>
+                      <div className="hub-detail-row">
+                        <dt>{aboutCopy.operationsHub.phoneLabel}</dt>
+                        <dd className="mpn-code">
+                          <a href={`tel:${aboutCopy.operationsHub.phone}`}>
+                            {aboutCopy.operationsHub.phone}
                           </a>
                         </dd>
                       </div>
-                      <div>
-                        <dt>{localeContent.contact.labels.phone}</dt>
-                        <dd>
-                          <a href={`tel:${contact.phone}`} className="mpn-code">
-                            {contact.phone}
+                      <div className="hub-detail-row">
+                        <dt>{aboutCopy.operationsHub.salesPhoneLabel}</dt>
+                        <dd className="mpn-code">
+                          <a href={`tel:${aboutCopy.operationsHub.salesPhone}`}>
+                            {aboutCopy.operationsHub.salesPhone}
                           </a>
                         </dd>
                       </div>
-                      <div>
-                        <dt>{localeContent.contact.labels.email}</dt>
-                        <dd>
-                          <a href={`mailto:${contact.email}`} className="mpn-code" style={{ color: "var(--ou-cyber-dark)" }}>
-                            {contact.email}
+                      <div className="hub-detail-row">
+                        <dt>{aboutCopy.operationsHub.emailLabel}</dt>
+                        <dd className="mpn-code">
+                          <a href={`mailto:${aboutCopy.operationsHub.email}`}>
+                            {aboutCopy.operationsHub.email}
                           </a>
                         </dd>
                       </div>
-                      <div>
-                        <dt>{localeContent.contact.labels.qq}</dt>
-                        <dd className="mpn-code">{contact.qq}</dd>
-                      </div>
-                      <div>
-                        <dt>{localeContent.contact.labels.address}</dt>
-                        <dd>{locale === "zh" ? contact.addressZh : contact.addressEn}</dd>
-                      </div>
-                      <div>
-                        <dt>{localeContent.contact.labels.hours}</dt>
-                        <dd>{locale === "zh" ? contact.hoursZh : contact.hoursEn}</dd>
+                      <div className="hub-detail-row">
+                        <dt>{aboutCopy.operationsHub.hoursLabel}</dt>
+                        <dd>{aboutCopy.operationsHub.hours}</dd>
                       </div>
                     </dl>
+                  </div>
+                ) : null}
+              </div>
+            </section>
 
-                    <div
-                      style={{
-                        marginTop: 22,
-                        paddingTop: 18,
-                        borderTop: "1px solid var(--border-subtle)",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 14,
-                      }}
-                    >
-                      <img
-                        src={brand.wechatQr}
-                        alt={localeContent.contact.labels.wechat}
-                        width="84"
-                        height="84"
-                        style={{ borderRadius: 6, border: "1px solid var(--border-subtle)" }}
-                      />
-                      <div style={{ fontSize: 13, color: "var(--text-muted)" }}>
-                        <strong style={{ display: "block", color: "var(--ou-navy)", marginBottom: 4 }}>
-                          {localeContent.contact.labels.wechat}
-                        </strong>
-                        <span>
-                          {locale === "zh"
-                            ? "微信扫码联系欧连商务客服获取实时现货支持"
-                            : "Scan WeChat QR code for direct engineering support"}
+            {/* Careers Accordion Section */}
+            <section className="ou-section is-bordered-top">
+              <div className="ou-container about-what-split">
+                <div className="about-what-head">
+                  <span className="gold-top-rule" aria-hidden="true" />
+                  <h2>{aboutCopy.careersTitle}</h2>
+                  <p className="careers-lead-copy">{aboutCopy.careersLead}</p>
+                  <a
+                    href={`mailto:${aboutCopy.applyEmail || contact.email}`}
+                    className="editorial-text-link is-strong"
+                  >
+                    {aboutCopy.applyAction} {aboutCopy.applyEmail || contact.email}
+                  </a>
+                </div>
+
+                <div className="faq-editorial-list">
+                  {aboutCopy.careers.map((job, idx) => (
+                    <details key={job.id} className="faq-editorial-item" open={idx === 0}>
+                      <summary className="faq-editorial-summary">
+                        <span className="faq-editorial-q">
+                          <span className="faq-editorial-qtext">{job.title}</span>
+                          <span className="career-type-tag">{job.type}</span>
                         </span>
+                        <span className="faq-editorial-toggle" aria-hidden="true" />
+                      </summary>
+                      <div className="faq-editorial-answer">
+                        <p className="career-para">{job.responsibilities}</p>
+                        <p className="career-para is-muted">{job.requirements}</p>
+                      </div>
+                    </details>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* Bottom CTA Strip */}
+            {aboutCopy.bottomCta ? (
+              <section className="bottom-cta-strip">
+                <div className="ou-container bottom-cta-inner">
+                  <div className="bottom-cta-copy">
+                    <h2>{aboutCopy.bottomCta.title}</h2>
+                  </div>
+                  <a
+                    href={routeHref(locale, "contact")}
+                    className="btn-primary"
+                    onClick={handleInlineLink(routeHref(locale, "contact"))}
+                  >
+                    <span>{aboutCopy.bottomCta.buttonText}</span>
+                    <ArrowRight size={14} aria-hidden="true" />
+                  </a>
+                </div>
+              </section>
+            ) : null}
+          </>
+        )}
+
+        {/* =================================================================
+            PAGE 6: BOM RFQ & CONTACT (/zh/contact, /en/contact)
+        ================================================================= */}
+        {route === "contact" && (
+          <>
+            <section className="editorial-hero is-subpage-hero">
+              <div className="ou-container">
+                <nav className="breadcrumb-bar" aria-label="Breadcrumb">
+                  <a
+                    href={routeHref(locale, "home")}
+                    onClick={handleInlineLink(routeHref(locale, "home"))}
+                  >
+                    {localeContent.breadcrumbs?.home || localeContent.nav.home}
+                  </a>
+                  <span aria-hidden="true">/</span>
+                  <span>{localeContent.breadcrumbs?.contact || localeContent.nav.contact}</span>
+                </nav>
+
+                <div className="subpage-hero-split">
+                  <div className="subpage-hero-copy">
+                    <h1>{contactCopy.heading}</h1>
+                    <p className="hero-lead">{contactCopy.lead}</p>
+
+                    {Array.isArray(contactCopy.steps) ? (
+                      <div className="contact-steps-strip">
+                        {contactCopy.steps.map((st, idx) => (
+                          <React.Fragment key={idx}>
+                            <span className="contact-step-item">
+                              <strong className="mpn-code">0{idx + 1}</strong>
+                              <span>{st}</span>
+                            </span>
+                            {idx < contactCopy.steps.length - 1 ? (
+                              <span className="contact-step-arrow" aria-hidden="true">
+                                →
+                              </span>
+                            ) : null}
+                          </React.Fragment>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+
+                  <div className="subpage-hero-media">
+                    <div className="editorial-photo-frame is-contact-hero-photo">
+                      <img
+                        src={contactCopy.heroImagePath}
+                        alt={contactCopy.heading}
+                        width="681"
+                        height="438"
+                      />
+                      {contactCopy.heroImageBadge ? (
+                        <span className="photo-corner-badge">{contactCopy.heroImageBadge}</span>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="ou-section">
+              <div className="ou-container contact-editorial-grid">
+                {/* Left Column: 01 BOM List Builder + 02 Inquiry & Contact Form */}
+                <div className="contact-main-col">
+                  {/* 01. BOM List Panel (Placed outside <form> so first text input inside <form> is strictly 'name') */}
+                  <div className="rfq-sheet-block">
+                    <div className="rfq-block-header">
+                      <div className="rfq-step-heading">
+                        <span className="editorial-step-num mpn-code">
+                          {contactCopy.bomSection.stepNum}
+                        </span>
+                        <h2>{contactCopy.bomSection.title}</h2>
+                        {bomItems.length > 0 ? (
+                          <span className="bom-state-tag is-selected">
+                            {contactCopy.bomSection.selectedBadge} ({bomItems.length})
+                          </span>
+                        ) : sampleUntouched ? (
+                          <span className="bom-state-tag">
+                            {contactCopy.bomSection.sampleBadge}
+                          </span>
+                        ) : null}
+                      </div>
+
+                      <div className="bom-mode-tabs" role="tablist">
+                        <button
+                          type="button"
+                          role="tab"
+                          aria-selected={bomTab === "manual"}
+                          className={`bom-mode-tab${bomTab === "manual" ? " is-active" : ""}`}
+                          onClick={() => setBomTab("manual")}
+                        >
+                          {contactCopy.bomSection.tabs.manual}
+                        </button>
+                        <button
+                          type="button"
+                          role="tab"
+                          aria-selected={bomTab === "paste"}
+                          className={`bom-mode-tab${bomTab === "paste" ? " is-active" : ""}`}
+                          onClick={() => setBomTab("paste")}
+                        >
+                          {contactCopy.bomSection.tabs.paste}
+                        </button>
                       </div>
                     </div>
-                  </aside>
 
-                  {/* Structured Multi-MPN BOM RFQ Form */}
-                  <div className="rfq-form-card">
-                    <h2 style={{ margin: "0 0 6px", fontSize: 22, color: "var(--ou-navy)" }}>
-                      {localeContent.contact.formTitle}
-                    </h2>
-                    <p style={{ margin: "0 0 20px", fontSize: 14, color: "var(--text-muted)" }}>
-                      {localeContent.contact.formSubtitle}
-                    </p>
+                    {bomTab === "manual" ? (
+                      <div className="bom-manual-editor">
+                        <div className="table-scroll-wrap">
+                          <table className="bom-edit-table">
+                            <thead>
+                              <tr>
+                                <th scope="col">{contactCopy.bomSection.tableHeaders.mpn}</th>
+                                <th scope="col" className="qty-col">
+                                  {contactCopy.bomSection.tableHeaders.qty}
+                                </th>
+                                <th scope="col">
+                                  {contactCopy.bomSection.tableHeaders.leadTime}
+                                </th>
+                                <th scope="col" className="num-col">
+                                  {contactCopy.bomSection.tableHeaders.action}
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {activeContactRows.map((row, idx) => (
+                                <tr key={row.id || `${row.mpn}-${idx}`}>
+                                  <td>
+                                    <input
+                                      type="search"
+                                      value={row.mpn}
+                                      placeholder={contactCopy.bomSection.rowPlaceholders.mpn}
+                                      aria-label={`${contactCopy.bomSection.tableHeaders.mpn} ${
+                                        idx + 1
+                                      }`}
+                                      onChange={(e) =>
+                                        handleUpdateBomField(idx, "mpn", e.target.value)
+                                      }
+                                      className="bom-cell-input is-mono"
+                                    />
+                                  </td>
+                                  <td className="qty-col">
+                                    <input
+                                      type="number"
+                                      min="1"
+                                      value={row.qty}
+                                      placeholder={contactCopy.bomSection.rowPlaceholders.qty}
+                                      aria-label={`${contactCopy.bomSection.tableHeaders.qty} ${
+                                        idx + 1
+                                      }`}
+                                      onChange={(e) =>
+                                        handleUpdateBomField(idx, "qty", e.target.value)
+                                      }
+                                      className="bom-cell-input is-mono"
+                                    />
+                                  </td>
+                                  <td>
+                                    <input
+                                      type="search"
+                                      value={row.leadTime || ""}
+                                      placeholder={contactCopy.bomSection.rowPlaceholders.leadTime}
+                                      aria-label={`${contactCopy.bomSection.tableHeaders.leadTime} ${
+                                        idx + 1
+                                      }`}
+                                      onChange={(e) =>
+                                        handleUpdateBomField(idx, "leadTime", e.target.value)
+                                      }
+                                      className="bom-cell-input"
+                                    />
+                                  </td>
+                                  <td className="num-col">
+                                    <button
+                                      type="button"
+                                      className="bom-row-remove"
+                                      aria-label={`${contactCopy.bomSection.removeRowLabel} ${
+                                        row.mpn || idx + 1
+                                      }`}
+                                      onClick={() => handleRemoveContactRow(idx)}
+                                    >
+                                      <Trash2 size={14} aria-hidden="true" />
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
 
-                    <form action="/api/inquiry" method="post" onSubmit={handleRfqSubmit} noValidate>
-                      {/* Honeypot field hidden from human users */}
-                      <div style={{ position: "absolute", left: "-9999px" }} aria-hidden="true">
-                        <label htmlFor="rfq-website-hp">Website</label>
+                        <div className="bom-editor-actions">
+                          <button
+                            type="button"
+                            className="btn-outline is-compact"
+                            onClick={handleAddContactRow}
+                          >
+                            <span>{contactCopy.bomSection.addRowButton}</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            className="editorial-text-link is-button"
+                            onClick={() => setBomTab("paste")}
+                          >
+                            {contactCopy.bomSection.pasteLabel} →
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bom-paste-editor">
+                        <label htmlFor="bom-paste-area" className="bom-paste-hint">
+                          {contactCopy.bomSection.pasteHint}
+                        </label>
+                        <textarea
+                          id="bom-paste-area"
+                          value={rfqBomText}
+                          onChange={(e) => setRfqBomText(e.target.value)}
+                          placeholder={contactCopy.bomSection.pastePlaceholder}
+                          className="form-control is-mono-area"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 02. Requirements & Contact Details (<form>) */}
+                  <form className="rfq-sheet-block is-form-block" onSubmit={handleRfqSubmit} noValidate>
+                    <input type="hidden" name="bomText" value={effectiveBomText} readOnly />
+
+                    <div className="rfq-block-header">
+                      <div className="rfq-step-heading">
+                        <span className="editorial-step-num mpn-code">
+                          {contactCopy.formSection.stepNum}
+                        </span>
+                        <h2>{contactCopy.formSection.title}</h2>
+                      </div>
+                    </div>
+
+                    <div className="form-grid-2col">
+                      <div className="form-field">
+                        <label htmlFor="rfq-name">{contactCopy.fields.name}</label>
                         <input
-                          id="rfq-website-hp"
+                          id="rfq-name"
+                          name="name"
                           type="text"
-                          name="website"
-                          tabIndex={-1}
-                          autoComplete="off"
-                          value={rfqHoneypot}
-                          onChange={(e) => setRfqHoneypot(e.target.value)}
+                          required
+                          value={rfqName}
+                          onChange={(e) => setRfqName(e.target.value)}
+                          placeholder={contactCopy.fields.namePlaceholder}
+                          className="form-control"
                         />
                       </div>
 
-                      {bomItems.length > 0 ? (
-                        <div className="attached-bom-box">
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                            <strong style={{ fontSize: 13, color: "var(--ou-navy)" }}>
-                              {localeContent.contact.fields.bomList} ({bomItems.length})
-                            </strong>
-                            <button
-                              type="button"
-                              onClick={handleClearBom}
-                              style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: 12, cursor: "pointer" }}
-                            >
-                              {localeContent.bomDrawer.clearAll}
-                            </button>
-                          </div>
-                          {bomItems.map((item) => (
-                            <div key={item.mpn} className="attached-bom-item">
-                              <div>
-                                <strong className="mpn-code" style={{ color: "var(--ou-navy)", marginRight: 8 }}>
-                                  {item.mpn}
-                                </strong>
-                                <span style={{ fontSize: 12, color: "var(--text-muted)" }}>{item.brand}</span>
-                              </div>
-                              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                                <input
-                                  type="number"
-                                  min="1"
-                                  value={item.qty}
-                                  aria-label={`Qty ${item.mpn}`}
-                                  onChange={(e) => handleUpdateBomQty(item.mpn, e.target.value)}
-                                  className="qty-input"
-                                />
-                                <button
-                                  type="button"
-                                  onClick={() => handleRemoveBomItem(item.mpn)}
-                                  aria-label={`Remove ${item.mpn}`}
-                                  style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-muted)" }}
-                                >
-                                  <Trash2 size={15} aria-hidden="true" />
-                                </button>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ) : null}
-
-                      <div className="form-row-2">
-                        <div className="form-field">
-                          <label htmlFor="rfq-name">{localeContent.contact.fields.name}</label>
-                          <input
-                            id="rfq-name"
-                            name="name"
-                            type="text"
-                            required
-                            value={rfqName}
-                            onChange={(e) => setRfqName(e.target.value)}
-                            placeholder={localeContent.contact.fields.namePlaceholder}
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="form-field">
-                          <label htmlFor="rfq-company">{localeContent.contact.fields.company}</label>
-                          <input
-                            id="rfq-company"
-                            name="company"
-                            type="text"
-                            value={rfqCompany}
-                            onChange={(e) => setRfqCompany(e.target.value)}
-                            placeholder={localeContent.contact.fields.companyPlaceholder}
-                            className="form-control"
-                          />
-                        </div>
+                      <div className="form-field">
+                        <label htmlFor="rfq-company">{contactCopy.fields.company}</label>
+                        <input
+                          id="rfq-company"
+                          name="company"
+                          type="text"
+                          value={rfqCompany}
+                          onChange={(e) => setRfqCompany(e.target.value)}
+                          placeholder={contactCopy.fields.companyPlaceholder}
+                          className="form-control"
+                        />
                       </div>
+                    </div>
 
-                      <div className="form-row-2">
-                        <div className="form-field">
-                          <label htmlFor="rfq-contact">{localeContent.contact.fields.contact}</label>
-                          <input
-                            id="rfq-contact"
-                            name="contact"
-                            type="text"
-                            required
-                            value={rfqContact}
-                            onChange={(e) => setRfqContact(e.target.value)}
-                            placeholder={localeContent.contact.fields.contactPlaceholder}
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="form-field">
-                          <label htmlFor="rfq-customer-type">{localeContent.contact.fields.customerType}</label>
-                          <select
-                            id="rfq-customer-type"
-                            name="customerType"
-                            value={rfqCustomerType}
-                            onChange={(e) => setRfqCustomerType(e.target.value)}
-                            className="form-control"
-                          >
-                            {localeContent.contact.fields.customerTypes.map((opt) => (
-                              <option key={opt.value} value={opt.value}>
-                                {opt.label}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
+                    <div className="form-grid-2col">
+                      <div className="form-field">
+                        <label htmlFor="rfq-contact">{contactCopy.fields.contact}</label>
+                        <input
+                          id="rfq-contact"
+                          name="contact"
+                          type="text"
+                          required
+                          value={rfqContact}
+                          onChange={(e) => setRfqContact(e.target.value)}
+                          placeholder={contactCopy.fields.contactPlaceholder}
+                          className="form-control"
+                        />
                       </div>
 
                       <div className="form-field">
-                        <label htmlFor="rfq-inquiry-type">{localeContent.contact.fields.inquiryType}</label>
+                        <label htmlFor="rfq-customer-type">
+                          {contactCopy.fields.customerType}
+                        </label>
                         <select
-                          id="rfq-inquiry-type"
-                          name="inquiryType"
-                          value={rfqInquiryType}
-                          onChange={(e) => setRfqInquiryType(e.target.value)}
+                          id="rfq-customer-type"
+                          name="customerType"
+                          value={rfqCustomerType}
+                          onChange={(e) => setRfqCustomerType(e.target.value)}
                           className="form-control"
                         >
-                          {localeContent.contact.fields.inquiryTypes.map((opt) => (
+                          {contactCopy.fields.customerTypes.map((opt) => (
                             <option key={opt.value} value={opt.value}>
                               {opt.label}
                             </option>
                           ))}
                         </select>
                       </div>
+                    </div>
 
+                    {Array.isArray(contactCopy.formSection.focusChips) ? (
                       <div className="form-field">
-                        <label htmlFor="rfq-bom-text">{localeContent.contact.fields.bomText}</label>
-                        <textarea
-                          id="rfq-bom-text"
-                          name="bomText"
-                          value={rfqBomText}
-                          onChange={(e) => {
-                            setRfqBomTextTouched(true);
-                            setRfqBomText(e.target.value);
-                          }}
-                          placeholder={localeContent.contact.fields.bomTextPlaceholder}
-                          className="form-control"
-                        />
-                      </div>
-
-                      <div className="form-field">
-                        <label htmlFor="rfq-message">{localeContent.contact.fields.message}</label>
-                        <textarea
-                          id="rfq-message"
-                          name="message"
-                          value={rfqMessage}
-                          onChange={(e) => setRfqMessage(e.target.value)}
-                          placeholder={localeContent.contact.fields.messagePlaceholder}
-                          className="form-control"
-                          style={{ fontFamily: "var(--font-sans)", minHeight: 88 }}
-                        />
-                      </div>
-
-                      <div className="form-field" style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
-                        <input
-                          id="rfq-consent"
-                          name="consent"
-                          type="checkbox"
-                          required
-                          checked={rfqConsent}
-                          onChange={(e) => setRfqConsent(e.target.checked)}
-                          style={{ width: 18, height: 18, marginTop: 2, flexShrink: 0 }}
-                        />
-                        <label htmlFor="rfq-consent" style={{ fontWeight: 400, fontSize: 13, color: "var(--text-body)", margin: 0 }}>
-                          {localeContent.contact.fields.consent}
-                        </label>
-                      </div>
-
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}>
-                        <button
-                          type="submit"
-                          className="btn-volt"
-                          disabled={rfqStatus === "submitting"}
-                        >
-                          <span>
-                            {rfqStatus === "submitting"
-                              ? localeContent.contact.fields.submitting
-                              : localeContent.contact.fields.submit}
-                          </span>
-                          <ArrowRight size={15} aria-hidden="true" />
-                        </button>
-
-                        <a href={mailtoHref} className="btn-navy-outline">
-                          <Mail size={15} aria-hidden="true" />
-                          <span>{contact.email}</span>
-                        </a>
-                      </div>
-
-                      <div role="status" aria-live="polite">
-                        {rfqStatus === "validation_error" ? (
-                          <div className="honest-fallback-panel">
-                            <strong style={{ color: "var(--ou-navy)", fontSize: 14 }}>
-                              {localeContent.contact.feedback.validationError}
-                            </strong>
-                          </div>
-                        ) : null}
-
-                        {rfqStatus === "success" ? (
-                          <div className="success-panel">
-                            <strong style={{ display: "flex", alignItems: "center", gap: 6, color: "var(--ou-navy)", marginBottom: 4 }}>
-                              <CheckCircle2 size={18} color="var(--ou-cyber-dark)" aria-hidden="true" />
-                              <span>{localeContent.contact.feedback.successTitle}</span>
-                            </strong>
-                            <p style={{ margin: 0, fontSize: 13.5, color: "var(--text-body)" }}>
-                              {localeContent.contact.feedback.successBody}
-                            </p>
-                          </div>
-                        ) : null}
-
-                        {rfqStatus === "fallback" ? (
-                          <div className="honest-fallback-panel">
-                            <h3 style={{ margin: "0 0 6px", fontSize: 15, color: "var(--ou-navy)" }}>
-                              {localeContent.contact.feedback.fallbackTitle}
-                            </h3>
-                            <p style={{ margin: "0 0 12px", fontSize: 13.5, color: "var(--text-body)" }}>
-                              {localeContent.contact.feedback.fallbackBody}
-                            </p>
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+                        <span className="field-group-label">
+                          {contactCopy.formSection.focusLabel}
+                        </span>
+                        <div className="focus-chips-row">
+                          {contactCopy.formSection.focusChips.map((chip) => {
+                            const active = selectedFocuses.includes(chip.value);
+                            return (
                               <button
+                                key={chip.value}
                                 type="button"
-                                className="btn-navy-outline"
-                                onClick={handleCopyFallback}
+                                aria-pressed={active}
+                                className={`focus-chip-btn${active ? " is-active" : ""}`}
+                                onClick={() => toggleFocusChip(chip.value)}
                               >
-                                <Copy size={14} aria-hidden="true" />
-                                <span>
-                                  {copiedFallback
-                                    ? localeContent.contact.feedback.copiedBomButton
-                                    : localeContent.contact.feedback.copyBomButton}
-                                </span>
+                                {active ? <Check size={13} aria-hidden="true" /> : null}
+                                <span>{chip.label}</span>
                               </button>
-                              <a href={mailtoHref} className="btn-volt">
-                                <Mail size={14} aria-hidden="true" />
-                                <span>{localeContent.contact.feedback.mailtoButton}</span>
-                              </a>
-                              <a href={`tel:${contact.salesPhone}`} className="btn-navy-outline">
-                                <PhoneCall size={14} aria-hidden="true" />
-                                <span>{localeContent.contact.feedback.callButton}</span>
-                              </a>
-                            </div>
-                          </div>
-                        ) : null}
+                            );
+                          })}
+                        </div>
                       </div>
-                    </form>
-                  </div>
+                    ) : null}
+
+                    {/* Anti-bot Honeypot */}
+                    <div aria-hidden="true" className="honeypot-field">
+                      <label htmlFor="rfq-website">Website</label>
+                      <input
+                        id="rfq-website"
+                        name="website"
+                        type="text"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        value={rfqHoneypot}
+                        onChange={(e) => setRfqHoneypot(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="form-field">
+                      <label htmlFor="rfq-message">{contactCopy.fields.message}</label>
+                      <textarea
+                        id="rfq-message"
+                        name="message"
+                        value={rfqMessage}
+                        onChange={(e) => setRfqMessage(e.target.value)}
+                        placeholder={contactCopy.fields.messagePlaceholder}
+                        className="form-control"
+                      />
+                    </div>
+
+                    <div className="consent-row">
+                      <input
+                        id="rfq-consent"
+                        name="consent"
+                        type="checkbox"
+                        required
+                        checked={rfqConsent}
+                        onChange={(e) => setRfqConsent(e.target.checked)}
+                      />
+                      <label htmlFor="rfq-consent">{contactCopy.fields.consent}</label>
+                    </div>
+
+                    <div className="rfq-submit-bar">
+                      <button
+                        type="submit"
+                        className="btn-primary"
+                        disabled={rfqStatus === "submitting"}
+                      >
+                        <span>
+                          {rfqStatus === "submitting"
+                            ? contactCopy.fields.submitting
+                            : contactCopy.fields.submit}
+                        </span>
+                      </button>
+
+                      <a href={mailtoHref} className="editorial-text-link">
+                        <Mail size={14} aria-hidden="true" />
+                        <span>{contactCopy.formSection.emailActionText}</span>
+                      </a>
+                    </div>
+
+                    <p className="rfq-submit-footnote">
+                      {contactCopy.formSection.submitFootnote}
+                    </p>
+
+                    <div role="status" aria-live="polite">
+                      {rfqStatus === "validation_error" ? (
+                        <div className="rfq-feedback-box is-warning">
+                          <strong>{contactCopy.feedback.validationError}</strong>
+                        </div>
+                      ) : null}
+
+                      {rfqStatus === "success" ? (
+                        <div className="rfq-feedback-box is-success">
+                          <strong className="feedback-title-row">
+                            <CheckCircle2 size={17} aria-hidden="true" />
+                            <span>{contactCopy.feedback.successTitle}</span>
+                          </strong>
+                          <p>{contactCopy.feedback.successBody}</p>
+                        </div>
+                      ) : null}
+
+                      {rfqStatus === "fallback" ? (
+                        <div className="rfq-feedback-box is-fallback">
+                          <h3>{contactCopy.feedback.fallbackTitle}</h3>
+                          <p>{contactCopy.feedback.fallbackBody}</p>
+                          <div className="fallback-actions-row">
+                            <button
+                              type="button"
+                              className="btn-outline is-compact"
+                              onClick={handleCopyFallback}
+                            >
+                              <Copy size={13} aria-hidden="true" />
+                              <span>
+                                {copiedFallback
+                                  ? contactCopy.feedback.copiedBomButton
+                                  : contactCopy.feedback.copyBomButton}
+                              </span>
+                            </button>
+                            <a href={mailtoHref} className="btn-primary is-compact">
+                              <Mail size={13} aria-hidden="true" />
+                              <span>{contactCopy.feedback.mailtoButton}</span>
+                            </a>
+                            <a href={`tel:${contact.phone}`} className="btn-outline is-compact">
+                              <PhoneCall size={13} aria-hidden="true" />
+                              <span>{contactCopy.feedback.callButton}</span>
+                            </a>
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+                  </form>
                 </div>
+
+                {/* Right Sidebar: Direct Shanghai Team Info + Product Photo */}
+                <aside className="contact-sidebar-col">
+                  <div className="direct-contact-sheet">
+                    <h2>{contactCopy.directChannelsTitle}</h2>
+                    <dl className="hub-details-list">
+                      <div className="hub-detail-row">
+                        <dt>{contactCopy.labels.phone}</dt>
+                        <dd className="mpn-code">
+                          <a href={`tel:${contact.phone}`}>{contact.phone}</a>
+                        </dd>
+                      </div>
+                      <div className="hub-detail-row">
+                        <dt>{contactCopy.labels.salesPhone}</dt>
+                        <dd className="mpn-code">
+                          <a href={`tel:${contact.salesPhone}`}>{contact.salesPhone}</a>
+                        </dd>
+                      </div>
+                      <div className="hub-detail-row">
+                        <dt>{contactCopy.labels.email}</dt>
+                        <dd className="mpn-code">
+                          <a href={`mailto:${contact.email}`}>{contact.email}</a>
+                        </dd>
+                      </div>
+                      <div className="hub-detail-row">
+                        <dt>{contactCopy.labels.qq}</dt>
+                        <dd className="mpn-code">{contact.qq}</dd>
+                      </div>
+                      <div className="hub-detail-row">
+                        <dt>{contactCopy.labels.address}</dt>
+                        <dd>{locale === "zh" ? contact.addressZh : contact.addressEn}</dd>
+                      </div>
+                      <div className="hub-detail-row">
+                        <dt>{contactCopy.labels.hours}</dt>
+                        <dd>{locale === "zh" ? contact.hoursZh : contact.hoursEn}</dd>
+                      </div>
+                    </dl>
+
+                    {brand.wechatQr ? (
+                      <div className="sidebar-qr-box">
+                        <img
+                          src={brand.wechatQr}
+                          alt={contactCopy.labels.wechat}
+                          width="68"
+                          height="68"
+                        />
+                        <div>
+                          <strong>{contactCopy.labels.wechat}</strong>
+                          <span>
+                            {locale === "zh"
+                              ? "扫码添加微信对接料号与库存"
+                              : "Scan on WeChat for BOM & stock inquiries"}
+                          </span>
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+
+                  {contactCopy.sidebarImagePath ? (
+                    <div className="editorial-photo-frame is-sidebar-photo">
+                      <img
+                        src={contactCopy.sidebarImagePath}
+                        alt={contactCopy.directChannelsTitle}
+                        width="375"
+                        height="354"
+                      />
+                      {contactCopy.sidebarImageBadge ? (
+                        <span className="photo-corner-badge is-mini">
+                          {contactCopy.sidebarImageBadge}
+                        </span>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </aside>
               </div>
             </section>
+
+            {/* Bottom 3-Item Preparation Panel */}
+            {contactCopy.prepPanel ? (
+              <section className="ou-section ou-section-warm">
+                <div className="ou-container">
+                  <div className="contact-prep-panel">
+                    <h2>{contactCopy.prepPanel.title}</h2>
+                    <div className="contact-prep-grid">
+                      {contactCopy.prepPanel.items.map((item) => (
+                        <div key={item.num} className="contact-prep-cell">
+                          <span className="editorial-step-num mpn-code">{item.num}</span>
+                          <h3>{item.title}</h3>
+                          <p>{item.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="contact-prep-note">{contactCopy.prepPanel.note}</p>
+                  </div>
+                </div>
+              </section>
+            ) : null}
           </>
         )}
 
+        {/* =================================================================
+            404 NOT FOUND
+        ================================================================= */}
         {route === "notFound" && (
-          <section className="ou-section blueprint-surface" style={{ minHeight: "62vh" }}>
+          <section className="ou-section" style={{ minHeight: "62vh" }}>
             <div className="ou-container">
-              <div className="rfq-form-card" style={{ maxWidth: 760, marginInline: "auto", borderTop: "4px solid var(--ou-volt-orange)" }}>
-                <span className="eyebrow-tag">HTTP 404 · ROUTE NOT FOUND</span>
+              <div className="not-found-sheet">
+                <span className="editorial-eyebrow-gold mpn-code">
+                  HTTP {localeContent.notFound.code || "404"}
+                </span>
                 <h1>{localeContent.notFound.title}</h1>
-                <p className="page-lead">{localeContent.notFound.description}</p>
-                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                <p>{localeContent.notFound.description}</p>
+                <div className="hero-cta-row">
                   <a
                     href={routeHref(locale, "products")}
-                    className="btn-volt"
+                    className="btn-primary"
                     onClick={handleInlineLink(routeHref(locale, "products"))}
                   >
                     <span>{localeContent.notFound.catalogAction}</span>
                   </a>
                   <a
                     href={routeHref(locale, "home")}
-                    className="btn-navy-outline"
+                    className="btn-outline"
                     onClick={handleInlineLink(routeHref(locale, "home"))}
                   >
                     <span>{localeContent.notFound.action}</span>
@@ -1357,6 +2425,7 @@ export function App({
         onClearBom={handleClearBom}
         onNavigate={navigateTo}
         drawerCopy={localeContent.bomDrawer}
+        stickyCopy={localeContent.productsPage?.stickyBomBar}
       />
 
       <Footer
