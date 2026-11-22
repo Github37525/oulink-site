@@ -106,4 +106,13 @@ test("vercel.json enforces cleanUrls, dist/client output, localized 404 rewrites
     ),
     "vercel.json must declare UTF-8 charset header for llms.txt / llms-full.txt"
   );
+  assert.ok(
+    allHeaderEntries.some(
+      (h) =>
+        h.source === "/assets/models/(.*)\\.glb" &&
+        h.key === "content-type" &&
+        h.value === "model/gltf-binary"
+    ),
+    "vercel.json must declare Content-Type: model/gltf-binary for /assets/models/(.*)\\.glb"
+  );
 });
