@@ -46,7 +46,7 @@ test("no-code configuration edits in siteContent and productsCatalog propagate i
     root: rootDir,
     esbuild: { jsx: "automatic" },
     optimizeDeps: { noDiscovery: true, include: [] },
-    server: { middlewareMode: true, watch: null },
+    server: { middlewareMode: true, watch: null, hmr: false },
     appType: "custom",
   });
 

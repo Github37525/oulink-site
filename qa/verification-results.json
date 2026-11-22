@@ -1,7 +1,7 @@
 {
-  "checkedAt": "2026-11-21T15:02:06.022Z",
+  "checkedAt": "2026-11-22T03:28:44.505Z",
   "browserExecutable": "C:\\Users\\lth\\AppData\\Local\\ms-playwright\\chromium-1254\\chrome-win64\\chrome.exe",
-  "baseURL": "http://127.0.0.1:4998",
+  "baseURL": "http://127.0.0.1:4623",
   "totalViewportPageChecks": 48,
   "totalNoJsPageChecks": 12,
   "interactionChecks": {
@@ -14,7 +14,60 @@
       "contactBomScreenshot": "qa/zh-contact-bom-1440.png",
       "honest503FallbackVerified": true,
       "real404Verified": true,
-      "editorialAssetsDecodedCount": 20
+      "editorialAssetsDecodedCount": 20,
+      "editorialMinWidthPx": 1104,
+      "editorialMaxWidthPx": 1920
+    },
+    "threeCadWorkbenchFlow": {
+      "passed": true,
+      "wireframeCanvas": {
+        "width": 690,
+        "height": 411,
+        "nonBgPixels": 113199,
+        "nonBgRatio": 0.3992,
+        "signature": "d9a9f8aa"
+      },
+      "explodedCanvas": {
+        "width": 690,
+        "height": 411,
+        "nonBgPixels": 117834,
+        "nonBgRatio": 0.4155,
+        "signature": "27a8e266"
+      },
+      "xrayCanvas": {
+        "width": 690,
+        "height": 411,
+        "nonBgPixels": 112800,
+        "nonBgRatio": 0.3978,
+        "signature": "9ee14e49"
+      },
+      "solidCanvas": {
+        "width": 690,
+        "height": 411,
+        "nonBgPixels": 112612,
+        "nonBgRatio": 0.3971,
+        "signature": "90155501"
+      },
+      "heavyTabCanvas": {
+        "width": 690,
+        "height": 411,
+        "nonBgPixels": 111971,
+        "nonBgRatio": 0.3948,
+        "signature": "25189efe"
+      },
+      "catalogInitialMpn": "368500-1",
+      "catalogInspectedSecondRowMpn": "3-1418390-1",
+      "addedToBomFrom3dPanel": true,
+      "englishPagesVerified": [
+        "/en",
+        "/en/products"
+      ],
+      "showcaseScreenshots": [
+        "qa/zh-home-3d-wireframe-1440.png",
+        "qa/zh-home-3d-exploded-1440.png",
+        "qa/zh-products-3d-linked-1440.png"
+      ],
+      "consoleErrorCount": 0
     },
     "mobileMenu390": {
       "passed": true
@@ -37,11 +90,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 25,
+      "totalImages": 26,
       "brokenImages": [],
-      "editorialImgCount": 6,
+      "editorialImgCount": 7,
       "editorialPaths": [
         "/assets/editorial/home-hero-connector.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal-lock.jpg",
@@ -72,11 +126,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 7,
+      "totalImages": 8,
       "brokenImages": [],
-      "editorialImgCount": 5,
+      "editorialImgCount": 6,
       "editorialPaths": [
         "/assets/editorial/products-hero.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal.jpg",
@@ -233,11 +288,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 25,
+      "totalImages": 26,
       "brokenImages": [],
-      "editorialImgCount": 6,
+      "editorialImgCount": 7,
       "editorialPaths": [
         "/assets/editorial/home-hero-connector.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal-lock.jpg",
@@ -268,11 +324,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 7,
+      "totalImages": 8,
       "brokenImages": [],
-      "editorialImgCount": 5,
+      "editorialImgCount": 6,
       "editorialPaths": [
         "/assets/editorial/products-hero.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal.jpg",
@@ -429,11 +486,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 25,
+      "totalImages": 26,
       "brokenImages": [],
-      "editorialImgCount": 6,
+      "editorialImgCount": 7,
       "editorialPaths": [
         "/assets/editorial/home-hero-connector.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal-lock.jpg",
@@ -464,11 +522,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 7,
+      "totalImages": 8,
       "brokenImages": [],
-      "editorialImgCount": 5,
+      "editorialImgCount": 6,
       "editorialPaths": [
         "/assets/editorial/products-hero.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal.jpg",
@@ -625,11 +684,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 25,
+      "totalImages": 26,
       "brokenImages": [],
-      "editorialImgCount": 6,
+      "editorialImgCount": 7,
       "editorialPaths": [
         "/assets/editorial/home-hero-connector.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal-lock.jpg",
@@ -660,11 +720,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 7,
+      "totalImages": 8,
       "brokenImages": [],
-      "editorialImgCount": 5,
+      "editorialImgCount": 6,
       "editorialPaths": [
         "/assets/editorial/products-hero.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal.jpg",
@@ -821,11 +882,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 25,
+      "totalImages": 26,
       "brokenImages": [],
-      "editorialImgCount": 6,
+      "editorialImgCount": 7,
       "editorialPaths": [
         "/assets/editorial/home-hero-connector.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal-lock.jpg",
@@ -856,11 +918,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 7,
+      "totalImages": 8,
       "brokenImages": [],
-      "editorialImgCount": 5,
+      "editorialImgCount": 6,
       "editorialPaths": [
         "/assets/editorial/products-hero.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal.jpg",
@@ -1017,11 +1080,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 25,
+      "totalImages": 26,
       "brokenImages": [],
-      "editorialImgCount": 6,
+      "editorialImgCount": 7,
       "editorialPaths": [
         "/assets/editorial/home-hero-connector.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal-lock.jpg",
@@ -1052,11 +1116,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 7,
+      "totalImages": 8,
       "brokenImages": [],
-      "editorialImgCount": 5,
+      "editorialImgCount": 6,
       "editorialPaths": [
         "/assets/editorial/products-hero.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal.jpg",
@@ -1213,11 +1278,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 25,
+      "totalImages": 26,
       "brokenImages": [],
-      "editorialImgCount": 6,
+      "editorialImgCount": 7,
       "editorialPaths": [
         "/assets/editorial/home-hero-connector.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal-lock.jpg",
@@ -1248,11 +1314,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 7,
+      "totalImages": 8,
       "brokenImages": [],
-      "editorialImgCount": 5,
+      "editorialImgCount": 6,
       "editorialPaths": [
         "/assets/editorial/products-hero.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal.jpg",
@@ -1409,11 +1476,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 25,
+      "totalImages": 26,
       "brokenImages": [],
-      "editorialImgCount": 6,
+      "editorialImgCount": 7,
       "editorialPaths": [
         "/assets/editorial/home-hero-connector.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal-lock.jpg",
@@ -1444,11 +1512,12 @@
       "bodyBg": "rgb(246, 245, 241)",
       "htmlBg": "rgb(246, 245, 241)",
       "shellBg": "rgb(246, 245, 241)",
-      "totalImages": 7,
+      "totalImages": 8,
       "brokenImages": [],
-      "editorialImgCount": 5,
+      "editorialImgCount": 6,
       "editorialPaths": [
         "/assets/editorial/products-hero.jpg",
+        "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-housing.jpg",
         "/assets/editorial/cat-terminal.jpg",
         "/assets/editorial/cat-seal.jpg",
@@ -1598,13 +1667,14 @@
       "status": 200,
       "h1Count": 1,
       "h1Visible": true,
-      "mainHeight": 3165.125,
-      "bodyTextLength": 1212,
+      "mainHeight": 4093.578125,
+      "bodyTextLength": 2326,
       "hasVerifiedPhone": true,
       "visibleBrandImgs": 17,
       "visibleTableRows": 6,
       "faqVisibleCount": 0,
       "closedDetailsCount": 0,
+      "cadFallbackVisible": true,
       "route": "home"
     },
     {
@@ -1612,13 +1682,14 @@
       "status": 200,
       "h1Count": 1,
       "h1Visible": true,
-      "mainHeight": 2460.90625,
-      "bodyTextLength": 2830,
+      "mainHeight": 3190.078125,
+      "bodyTextLength": 3655,
       "hasVerifiedPhone": true,
       "visibleBrandImgs": 0,
       "visibleTableRows": 20,
       "faqVisibleCount": 0,
       "closedDetailsCount": 0,
+      "cadFallbackVisible": true,
       "route": "products"
     },
     {
@@ -1633,6 +1704,7 @@
       "visibleTableRows": 6,
       "faqVisibleCount": 30,
       "closedDetailsCount": 0,
+      "cadFallbackVisible": false,
       "route": "solutions"
     },
     {
@@ -1647,6 +1719,7 @@
       "visibleTableRows": 0,
       "faqVisibleCount": 29,
       "closedDetailsCount": 0,
+      "cadFallbackVisible": false,
       "route": "quality"
     },
     {
@@ -1661,6 +1734,7 @@
       "visibleTableRows": 0,
       "faqVisibleCount": 19,
       "closedDetailsCount": 2,
+      "cadFallbackVisible": false,
       "route": "about"
     },
     {
@@ -1675,6 +1749,7 @@
       "visibleTableRows": 2,
       "faqVisibleCount": 0,
       "closedDetailsCount": 0,
+      "cadFallbackVisible": false,
       "route": "contact"
     },
     {
@@ -1682,13 +1757,14 @@
       "status": 200,
       "h1Count": 1,
       "h1Visible": true,
-      "mainHeight": 3293.3125,
-      "bodyTextLength": 3154,
+      "mainHeight": 4310.734375,
+      "bodyTextLength": 5177,
       "hasVerifiedPhone": true,
       "visibleBrandImgs": 17,
       "visibleTableRows": 6,
       "faqVisibleCount": 0,
       "closedDetailsCount": 0,
+      "cadFallbackVisible": true,
       "route": "home"
     },
     {
@@ -1696,13 +1772,14 @@
       "status": 200,
       "h1Count": 1,
       "h1Visible": true,
-      "mainHeight": 2511.46875,
-      "bodyTextLength": 4372,
+      "mainHeight": 3802.140625,
+      "bodyTextLength": 5650,
       "hasVerifiedPhone": true,
       "visibleBrandImgs": 0,
       "visibleTableRows": 20,
       "faqVisibleCount": 0,
       "closedDetailsCount": 0,
+      "cadFallbackVisible": true,
       "route": "products"
     },
     {
@@ -1717,6 +1794,7 @@
       "visibleTableRows": 6,
       "faqVisibleCount": 30,
       "closedDetailsCount": 0,
+      "cadFallbackVisible": false,
       "route": "solutions"
     },
     {
@@ -1731,6 +1809,7 @@
       "visibleTableRows": 0,
       "faqVisibleCount": 29,
       "closedDetailsCount": 0,
+      "cadFallbackVisible": false,
       "route": "quality"
     },
     {
@@ -1745,6 +1824,7 @@
       "visibleTableRows": 0,
       "faqVisibleCount": 19,
       "closedDetailsCount": 2,
+      "cadFallbackVisible": false,
       "route": "about"
     },
     {
@@ -1759,6 +1839,7 @@
       "visibleTableRows": 2,
       "faqVisibleCount": 0,
       "closedDetailsCount": 0,
+      "cadFallbackVisible": false,
       "route": "contact"
     }
   ]

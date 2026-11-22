@@ -25,6 +25,8 @@ import { ProductSpecTable } from "./components/ProductSpecTable.jsx";
 import { BomDrawer } from "./components/BomDrawer.jsx";
 import { QualityPipeline } from "./components/QualityPipeline.jsx";
 import { FaqAccordion } from "./components/FaqAccordion.jsx";
+import { ConnectorCadViewer } from "./components/ConnectorCadViewer.jsx";
+import { CAD_MODELS_BY_CATEGORY as EXTERNAL_CAD_MODELS_BY_CATEGORY } from "./content/cadModelsMeta.js";
 
 const BOM_STORAGE_KEY = "oulink_bom_v1";
 
@@ -68,6 +70,10 @@ export function App({
   const [bomItems, setBomItems] = useState([]);
   const [bomDrawerOpen, setBomDrawerOpen] = useState(false);
 
+  // 3D CAD Engineering Workbench & Linked Catalog Inspector state
+  const [homeCadCategory, setHomeCadCategory] = useState("connector-housings");
+  const [inspectedMpn, setInspectedMpn] = useState("");
+
   // Solutions role tab state
   const [activeRoleId, setActiveRoleId] = useState("wire-harness");
 
@@ -92,6 +98,7 @@ export function App({
   const [copiedFallback, setCopiedFallback] = useState(false);
 
   const searchInputRef = useRef(null);
+  const catalogCadRef = useRef(null);
 
   useEffect(() => {
     setCurrentPath(initialPathname);
@@ -456,6 +463,45 @@ export function App({
     [catalogApi, catalogQuery, selectedBrand, selectedCategory, mappedSortKey, catalogPage]
   );
 
+  const categoryStatsMap = useMemo(() => {
+    const map = {};
+    for (const c of PRODUCT_CATEGORIES || []) {
+      map[c.id] = c.count;
+    }
+    if (Array.isArray(catalogApi.categories)) {
+      for (const c of catalogApi.categories) {
+        if (typeof c.count === "number") map[c.id] = c.count;
+      }
+    }
+    return map;
+  }, [catalogApi]);
+
+  const homeRepresentativeItems = useMemo(() => {
+    const res = catalogApi.searchProducts("", {
+      categoryId: homeCadCategory,
+      page: 1,
+      pageSize: 4,
+    });
+    return res.items || [];
+  }, [catalogApi, homeCadCategory]);
+
+  const activeInspectedProduct = useMemo(() => {
+    if (inspectedMpn) {
+      const inCurrentPage = catalogResult.items.find((it) => it.mpn === inspectedMpn);
+      if (inCurrentPage) return inCurrentPage;
+      const exactHit = catalogApi.getProductByMpn(inspectedMpn);
+      if (
+        exactHit &&
+        (selectedCategory === "all" || exactHit.categoryId === selectedCategory) &&
+        (selectedBrand === "all" ||
+          String(exactHit.brandId).toLowerCase() === String(selectedBrand).toLowerCase())
+      ) {
+        return exactHit;
+      }
+    }
+    return catalogResult.items[0] || null;
+  }, [inspectedMpn, catalogResult.items, catalogApi, selectedCategory, selectedBrand]);
+
   const activeBrandObj =
     selectedBrand && selectedBrand !== "all"
       ? brandMap.get(String(selectedBrand).toLowerCase())
@@ -644,6 +690,22 @@ export function App({
                     onNavigate={navigateTo}
                     inputRef={searchInputRef}
                   />
+
+                  {localeContent.hero.cadJumpCta ? (
+                    <div className="hero-cad-jump-bar">
+                      <span className="hero-cad-jump-tag">
+                        {localeContent.hero.cadJumpTag || "3D CAD"}
+                      </span>
+                      <span>{localeContent.hero.cadJumpLabel}</span>
+                      <a
+                        href="#cad-workbench"
+                        className="hero-cad-jump-link"
+                        onClick={handleInlineLink("#cad-workbench")}
+                      >
+                        {localeContent.hero.cadJumpCta}
+                      </a>
+                    </div>
+                  ) : null}
                 </div>
 
                 <div className="hero-media-col">
@@ -709,6 +771,64 @@ export function App({
                 />
               </div>
             </section>
+
+            {/* 3B. Interactive 3D CAD Engineering Workbench (5 Parametric Connector Assemblies) */}
+            {localeContent.homeSections?.cadWorkbench ? (
+              <section id="cad-workbench" className="ou-section cad-home-section">
+                <div className="ou-container">
+                  <div className="editorial-section-head">
+                    <div>
+                      <span className="gold-top-rule" aria-hidden="true" />
+                      <span className="editorial-eyebrow-gold">
+                        {localeContent.homeSections.cadWorkbench.eyebrow}
+                      </span>
+                      <h2>{localeContent.homeSections.cadWorkbench.title}</h2>
+                      <p>{localeContent.homeSections.cadWorkbench.subtitle}</p>
+                    </div>
+                    <a
+                      href={routeHref(locale, "products")}
+                      className="editorial-text-link is-strong"
+                      onClick={handleInlineLink(routeHref(locale, "products"))}
+                    >
+                      {localeContent.homeSections.cadWorkbench.actionText}
+                    </a>
+                  </div>
+
+                  <ConnectorCadViewer
+                    locale={locale}
+                    variant="home"
+                    categoryId={homeCadCategory}
+                    onSelectCategory={setHomeCadCategory}
+                    cadModelsMap={EXTERNAL_CAD_MODELS_BY_CATEGORY}
+                    viewerUi={localeContent.cadViewerUi}
+                    workbenchCopy={localeContent.homeSections.cadWorkbench}
+                    categoryStatsMap={categoryStatsMap}
+                    representativeItems={homeRepresentativeItems}
+                    bomItems={bomItems}
+                    onToggleBom={handleToggleBom}
+                    onAddBom={handleAddBom}
+                    onSelectRepresentativeMpn={(sku, catId) => {
+                      setSelectedCategory(catId);
+                      setCatalogQuery(sku.mpn);
+                      setInspectedMpn(sku.mpn);
+                      navigateTo(
+                        `${routeHref(locale, "products")}?category=${encodeURIComponent(
+                          catId
+                        )}&q=${encodeURIComponent(sku.mpn)}`
+                      );
+                    }}
+                    onNavigateToCategory={(catId) => {
+                      setSelectedCategory(catId);
+                      setCatalogQuery("");
+                      setInspectedMpn("");
+                      navigateTo(
+                        `${routeHref(locale, "products")}?category=${encodeURIComponent(catId)}`
+                      );
+                    }}
+                  />
+                </div>
+              </section>
+            ) : null}
 
             {/* 4. Component Categories (4 Real Photography Cards) */}
             {localeContent.homeSections?.categoriesSection ? (
@@ -1000,6 +1120,7 @@ export function App({
                         setCatalogQuery("");
                         setSelectedBrand("all");
                         setSelectedCategory("all");
+                        setInspectedMpn("");
                         setCatalogSort("mpn");
                         setCatalogPage(1);
                       }}
@@ -1077,6 +1198,7 @@ export function App({
                           }`}
                           onClick={() => {
                             setSelectedCategory("all");
+                            setInspectedMpn("");
                             setCatalogPage(1);
                           }}
                         >
@@ -1095,6 +1217,7 @@ export function App({
                               className={`sidebar-filter-item${isActive ? " is-active" : ""}`}
                               onClick={() => {
                                 setSelectedCategory(isActive ? "all" : cat.id);
+                                setInspectedMpn("");
                                 setCatalogPage(1);
                               }}
                             >
@@ -1123,6 +1246,30 @@ export function App({
 
                 {/* Right Main Catalog Data Sheet */}
                 <div className="catalog-main-col">
+                  <div ref={catalogCadRef}>
+                    <ConnectorCadViewer
+                      locale={locale}
+                      variant="catalog"
+                      categoryId={
+                        selectedCategory !== "all"
+                          ? selectedCategory
+                          : activeInspectedProduct?.categoryId || "connector-housings"
+                      }
+                      cadModelsMap={EXTERNAL_CAD_MODELS_BY_CATEGORY}
+                      viewerUi={localeContent.cadViewerUi}
+                      workbenchCopy={productsCopy.cadInspector || {}}
+                      categoryStatsMap={categoryStatsMap}
+                      inspectedProduct={activeInspectedProduct}
+                      bomItems={bomItems}
+                      onToggleBom={handleToggleBom}
+                      onAddBom={handleAddBom}
+                      onInquireProduct={(sku) => {
+                        handleAddBom(sku);
+                        navigateTo(routeHref(locale, "contact"));
+                      }}
+                    />
+                  </div>
+
                   <div className="catalog-toolbar">
                     <div className="catalog-count-display">
                       <strong className="gold-count-num mpn-code">{catalogResult.total}</strong>
@@ -1162,6 +1309,19 @@ export function App({
                     onAddBom={handleAddBom}
                     onToggleBom={handleToggleBom}
                     onRequestCustomMpn={handleRequestCustomMpn}
+                    inspectedMpn={activeInspectedProduct?.mpn || ""}
+                    onInspectItem={(item) => {
+                      setInspectedMpn(item.mpn);
+                      if (typeof window !== "undefined" && catalogCadRef.current) {
+                        const rect = catalogCadRef.current.getBoundingClientRect();
+                        if (rect.top < 64) {
+                          catalogCadRef.current.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                          });
+                        }
+                      }
+                    }}
                     activeQuery={catalogQuery}
                     activeBrandName={
                       activeBrandObj

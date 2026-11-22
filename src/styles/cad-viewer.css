@@ -1,0 +1,1138 @@
+/* === Ou-Link 3D CAD Engineering Workbench & MPN Linked Inspector (Image 2.6 Editorial Blueprint) === */
+
+/* Hero quick jump pill/link */
+.hero-cad-jump-bar {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border-hairline);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12.5px;
+  color: var(--color-text-secondary);
+}
+
+.hero-cad-jump-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 7px;
+  background-color: var(--color-bg-alt);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-primary);
+}
+
+.hero-cad-jump-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+  color: var(--color-primary);
+  transition: color 0.15s ease;
+}
+
+.hero-cad-jump-link:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Home CAD Workbench Section Wrapper */
+.cad-home-section {
+  background-color: var(--color-bg-alt);
+  border-top: 1px solid var(--color-border-hairline);
+  border-bottom: 1px solid var(--color-border-hairline);
+}
+
+/* Category Switcher Strip (Home 5-Model Selector) */
+.cad-model-tabs-bar {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border: 1px solid var(--color-border-strong);
+  border-bottom: none;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background-color: var(--color-surface);
+}
+
+.cad-model-tab-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  padding: 11px 14px;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--color-border-hairline);
+  border-bottom: 2px solid transparent;
+  text-align: left;
+  cursor: pointer;
+  min-width: 0;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.cad-model-tab-btn:last-child {
+  border-right: none;
+}
+
+.cad-model-tab-btn:hover {
+  background-color: var(--color-surface-elevated);
+}
+
+.cad-model-tab-btn.is-active {
+  background-color: var(--color-row-selected);
+  border-bottom-color: var(--color-primary);
+}
+
+.cad-tab-top-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 6px;
+}
+
+.cad-tab-index {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-accent-gold-text);
+  letter-spacing: 0.04em;
+}
+
+.cad-model-tab-btn.is-active .cad-tab-index {
+  color: var(--color-primary);
+}
+
+.cad-tab-dwg {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--color-text-muted);
+}
+
+.cad-tab-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+/* Main CAD Sheet Frame */
+.cad-workbench-sheet {
+  width: 100%;
+  min-width: 0;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
+
+.cad-workbench-sheet.is-catalog-mode {
+  border-radius: var(--radius-sm);
+  margin-bottom: 18px;
+}
+
+/* Catalog Linked Inspector Header Bar */
+.cad-catalog-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding: 10px 16px;
+  background-color: var(--color-band-dark);
+  color: var(--color-text-on-dark);
+  border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+}
+
+.cad-catalog-topbar-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  min-width: 0;
+}
+
+.cad-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--color-accent-gold-bright);
+  flex-shrink: 0;
+}
+
+.cad-catalog-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--color-accent-gold-bright);
+}
+
+.cad-catalog-headline {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-text-on-dark);
+}
+
+.cad-catalog-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text-on-dark);
+  border: 1px solid rgba(247, 246, 242, 0.28);
+  border-radius: var(--radius-xs);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.cad-catalog-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Workbench Two-Column Split: Left 3D Stage + Right Engineering Spec / Linked SKU */
+.cad-workbench-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  min-width: 0;
+}
+
+.cad-workbench-sheet.is-catalog-mode .cad-workbench-grid {
+  grid-template-columns: minmax(0, 1.28fr) minmax(0, 1fr);
+}
+
+/* Left Column: 3D Blueprint Viewport & Controls */
+.cad-stage-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-right: 1px solid var(--color-border-hairline);
+  background-color: var(--color-bg-canvas);
+}
+
+/* Top Drawing Title & Mode Switcher Toolbar */
+.cad-stage-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding: 10px 14px;
+  background-color: var(--color-surface-elevated);
+  border-bottom: 1px solid var(--color-border-hairline);
+}
+
+.cad-mode-group {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  background-color: var(--color-surface);
+}
+
+.cad-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-body);
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--color-border-hairline);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.14s ease, color 0.14s ease;
+}
+
+.cad-mode-btn:last-child {
+  border-right: none;
+}
+
+.cad-mode-btn:hover {
+  background-color: var(--color-bg-canvas);
+  color: var(--color-primary);
+}
+
+.cad-mode-btn.is-active {
+  background-color: var(--color-primary);
+  color: var(--color-text-on-dark);
+  font-weight: 600;
+}
+
+.cad-Quick-tools {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cad-tool-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: var(--color-surface);
+  color: var(--color-text-body);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.14s ease, color 0.14s ease, background-color 0.14s ease;
+}
+
+.cad-tool-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.cad-tool-btn.is-active {
+  background-color: var(--color-row-selected);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* 3D Canvas Viewport with Engineering Blueprint Grid & Corner Fiducials */
+.cad-canvas-stage {
+  position: relative;
+  width: 100%;
+  height: 410px;
+  min-height: 320px;
+  background-color: #F4F3EE;
+  background-image:
+    linear-gradient(to right, rgba(206, 204, 198, 0.28) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(206, 204, 198, 0.28) 1px, transparent 1px),
+    radial-gradient(circle at 50% 46%, rgba(255, 255, 255, 0.72) 0%, rgba(241, 239, 234, 0.92) 78%);
+  background-size: 24px 24px, 24px 24px, 100% 100%;
+  overflow: hidden;
+  user-select: none;
+}
+
+.cad-workbench-sheet.is-catalog-mode .cad-canvas-stage {
+  height: 350px;
+  min-height: 290px;
+}
+
+.cad-canvas-mount {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.cad-canvas-mount:active {
+  cursor: grabbing;
+}
+
+.cad-canvas-mount canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* CAD Sheet Corner Crosshair Fiducials */
+.cad-fiducial {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.cad-fiducial.is-tl {
+  top: 10px;
+  left: 10px;
+  border-top: 1.5px solid var(--color-accent-gold);
+  border-left: 1.5px solid var(--color-accent-gold);
+}
+
+.cad-fiducial.is-tr {
+  top: 10px;
+  right: 10px;
+  border-top: 1.5px solid var(--color-accent-gold);
+  border-right: 1.5px solid var(--color-accent-gold);
+}
+
+.cad-fiducial.is-bl {
+  bottom: 10px;
+  left: 10px;
+  border-bottom: 1.5px solid var(--color-accent-gold);
+  border-left: 1.5px solid var(--color-accent-gold);
+}
+
+.cad-fiducial.is-br {
+  bottom: 10px;
+  right: 10px;
+  border-bottom: 1.5px solid var(--color-accent-gold);
+  border-right: 1.5px solid var(--color-accent-gold);
+}
+
+/* Viewport Top-Left & Top-Right Technical Overlays */
+.cad-hud-top-left {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  pointer-events: none;
+  max-width: calc(100% - 140px);
+}
+
+.cad-hud-dwg-code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+}
+
+.cad-hud-model-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  background: rgba(246, 245, 241, 0.82);
+  padding: 1px 6px 1px 0;
+  border-radius: var(--radius-xs);
+}
+
+.cad-hud-top-right {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  pointer-events: none;
+}
+
+.cad-hud-angle-readout {
+  padding: 2px 7px;
+  background: rgba(250, 249, 247, 0.9);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.cad-hud-scale-tag {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--color-text-secondary);
+}
+
+/* Active Sub-Part Floating Callout Banner inside 3D Viewport */
+.cad-active-part-callout {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 34px;
+  z-index: 5;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--color-primary);
+  border-left: 3px solid var(--color-accent-gold);
+  border-radius: var(--radius-xs);
+}
+
+.cad-callout-body {
+  min-width: 0;
+}
+
+.cad-callout-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.cad-callout-mesh {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-accent-gold-text);
+}
+
+.cad-callout-desc {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--color-text-body);
+  line-height: 1.45;
+}
+
+.cad-callout-close {
+  background: transparent;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  padding: 2px 7px;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.cad-callout-close:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* Bottom Dimension & Interaction Hint Ruler inside Viewport */
+.cad-hud-bottom-bar {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 10px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  pointer-events: none;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
+.cad-ruler-measure {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  color: var(--color-text-primary);
+  background: rgba(246, 245, 241, 0.86);
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+}
+
+.cad-ruler-line {
+  display: inline-block;
+  width: 28px;
+  height: 5px;
+  border-bottom: 1px solid var(--color-primary);
+  border-left: 1px solid var(--color-primary);
+  border-right: 1px solid var(--color-primary);
+}
+
+.cad-hud-hint {
+  background: rgba(246, 245, 241, 0.82);
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+}
+
+/* SSR / No-JS / Non-WebGL Graceful Engineering Blueprint Fallback */
+.cad-static-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 20px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(246, 245, 241, 0.96) 0%, rgba(241, 239, 234, 0.98) 100%);
+  transition: opacity 0.25s ease;
+}
+
+.cad-static-fallback.is-ready-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cad-fallback-photo-wrap {
+  width: min(260px, 72%);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  background-color: var(--color-surface);
+  padding: 4px;
+  margin-bottom: 10px;
+}
+
+.cad-fallback-photo-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 306 / 198;
+  object-fit: cover;
+}
+
+.cad-fallback-caption {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  max-width: 420px;
+}
+
+/* Explode Travel Slider & Telemetry Strip Below Canvas */
+.cad-explode-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding: 9px 14px;
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border-hairline);
+}
+
+.cad-explode-label-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.cad-explode-pct {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-primary);
+  min-width: 38px;
+}
+
+.cad-explode-slider {
+  flex: 1 1 140px;
+  min-width: 100px;
+  height: 4px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+/* 4-Cell Engineering Telemetry Footer under Stage */
+.cad-telemetry-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--color-border-hairline);
+  background-color: var(--color-surface-elevated);
+}
+
+.cad-telemetry-cell {
+  padding: 8px 12px;
+  border-right: 1px solid var(--color-border-hairline);
+  min-width: 0;
+}
+
+.cad-telemetry-cell:last-child {
+  border-right: none;
+}
+
+.cad-telemetry-key {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.cad-telemetry-val {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  word-break: break-word;
+}
+
+/* Right Column: Sub-Parts Breakdown & Linked Product / Category Panel */
+.cad-inspector-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px 18px;
+  min-width: 0;
+  background-color: var(--color-surface);
+}
+
+.cad-inspector-head {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border-hairline);
+}
+
+.cad-inspector-code-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.cad-inspector-code {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--color-accent-gold-text);
+}
+
+.cad-inspector-ip-badge {
+  padding: 1px 7px;
+  background-color: var(--color-bg-alt);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.cad-inspector-title {
+  margin: 0 0 4px;
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1.35;
+}
+
+.cad-inspector-material {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--color-text-secondary);
+}
+
+/* Sub-Parts Interactive List */
+.cad-parts-block {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border-hairline);
+}
+
+.cad-parts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.cad-parts-heading {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.cad-parts-reset-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.cad-parts-reset-btn:hover {
+  text-decoration: underline;
+}
+
+.cad-parts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cad-part-btn {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 7px 10px;
+  background-color: var(--color-surface-elevated);
+  border: 1px solid var(--color-border-hairline);
+  border-radius: var(--radius-xs);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.14s ease, background-color 0.14s ease;
+}
+
+.cad-part-btn:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-bg-canvas);
+}
+
+.cad-part-btn.is-active {
+  background-color: var(--color-row-selected);
+  border-color: var(--color-primary);
+  border-left: 3px solid var(--color-accent-gold);
+}
+
+.cad-part-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+}
+
+.cad-part-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.cad-part-mesh-tag {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--color-text-muted);
+}
+
+.cad-part-role {
+  font-size: 11.5px;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+/* Home Mode: Representative Stocked MPNs & Category Jump CTA */
+.cad-home-stock-footer {
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cad-rep-mpn-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cad-rep-label {
+  font-size: 11.5px;
+  color: var(--color-text-secondary);
+}
+
+.cad-rep-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background-color: var(--color-bg-canvas);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--color-text-primary);
+  transition: border-color 0.14s ease, color 0.14s ease;
+}
+
+.cad-rep-chip:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.cad-home-cta-btn {
+  width: 100%;
+}
+
+/* Catalog Mode: Active Linked SKU Specification Sheet */
+.cad-linked-sku-panel {
+  padding: 12px;
+  margin-bottom: 10px;
+  background-color: var(--color-surface-elevated);
+  border: 1px solid var(--color-border-strong);
+  border-left: 3px solid var(--color-primary);
+  border-radius: var(--radius-xs);
+}
+
+.cad-sku-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.cad-sku-active-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-primary);
+  letter-spacing: 0.03em;
+}
+
+.cad-sku-stock-pill {
+  padding: 1px 6px;
+  background-color: var(--color-row-selected);
+  border: 1px solid rgba(8, 71, 50, 0.28);
+  border-radius: var(--radius-xs);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.cad-sku-mpn-heading {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+  word-break: break-all;
+}
+
+.cad-sku-series-line {
+  margin: 3px 0 10px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.cad-sku-spec-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px 12px;
+  padding-top: 9px;
+  border-top: 1px solid var(--color-border-hairline);
+}
+
+.cad-sku-spec-item {
+  min-width: 0;
+}
+
+.cad-sku-spec-item span {
+  display: block;
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.cad-sku-spec-item strong {
+  display: block;
+  margin-top: 1px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  word-break: break-word;
+}
+
+.cad-sku-spec-item strong.is-gold-price {
+  color: var(--color-primary);
+}
+
+.cad-sku-actions-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.cad-sku-actions-row .btn-primary {
+  flex: 1 1 150px;
+}
+
+.cad-sku-actions-row .btn-outline {
+  flex: 0 1 auto;
+}
+
+/* ProductSpecTable 3D Inspect Trigger & Row Highlight */
+.spec-table tbody tr.is-inspected {
+  background-color: #F3F6F1;
+}
+
+.spec-table tbody tr.is-inspected td:first-child {
+  box-shadow: inset 3px 0 0 var(--color-accent-gold);
+}
+
+.spec-table tbody tr.is-selected.is-inspected {
+  background-color: var(--color-row-selected);
+}
+
+.spec-mpn-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: inherit;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.spec-mpn-btn:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.spec-action-group {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.inspect-3d-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 29px;
+  padding: 3px 8px;
+  background-color: var(--color-surface-elevated);
+  color: var(--color-text-body);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  font-size: 11.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.14s ease, color 0.14s ease, background-color 0.14s ease;
+}
+
+.inspect-3d-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.inspect-3d-btn.is-active {
+  background-color: var(--color-band-dark);
+  border-color: var(--color-band-dark);
+  color: var(--color-accent-gold-bright);
+  font-weight: 600;
+}
+
+/* === Responsive Multi-Viewport Rules (1024px / 768px / 390px / 320px Zero Overflow) === */
+@media (max-width: 1080px) {
+  .cad-workbench-grid,
+  .cad-workbench-sheet.is-catalog-mode .cad-workbench-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cad-stage-column {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border-hairline);
+  }
+
+  .cad-model-tabs-bar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .cad-model-tab-btn {
+    border-bottom: 1px solid var(--color-border-hairline);
+  }
+}
+
+@media (max-width: 768px) {
+  .cad-model-tabs-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cad-canvas-stage,
+  .cad-workbench-sheet.is-catalog-mode .cad-canvas-stage {
+    height: 310px;
+    min-height: 260px;
+  }
+
+  .cad-telemetry-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cad-telemetry-cell:nth-child(2) {
+    border-right: none;
+  }
+
+  .cad-telemetry-cell:nth-child(1),
+  .cad-telemetry-cell:nth-child(2) {
+    border-bottom: 1px solid var(--color-border-hairline);
+  }
+
+  .cad-hud-hint {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .cad-model-tabs-bar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cad-model-tab-btn {
+    border-right: none;
+    padding: 9px 12px;
+  }
+
+  .cad-stage-toolbar {
+    padding: 8px 10px;
+  }
+
+  .cad-mode-group {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .cad-mode-btn {
+    justify-content: center;
+    padding: 5px 4px;
+    font-size: 11px;
+  }
+
+  .cad-Quick-tools {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .cad-tool-btn {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding: 5px 6px;
+    font-size: 11px;
+  }
+
+  .cad-canvas-stage,
+  .cad-workbench-sheet.is-catalog-mode .cad-canvas-stage {
+    height: 265px;
+    min-height: 240px;
+  }
+
+  .cad-inspector-column {
+    padding: 12px;
+  }
+
+  .cad-sku-spec-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cad-sku-actions-row .btn-primary,
+  .cad-sku-actions-row .btn-outline {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .cad-catalog-topbar {
+    padding: 8px 12px;
+  }
+}

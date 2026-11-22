@@ -1,5 +1,5 @@
 import React from "react";
-import { Plus, Check, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { Plus, Check, ChevronLeft, ChevronRight, ArrowRight, Box } from "lucide-react";
 
 function buildPageNumbers(current, total) {
   if (total <= 7) {
@@ -24,6 +24,8 @@ export function ProductSpecTable({
   onAddBom,
   onToggleBom,
   onRequestCustomMpn,
+  inspectedMpn = "",
+  onInspectItem,
   activeQuery = "",
   activeBrandName = "",
   pagination = null,
@@ -79,6 +81,10 @@ export function ProductSpecTable({
 
   const addText = tableCopy.addBomButton || mpnCopy.addBomText || "+ BOM";
   const addedText = tableCopy.addedBomButton || mpnCopy.addedBomText || "已加入";
+  const inspectText =
+    tableCopy.cadInspector?.inspectBtn || (locale === "zh" ? "3D 检视" : "3D View");
+  const inspectingText =
+    tableCopy.cadInspector?.inspectingBtn || (locale === "zh" ? "检视中" : "Active 3D");
 
   return (
     <div className="spec-table-sheet">
@@ -100,11 +106,18 @@ export function ProductSpecTable({
           <tbody>
             {items.map((item) => {
               const added = isInBom(item.mpn);
+              const isInspected = Boolean(inspectedMpn) && inspectedMpn === item.mpn;
               const brandLabel = locale === "zh" ? item.brandNameZh : item.brandNameEn;
               const categoryLabel = locale === "zh" ? item.categoryZh : item.categoryEn;
+              const rowClass = [
+                added ? "is-selected" : "",
+                isInspected ? "is-inspected" : "",
+              ]
+                .filter(Boolean)
+                .join(" ");
 
               return (
-                <tr key={item.id} className={added ? "is-selected" : undefined}>
+                <tr key={item.id} className={rowClass || undefined}>
                   <td className="check-col">
                     <input
                       type="checkbox"
@@ -116,7 +129,18 @@ export function ProductSpecTable({
                   </td>
                   <td>
                     <div className="spec-mpn-cell">
-                      <span className="spec-mpn-primary">{item.mpn}</span>
+                      {onInspectItem ? (
+                        <button
+                          type="button"
+                          className="spec-mpn-btn spec-mpn-primary"
+                          onClick={() => onInspectItem(item)}
+                          title={`${inspectText} ${item.mpn}`}
+                        >
+                          {item.mpn}
+                        </button>
+                      ) : (
+                        <span className="spec-mpn-primary">{item.mpn}</span>
+                      )}
                       <span className="spec-mpn-sub">
                         {brandLabel}
                         {item.batchYear ? ` · DC ${item.batchYear}` : ""}
@@ -141,14 +165,27 @@ export function ProductSpecTable({
                     ¥{Number(item.priceCny).toFixed(4)}
                   </td>
                   <td className="num-col action-col">
-                    <button
-                      type="button"
-                      className={`add-bom-btn${added ? " is-added" : ""}`}
-                      onClick={() => handleToggle(item)}
-                    >
-                      {added ? <Check size={13} aria-hidden="true" /> : <Plus size={13} aria-hidden="true" />}
-                      <span>{added ? addedText : addText}</span>
-                    </button>
+                    <div className="spec-action-group">
+                      {onInspectItem ? (
+                        <button
+                          type="button"
+                          className={`inspect-3d-btn${isInspected ? " is-active" : ""}`}
+                          aria-pressed={isInspected}
+                          onClick={() => onInspectItem(item)}
+                        >
+                          <Box size={12} aria-hidden="true" />
+                          <span>{isInspected ? inspectingText : inspectText}</span>
+                        </button>
+                      ) : null}
+                      <button
+                        type="button"
+                        className={`add-bom-btn${added ? " is-added" : ""}`}
+                        onClick={() => handleToggle(item)}
+                      >
+                        {added ? <Check size={13} aria-hidden="true" /> : <Plus size={13} aria-hidden="true" />}
+                        <span>{added ? addedText : addText}</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               );

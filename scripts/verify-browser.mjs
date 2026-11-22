@@ -26,6 +26,8 @@ const MIME_TYPES = {
   ".xml": "application/xml; charset=utf-8",
   ".woff": "font/woff",
   ".woff2": "font/woff2",
+  ".glb": "model/gltf-binary",
+  ".gltf": "model/gltf+json",
 };
 
 async function loadChromium() {
@@ -74,7 +76,12 @@ function resolveWindowsBrowserCandidates() {
 }
 
 async function launchBrowser(chromium) {
-  const launchArgs = ["--disable-gpu-sandbox", "--no-default-browser-check"];
+  const launchArgs = [
+    "--disable-gpu-sandbox",
+    "--enable-webgl",
+    "--ignore-gpu-blocklist",
+    "--no-default-browser-check",
+  ];
   try {
     const browser = await chromium.launch({ headless: true, args: launchArgs });
     return { browser, executable: "playwright-bundled-chromium" };
@@ -178,6 +185,67 @@ async function startLocalStaticServer() {
   };
 }
 
+/**
+ * Capture compositor screenshot of a WebGL <canvas> locator and compute pixel density & signature
+ * to strictly prove non-blank 3D rendering and real visual updates across modes.
+ */
+async function analyzeCanvasScreenshot(page, canvasLocator) {
+  await canvasLocator.waitFor({ state: "visible", timeout: 8000 });
+  const pngBuf = await canvasLocator.screenshot({ type: "png" });
+  const base64Png = pngBuf.toString("base64");
+
+  return page.evaluate(async (b64) => {
+    const img = await new Promise((resolve, reject) => {
+      const el = new Image();
+      el.onload = () => resolve(el);
+      el.onerror = reject;
+      el.src = `data:image/png;base64,${b64}`;
+    });
+    const w = img.naturalWidth;
+    const h = img.naturalHeight;
+    const offscreen = document.createElement("canvas");
+    offscreen.width = w;
+    offscreen.height = h;
+    const ctx = offscreen.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    const { data } = ctx.getImageData(0, 0, w, h);
+
+    // Sample corner background color (avoiding 4px corner fiducials)
+    const sampleIdx = (Math.min(10, h - 1) * w + Math.min(10, w - 1)) * 4;
+    const bgR = data[sampleIdx];
+    const bgG = data[sampleIdx + 1];
+    const bgB = data[sampleIdx + 2];
+
+    let nonBgPixels = 0;
+    let hash = 2166136261;
+    const totalPixels = w * h;
+
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      const a = data[i + 3];
+      const diff = Math.abs(r - bgR) + Math.abs(g - bgG) + Math.abs(b - bgB);
+      if (a > 10 && diff > 20) {
+        nonBgPixels += 1;
+      }
+      // Sample every 13th pixel into FNV-1a checksum
+      if ((i & 52) === 0) {
+        hash ^= (r << 16) ^ (g << 8) ^ b;
+        hash = Math.imul(hash, 16777619) >>> 0;
+      }
+    }
+
+    return {
+      width: w,
+      height: h,
+      nonBgPixels,
+      nonBgRatio: totalPixels > 0 ? Number((nonBgPixels / totalPixels).toFixed(4)) : 0,
+      signature: hash.toString(16).padStart(8, "0"),
+    };
+  }, base64Png);
+}
+
 async function main() {
   await mkdir(qaDir, { recursive: true });
 
@@ -236,6 +304,13 @@ async function main() {
 
           const response = await page.goto(`${baseURL}${routePath}`, { waitUntil: "networkidle" });
           await page.waitForSelector("main h1, h1", { timeout: 5000 });
+          if (route === "home" || route === "products") {
+            await page
+              .locator(".cad-static-fallback.is-ready-hidden")
+              .first()
+              .waitFor({ state: "attached", timeout: 8000 });
+            await page.waitForTimeout(180);
+          }
 
           const audit = await page.evaluate(() => {
             const docEl = document.documentElement;
@@ -625,6 +700,17 @@ async function main() {
             [],
             `Editorial photographs failed browser decode: ${failedEditorialProbes.join(", ")}`
           );
+          const lowResEditorialProbes = editorialDecodeCheck
+            .filter((r) => {
+              const minW = r.src.includes("/cat-") ? 1000 : 1400;
+              return r.w < minW;
+            })
+            .map((r) => `${r.src} (${r.w}x${r.h})`);
+          assert.deepEqual(
+            lowResEditorialProbes,
+            [],
+            `Low-resolution editorial photos remained: ${lowResEditorialProbes.join(", ")}`
+          );
 
           interactionChecks.searchAndBomFlow = {
             passed: true,
@@ -636,10 +722,257 @@ async function main() {
             honest503FallbackVerified: true,
             real404Verified: true,
             editorialAssetsDecodedCount: editorialDecodeCheck.length,
+            editorialMinWidthPx: Math.min(...editorialDecodeCheck.map((r) => r.w)),
+            editorialMaxWidthPx: Math.max(...editorialDecodeCheck.map((r) => r.w)),
           };
         } catch (err) {
           interactionChecks.searchAndBomFlow = { passed: false, error: err.message };
           failures.push(`[Search & BOM Flow] ${err.message}`);
+        }
+
+        // =====================================================================
+        // 3B. Three.js 3D CAD Workbench & Linked Product Catalog Flow (1440px)
+        // =====================================================================
+        try {
+          runtimeErrors.length = 0;
+          failedAssets.length = 0;
+
+          // --- Part 1: /zh Home 3D CAD Wireframe, Exploded View, X-Ray & Solid ---
+          await page.setViewportSize({ width: 1440, height: 1020 });
+          await page.goto(`${baseURL}/zh`, { waitUntil: "networkidle" });
+          await page
+            .locator("#cad-workbench .cad-static-fallback.is-ready-hidden")
+            .waitFor({ state: "attached", timeout: 8000 });
+
+          const homeWorkbench = page.locator("#cad-workbench");
+          await homeWorkbench.scrollIntoViewIfNeeded();
+          await page.evaluate(() => {
+            const el = document.getElementById("cad-workbench");
+            if (el) {
+              const top = el.getBoundingClientRect().top + window.scrollY - 52;
+              window.scrollTo({ top: Math.max(0, top), behavior: "instant" });
+            }
+          });
+          await page.waitForTimeout(300);
+
+          const homeCanvas = page.locator("#cad-workbench .cad-canvas-mount canvas").first();
+          const wireframeStats = await analyzeCanvasScreenshot(page, homeCanvas);
+          assert.ok(
+            wireframeStats.width >= 300 && wireframeStats.height >= 220,
+            `Home 3D <canvas> too small: ${wireframeStats.width}x${wireframeStats.height}`
+          );
+          assert.ok(
+            wireframeStats.nonBgRatio >= 0.02,
+            `Home 3D Wireframe <canvas> appears blank (nonBgRatio=${wireframeStats.nonBgRatio})`
+          );
+
+          const hudWireframeText = (await page.locator("#cad-workbench .cad-hud-dwg-code").innerText()).trim();
+          assert.match(hudWireframeText, /CAD-CH-16P\s*·\s*WIREFRAME/i);
+
+          // Save required HD showcase screenshot 1: qa/zh-home-3d-wireframe-1440.png
+          await page.screenshot({
+            path: path.join(qaDir, "zh-home-3d-wireframe-1440.png"),
+            fullPage: false,
+          });
+
+          // Trigger Exploded Assembly View (0% -> 100%)
+          const explodeBtn = page.locator("#cad-workbench .cad-tool-btn").first();
+          await explodeBtn.click();
+          await page.waitForFunction(
+            () => document.querySelector("#cad-workbench .cad-explode-pct")?.textContent?.trim() === "100%",
+            { timeout: 5000 }
+          );
+          // Wait for smooth interpolation of all sub-meshes & gold leader lines to settle
+          await page.waitForTimeout(850);
+
+          const explodedStats = await analyzeCanvasScreenshot(page, homeCanvas);
+          assert.ok(
+            explodedStats.nonBgRatio >= 0.02,
+            `Home 3D Exploded <canvas> appears blank (nonBgRatio=${explodedStats.nonBgRatio})`
+          );
+          assert.notEqual(
+            explodedStats.signature,
+            wireframeStats.signature,
+            "Exploded view must visibly update 3D <canvas> geometry positions"
+          );
+
+          // Save required HD showcase screenshot 2: qa/zh-home-3d-exploded-1440.png
+          await page.screenshot({
+            path: path.join(qaDir, "zh-home-3d-exploded-1440.png"),
+            fullPage: false,
+          });
+
+          // Collapse back and switch across X-Ray Cutaway & Studio Solid modes
+          await explodeBtn.click();
+          await page.waitForTimeout(550);
+
+          const modeButtons = page.locator("#cad-workbench .cad-mode-btn");
+          await modeButtons.nth(1).click(); // X-Ray
+          await page.waitForFunction(
+            () => (document.querySelector("#cad-workbench .cad-hud-dwg-code")?.textContent || "").includes("XRAY"),
+            { timeout: 4000 }
+          );
+          await page.waitForTimeout(220);
+          const xrayStats = await analyzeCanvasScreenshot(page, homeCanvas);
+          assert.ok(xrayStats.nonBgRatio >= 0.02, "X-Ray 3D mode must render non-blank geometry");
+
+          await modeButtons.nth(2).click(); // Solid
+          await page.waitForFunction(
+            () => (document.querySelector("#cad-workbench .cad-hud-dwg-code")?.textContent || "").includes("SOLID"),
+            { timeout: 4000 }
+          );
+          await page.waitForTimeout(220);
+          const solidStats = await analyzeCanvasScreenshot(page, homeCanvas);
+          assert.ok(solidStats.nonBgRatio >= 0.03, "Studio Solid 3D mode must render shaded PBR surfaces");
+          assert.notEqual(solidStats.signature, xrayStats.signature, "Solid mode must differ visually from X-Ray mode");
+
+          await modeButtons.nth(0).click(); // Return to CAD Wireframe
+          await page.waitForTimeout(180);
+
+          // Switch Home 3D Category Tab to IP6K9K Sealed Heavy-Duty Connector
+          const homeTabs = page.locator("#cad-workbench .cad-model-tab-btn");
+          await homeTabs.nth(1).click();
+          await page.waitForFunction(
+            () => {
+              const code = document.querySelector("#cad-workbench .cad-hud-dwg-code")?.textContent || "";
+              const hiddenFallback = document.querySelector("#cad-workbench .cad-static-fallback.is-ready-hidden");
+              return code.includes("CAD-HD-IP6K9K") && Boolean(hiddenFallback);
+            },
+            { timeout: 8000 }
+          );
+          await page.waitForTimeout(220);
+          const heavyTabCanvasStats = await analyzeCanvasScreenshot(page, homeCanvas);
+          assert.ok(heavyTabCanvasStats.nonBgRatio >= 0.02, "Switched IP6K9K GLB tab must render non-blank canvas");
+
+          // --- Part 2: /zh/products Category Switching + Row "3D 检视" Link + "+ 加入 BOM 清单" ---
+          await page.goto(`${baseURL}/zh/products`, { waitUntil: "networkidle" });
+          await page
+            .locator(".cad-workbench-sheet.is-catalog-mode .cad-static-fallback.is-ready-hidden")
+            .waitFor({ state: "attached", timeout: 8000 });
+          await page.waitForTimeout(250);
+
+          const catalogCanvas = page.locator(".cad-workbench-sheet.is-catalog-mode .cad-canvas-mount canvas").first();
+          const initialCatalogCanvas = await analyzeCanvasScreenshot(page, catalogCanvas);
+          assert.ok(initialCatalogCanvas.nonBgRatio >= 0.02, "/zh/products 3D canvas must render non-blank");
+
+          const initialLinkedMpn = (await page.locator(".cad-sku-mpn-heading").innerText()).trim();
+          assert.ok(initialLinkedMpn.length >= 3, "Initial linked MPN heading must be populated");
+
+          // Switch product category in sidebar -> Heavy-Duty & Sealed (index 2), verify 3D CAD updates to CAD-HD-IP6K9K
+          const categoryButtons = page.locator(".sidebar-filter-group").nth(1).locator(".sidebar-filter-item");
+          await categoryButtons.nth(2).click();
+          await page.waitForFunction(
+            () => {
+              const dwg = document.querySelector(".cad-hud-dwg-code")?.textContent || "";
+              const ready = document.querySelector(".cad-static-fallback.is-ready-hidden");
+              return dwg.includes("CAD-HD-IP6K9K") && Boolean(ready);
+            },
+            { timeout: 8000 }
+          );
+
+          // Switch to Automotive Crimp Terminals (index 3) -> verify CAD-TM-MQS
+          await categoryButtons.nth(3).click();
+          await page.waitForFunction(
+            () => {
+              const dwg = document.querySelector(".cad-hud-dwg-code")?.textContent || "";
+              const ready = document.querySelector(".cad-static-fallback.is-ready-hidden");
+              return dwg.includes("CAD-TM-MQS") && Boolean(ready);
+            },
+            null,
+            { timeout: 8000 }
+          );
+
+          // Switch to OEM Cross-Reference (index 6) -> verify CAD-OEM-XREF Pin-to-Pin tolerance view
+          await categoryButtons.nth(6).click();
+          await page.waitForFunction(
+            () => (document.querySelector(".cad-hud-dwg-code")?.textContent || "").includes("CAD-OEM-XREF"),
+            { timeout: 8000 }
+          );
+
+          // Switch back to All Categories (index 0) and click "3D 检视" on 2nd row SKU
+          await categoryButtons.nth(0).click();
+          await page.waitForFunction(
+            () => Boolean(document.querySelector(".cad-static-fallback.is-ready-hidden")),
+            { timeout: 8000 }
+          );
+          await page.waitForTimeout(250);
+
+          const secondRow = page.locator("table.spec-table tbody tr").nth(1);
+          const secondRowMpn = (await secondRow.locator(".spec-mpn-primary").first().innerText()).trim();
+          const secondRowInspectBtn = secondRow.locator(".inspect-3d-btn");
+          await secondRowInspectBtn.click();
+          await page.waitForFunction(
+            (expectedMpn) => document.querySelector(".cad-sku-mpn-heading")?.textContent?.trim() === expectedMpn,
+            secondRowMpn,
+            { timeout: 5000 }
+          );
+          await page.waitForTimeout(300);
+
+          const pressedState = await secondRowInspectBtn.getAttribute("aria-pressed");
+          assert.equal(pressedState, "true", "Clicked row '3D 检视' button must become aria-pressed='true'");
+
+          // Click "+ 加入 BOM 清单" inside the 3D linked SKU inspector panel
+          const linkedAddBomBtn = page.locator(".cad-linked-sku-panel .cad-sku-actions-row button.btn-primary").first();
+          await linkedAddBomBtn.click();
+          await page.waitForTimeout(220);
+          const linkedAddBomText = (await linkedAddBomBtn.innerText()).trim();
+          assert.match(linkedAddBomText, /已加入|Added/i, "3D inspector '+ 加入 BOM 清单' must toggle to added state");
+
+          // Align viewport so both the 3D Linked Inspector AND the active highlighted table rows are framed cleanly
+          await page.setViewportSize({ width: 1440, height: 1060 });
+          await page.evaluate(() => {
+            const sheet = document.querySelector(".cad-workbench-sheet.is-catalog-mode");
+            if (sheet) {
+              const top = sheet.getBoundingClientRect().top + window.scrollY - 76;
+              window.scrollTo({ top: Math.max(0, top), behavior: "instant" });
+            }
+          });
+          await page.waitForTimeout(320);
+
+          // Save required HD showcase screenshot 3: qa/zh-products-3d-linked-1440.png
+          await page.screenshot({
+            path: path.join(qaDir, "zh-products-3d-linked-1440.png"),
+            fullPage: false,
+          });
+
+          // --- Part 3: Verify /en & /en/products English 3D CAD Stages ---
+          for (const enPath of ["/en", "/en/products"]) {
+            await page.goto(`${baseURL}${enPath}`, { waitUntil: "networkidle" });
+            await page
+              .locator(".cad-static-fallback.is-ready-hidden")
+              .first()
+              .waitFor({ state: "attached", timeout: 8000 });
+            const enCanvas = page.locator(".cad-canvas-mount canvas").first();
+            const enStats = await analyzeCanvasScreenshot(page, enCanvas);
+            assert.ok(enStats.nonBgRatio >= 0.02, `${enPath} 3D WebGL canvas must render non-blank`);
+          }
+
+          assert.deepEqual(runtimeErrors, [], `3D CAD flow runtime errors: ${runtimeErrors.join(" | ")}`);
+          assert.deepEqual(failedAssets, [], `3D CAD flow failed assets: ${failedAssets.join(", ")}`);
+
+          await page.setViewportSize({ width: 1440, height: 900 });
+
+          interactionChecks.threeCadWorkbenchFlow = {
+            passed: true,
+            wireframeCanvas: wireframeStats,
+            explodedCanvas: explodedStats,
+            xrayCanvas: xrayStats,
+            solidCanvas: solidStats,
+            heavyTabCanvas: heavyTabCanvasStats,
+            catalogInitialMpn: initialLinkedMpn,
+            catalogInspectedSecondRowMpn: secondRowMpn,
+            addedToBomFrom3dPanel: true,
+            englishPagesVerified: ["/en", "/en/products"],
+            showcaseScreenshots: [
+              "qa/zh-home-3d-wireframe-1440.png",
+              "qa/zh-home-3d-exploded-1440.png",
+              "qa/zh-products-3d-linked-1440.png",
+            ],
+            consoleErrorCount: runtimeErrors.length,
+          };
+        } catch (err) {
+          interactionChecks.threeCadWorkbenchFlow = { passed: false, error: err.message };
+          failures.push(`[Three.js 3D CAD Flow] ${err.message}`);
         }
       }
 
@@ -677,6 +1010,10 @@ async function main() {
           ).length;
           // Ensure <details> answers are visible if <details> is used without JS
           const closedDetailsCount = [...document.querySelectorAll("main details:not([open])")].length;
+          const cadFallbackImg = document.querySelector(".cad-static-fallback img");
+          const cadFallbackVisible = cadFallbackImg
+            ? cadFallbackImg.getBoundingClientRect().width > 80 && cadFallbackImg.getBoundingClientRect().height > 50
+            : false;
 
           return {
             h1Count: document.querySelectorAll("h1").length,
@@ -688,6 +1025,7 @@ async function main() {
             visibleTableRows,
             faqVisibleCount,
             closedDetailsCount,
+            cadFallbackVisible,
             route: currentRoute,
           };
         }, route);
@@ -702,6 +1040,13 @@ async function main() {
           assert.ok(staticState.bodyTextLength > 250, `[No-JS ${routePath}] Visible text too short without JS`);
           assert.equal(staticState.hasVerifiedPhone, true, `[No-JS ${routePath}] Verified phone 021-64778688 not visible`);
 
+          if (route === "home" || route === "products") {
+            assert.equal(
+              staticState.cadFallbackVisible,
+              true,
+              `[No-JS ${routePath}] 3D CAD workbench static fallback blueprint image must be visible without JS`
+            );
+          }
           if (route === "home") {
             assert.ok(
               staticState.visibleBrandImgs >= 17,
