@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { Plus, Check, ChevronLeft, ChevronRight, ArrowRight, Box } from "lucide-react";
 
 function buildPageNumbers(current, total) {
@@ -15,7 +15,7 @@ function buildPageNumbers(current, total) {
   return pages;
 }
 
-export function ProductSpecTable({
+export const ProductSpecTable = memo(function ProductSpecTable({
   locale = "zh",
   items = [],
   tableCopy,
@@ -31,7 +31,8 @@ export function ProductSpecTable({
   pagination = null,
 }) {
   const headers = tableCopy.tableHeaders || {};
-  const isInBom = (mpn) => bomItems.some((entry) => entry.mpn === mpn);
+  const bomMpnSet = useMemo(() => new Set(bomItems.map((entry) => entry.mpn)), [bomItems]);
+  const isInBom = (mpn) => bomMpnSet.has(mpn);
 
   const handleToggle = (item) => {
     if (onToggleBom) {
@@ -243,4 +244,4 @@ export function ProductSpecTable({
       </div>
     </div>
   );
-}
+});

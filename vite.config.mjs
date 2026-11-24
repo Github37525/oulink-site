@@ -8,6 +8,9 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
+          if (/[\\/]node_modules[\\/]three[\\/]/.test(id)) {
+            return "three";
+          }
           if (id.includes("node_modules")) {
             return "vendor";
           }

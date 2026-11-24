@@ -1,8 +1,8 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { Search, X, Plus, Check, ArrowRight } from "lucide-react";
 import { routeHref } from "../routing.js";
 
-export function MpnSearchEngine({
+export const MpnSearchEngine = memo(function MpnSearchEngine({
   locale = "zh",
   mode = "hero",
   query = "",
@@ -16,7 +16,8 @@ export function MpnSearchEngine({
   onNavigate,
   inputRef,
 }) {
-  const isInBom = (mpn) => bomItems.some((entry) => entry.mpn === mpn);
+  const bomMpnSet = useMemo(() => new Set(bomItems.map((entry) => entry.mpn)), [bomItems]);
+  const isInBom = (mpn) => bomMpnSet.has(mpn);
   const catalogUrl = `${routeHref(locale, "products")}${
     query.trim() ? `?q=${encodeURIComponent(query.trim())}` : ""
   }`;
@@ -173,4 +174,4 @@ export function MpnSearchEngine({
       ) : null}
     </div>
   );
-}
+});

@@ -1,9 +1,15 @@
-import React from "react";
+import React, { memo } from "react";
 import { Mail, Phone } from "lucide-react";
 import { routeHref } from "../routing.js";
 import { VERIFIED_COMPANY_FACTS } from "../content/claimLedger.js";
 
-export function Footer({
+function toLogoWebp(src) {
+  return typeof src === "string" && /\/assets\/brand\/oulink-logo(?:-dark)?\.svg$/i.test(src)
+    ? src.replace(/\.svg$/i, ".webp")
+    : null;
+}
+
+export const Footer = memo(function Footer({
   locale = "zh",
   brand,
   contact,
@@ -37,13 +43,20 @@ export function Footer({
           className="footer-brand-link"
           onClick={handleLinkClick(routeHref(locale, "home"))}
         >
-          <img
-            src={brand.logoDark}
-            alt={locale === "zh" ? brand.fullNameZh : brand.fullNameEn}
-            className="footer-logo"
-            width="146"
-            height="43"
-          />
+          <picture>
+            {toLogoWebp(brand.logoDark) ? (
+              <source srcSet={toLogoWebp(brand.logoDark)} type="image/webp" />
+            ) : null}
+            <img
+              src={brand.logoDark}
+              alt={locale === "zh" ? brand.fullNameZh : brand.fullNameEn}
+              className="footer-logo"
+              width="146"
+              height="43"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
         </a>
 
         <div className="footer-contact-inline">
@@ -76,4 +89,4 @@ export function Footer({
       </div>
     </footer>
   );
-}
+});

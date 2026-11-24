@@ -1,4 +1,13 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  Suspense,
+  lazy,
+  useCallback,
+  useDeferredValue,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   ArrowRight,
   Check,
@@ -15,6 +24,7 @@ import {
   PRODUCT_CATEGORIES,
   PRODUCTS_CATALOG,
   createCatalogApi,
+  defaultCatalogApi,
 } from "./content/productsCatalog.js";
 import { resolveRoute, routeHref } from "./routing.js";
 import { Header } from "./components/Header.jsx";
@@ -25,8 +35,118 @@ import { ProductSpecTable } from "./components/ProductSpecTable.jsx";
 import { BomDrawer } from "./components/BomDrawer.jsx";
 import { QualityPipeline } from "./components/QualityPipeline.jsx";
 import { FaqAccordion } from "./components/FaqAccordion.jsx";
-import { ConnectorCadViewer } from "./components/ConnectorCadViewer.jsx";
 import { CAD_MODELS_BY_CATEGORY as EXTERNAL_CAD_MODELS_BY_CATEGORY } from "./content/cadModelsMeta.js";
+
+const LazyConnectorCadViewer = lazy(() =>
+  import("./components/ConnectorCadViewer.jsx").then((mod) => ({
+    default: mod.ConnectorCadViewer,
+  }))
+);
+
+function toEditorialWebp(src) {
+  return typeof src === "string" && /\/assets\/editorial\/[^/]+\.jpg$/i.test(src)
+    ? src.replace(/\.jpg$/i, ".webp")
+    : null;
+}
+
+function EditorialPicture({ src, alt, width, height, priority = false, className }) {
+  const webpSrc = toEditorialWebp(src);
+  return (
+    <picture>
+      {webpSrc ? <source srcSet={webpSrc} type="image/webp" /> : null}
+      <img
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        className={className}
+        loading={priority ? undefined : "lazy"}
+        fetchPriority={priority ? "high" : undefined}
+        decoding="async"
+      />
+    </picture>
+  );
+}
+
+function CadViewerSkeleton({ locale = "zh", variant = "home", categoryId, cadModelsMap }) {
+  const meta = cadModelsMap?.[categoryId] || cadModelsMap?.["connector-housings"] || {};
+  const title = locale === "zh" ? meta.nameZh || "3D 工程装配工作台" : meta.nameEn || "3D CAD Engineering Workbench";
+  const hint =
+    locale === "zh"
+      ? "滚动至视口附近自动加载交互式 3D CAD 装配模型…"
+      : "Interactive 3D CAD assembly loads automatically when scrolled into view…";
+  return (
+    <div
+      className={`cad-workbench-sheet${variant === "catalog" ? " is-catalog-mode" : " is-home-mode"}`}
+      style={{
+        minHeight: variant === "catalog" ? "360px" : "520px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "10px",
+        padding: "28px 20px",
+        textAlign: "center",
+      }}
+      data-cad-deferred="true"
+    >
+      {meta.code ? <span className="mpn-code">{meta.code}</span> : null}
+      <strong>{title}</strong>
+      <p style={{ margin: 0, fontSize: "13px", color: "var(--color-text-secondary)" }}>{hint}</p>
+    </div>
+  );
+}
+
+function DeferredCadViewer({ forceMount = false, ...viewerProps }) {
+  const hostRef = useRef(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    if (forceMount) {
+      setShouldLoad(true);
+      return undefined;
+    }
+    if (shouldLoad || typeof window === "undefined") return undefined;
+    if (typeof window.IntersectionObserver !== "function") {
+      setShouldLoad(true);
+      return undefined;
+    }
+    const el = hostRef.current;
+    if (!el) return undefined;
+    const observer = new window.IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "300px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [forceMount, shouldLoad]);
+
+  const fallback = (
+    <CadViewerSkeleton
+      locale={viewerProps.locale}
+      variant={viewerProps.variant}
+      categoryId={viewerProps.categoryId}
+      cadModelsMap={viewerProps.cadModelsMap}
+    />
+  );
+
+  return (
+    <div ref={hostRef}>
+      {shouldLoad ? (
+        <Suspense fallback={fallback}>
+          <LazyConnectorCadViewer {...viewerProps} />
+        </Suspense>
+      ) : (
+        fallback
+      )}
+    </div>
+  );
+}
 
 const BOM_STORAGE_KEY = "oulink_bom_v1";
 
@@ -73,6 +193,10 @@ export function App({
   // 3D CAD Engineering Workbench & Linked Catalog Inspector state
   const [homeCadCategory, setHomeCadCategory] = useState("connector-housings");
   const [inspectedMpn, setInspectedMpn] = useState("");
+  const [forceCatalogCad, setForceCatalogCad] = useState(false);
+
+  const deferredHeroQuery = useDeferredValue(heroQuery);
+  const deferredCatalogQuery = useDeferredValue(catalogQuery);
 
   // Solutions role tab state
   const [activeRoleId, setActiveRoleId] = useState("wire-harness");
@@ -126,10 +250,10 @@ export function App({
     }
   }, [locale, localeContent, sampleUntouched, bomItems.length]);
 
-  const catalogApi = useMemo(
-    () => createCatalogApi(activeProducts, activeBrands),
-    [activeProducts, activeBrands]
-  );
+  const catalogApi = useMemo(() => {
+    if (!customProducts && !customBrands) return defaultCatalogApi;
+    return createCatalogApi(activeProducts, activeBrands);
+  }, [customProducts, customBrands, activeProducts, activeBrands]);
 
   const brandMap = useMemo(() => {
     const map = new Map();
@@ -228,40 +352,64 @@ export function App({
     }
   }, [locale, route, localeContent, brand]);
 
-  const persistBom = (nextItems) => {
+  const persistBom = useCallback((nextItems) => {
     setBomItems(nextItems);
     try {
       window.localStorage.setItem(BOM_STORAGE_KEY, JSON.stringify(nextItems));
     } catch {
       // ignore storage errors
     }
-  };
+  }, []);
 
-  const handleAddBom = (product) => {
-    const existing = bomItems.find((entry) => entry.mpn === product.mpn);
-    if (existing) {
-      return;
-    }
-    const next = [
-      ...bomItems,
-      {
-        mpn: product.mpn,
-        brand: locale === "zh" ? product.brandNameZh : product.brandNameEn,
-        qty: product.moq || product.spq || 100,
-        leadTime: locale === "zh" ? "现货核实" : "Stock check",
-      },
-    ];
-    persistBom(next);
-  };
+  const handleAddBom = useCallback(
+    (product) => {
+      setBomItems((prev) => {
+        if (prev.some((entry) => entry.mpn === product.mpn)) return prev;
+        const next = [
+          ...prev,
+          {
+            mpn: product.mpn,
+            brand: locale === "zh" ? product.brandNameZh : product.brandNameEn,
+            qty: product.moq || product.spq || 100,
+            leadTime: locale === "zh" ? "现货核实" : "Stock check",
+          },
+        ];
+        try {
+          window.localStorage.setItem(BOM_STORAGE_KEY, JSON.stringify(next));
+        } catch {
+          // ignore storage errors
+        }
+        return next;
+      });
+    },
+    [locale]
+  );
 
-  const handleToggleBom = (product) => {
-    const exists = bomItems.some((entry) => entry.mpn === product.mpn);
-    if (exists) {
-      persistBom(bomItems.filter((entry) => entry.mpn !== product.mpn));
-    } else {
-      handleAddBom(product);
-    }
-  };
+  const handleToggleBom = useCallback(
+    (product) => {
+      setBomItems((prev) => {
+        const exists = prev.some((entry) => entry.mpn === product.mpn);
+        const next = exists
+          ? prev.filter((entry) => entry.mpn !== product.mpn)
+          : [
+              ...prev,
+              {
+                mpn: product.mpn,
+                brand: locale === "zh" ? product.brandNameZh : product.brandNameEn,
+                qty: product.moq || product.spq || 100,
+                leadTime: locale === "zh" ? "现货核实" : "Stock check",
+              },
+            ];
+        try {
+          window.localStorage.setItem(BOM_STORAGE_KEY, JSON.stringify(next));
+        } catch {
+          // ignore storage errors
+        }
+        return next;
+      });
+    },
+    [locale]
+  );
 
   const handleUpdateBomQty = (mpn, rawVal) => {
     const parsed = Number.parseInt(String(rawVal), 10);
@@ -334,7 +482,7 @@ export function App({
     persistBom([]);
   };
 
-  const navigateTo = (href) => {
+  const navigateTo = useCallback((href) => {
     if (typeof window === "undefined") return;
     const url = new URL(href, window.location.origin);
     window.history.pushState(null, "", url.pathname + url.search + url.hash);
@@ -357,7 +505,7 @@ export function App({
     } else {
       window.scrollTo({ top: 0, behavior: "instant" });
     }
-  };
+  }, []);
 
   const handleInlineLink = (href) => (event) => {
     if (
@@ -378,25 +526,36 @@ export function App({
     }
   };
 
-  const handleRequestCustomMpn = (mpnString) => {
-    const cleanMpn = String(mpnString || "").trim();
-    if (cleanMpn && !bomItems.some((entry) => entry.mpn === cleanMpn)) {
-      const next = [
-        ...bomItems,
-        {
-          mpn: cleanMpn,
-          brand: locale === "zh" ? "定制寻源 / 替代评估" : "Custom Sourcing / Cross-Ref",
-          qty: 100,
-          leadTime: locale === "zh" ? "待评估" : "TBD",
-        },
-      ];
-      persistBom(next);
-    }
-    setSelectedFocuses(["cross_ref"]);
-    navigateTo(routeHref(locale, "contact"));
-  };
+  const handleRequestCustomMpn = useCallback(
+    (mpnString) => {
+      const cleanMpn = String(mpnString || "").trim();
+      if (cleanMpn) {
+        setBomItems((prev) => {
+          if (prev.some((entry) => entry.mpn === cleanMpn)) return prev;
+          const next = [
+            ...prev,
+            {
+              mpn: cleanMpn,
+              brand: locale === "zh" ? "定制寻源 / 替代评估" : "Custom Sourcing / Cross-Ref",
+              qty: 100,
+              leadTime: locale === "zh" ? "待评估" : "TBD",
+            },
+          ];
+          try {
+            window.localStorage.setItem(BOM_STORAGE_KEY, JSON.stringify(next));
+          } catch {
+            // ignore storage errors
+          }
+          return next;
+        });
+      }
+      setSelectedFocuses(["cross_ref"]);
+      navigateTo(routeHref(locale, "contact"));
+    },
+    [locale, navigateTo]
+  );
 
-  const handleTriggerSearch = () => {
+  const handleTriggerSearch = useCallback(() => {
     if (searchInputRef.current) {
       searchInputRef.current.focus();
       searchInputRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -404,7 +563,34 @@ export function App({
       navigateTo(routeHref(locale, "products"));
       setTimeout(() => searchInputRef.current?.focus(), 60);
     }
-  };
+  }, [locale, navigateTo]);
+
+  const handleSelectBrandFromMatrix = useCallback(
+    (slug, targetHref) => {
+      setSelectedBrand(slug);
+      navigateTo(targetHref);
+    },
+    [navigateTo]
+  );
+
+  const handleCatalogQueryChange = useCallback((val) => {
+    setCatalogQuery(val);
+    setCatalogPage(1);
+  }, []);
+
+  const handleInspectCatalogItem = useCallback((item) => {
+    setInspectedMpn(item.mpn);
+    setForceCatalogCad(true);
+    if (typeof window !== "undefined" && catalogCadRef.current) {
+      const rect = catalogCadRef.current.getBoundingClientRect();
+      if (rect.top < 64) {
+        catalogCadRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }
+  }, []);
 
   const toggleFocusChip = (val) => {
     setSelectedFocuses((prev) => {
@@ -417,9 +603,9 @@ export function App({
 
   // Search computations
   const heroSearchResults = useMemo(() => {
-    if (!heroQuery.trim()) return null;
-    return catalogApi.searchProducts(heroQuery, { page: 1, pageSize: 8 });
-  }, [catalogApi, heroQuery]);
+    if (!deferredHeroQuery.trim()) return null;
+    return catalogApi.searchProducts(deferredHeroQuery, { page: 1, pageSize: 8 });
+  }, [catalogApi, deferredHeroQuery]);
 
   const standingStockItems = useMemo(() => {
     const preferredMpns = localeContent.homeSections?.standingStockSection?.featuredMpns || [];
@@ -453,14 +639,27 @@ export function App({
 
   const catalogResult = useMemo(
     () =>
-      catalogApi.searchProducts(catalogQuery, {
+      catalogApi.searchProducts(deferredCatalogQuery, {
         brandId: selectedBrand,
         categoryId: selectedCategory,
         sortBy: mappedSortKey,
         page: catalogPage,
         pageSize: 20,
       }),
-    [catalogApi, catalogQuery, selectedBrand, selectedCategory, mappedSortKey, catalogPage]
+    [catalogApi, deferredCatalogQuery, selectedBrand, selectedCategory, mappedSortKey, catalogPage]
+  );
+
+  const catalogPagination = useMemo(
+    () => ({
+      page: catalogResult.page,
+      totalPages: catalogResult.totalPages,
+      total: catalogResult.total,
+      onPageChange: (nextP) => {
+        setCatalogPage(nextP);
+        window.scrollTo({ top: 240, behavior: "smooth" });
+      },
+    }),
+    [catalogResult.page, catalogResult.totalPages, catalogResult.total]
   );
 
   const categoryStatsMap = useMemo(() => {
@@ -486,21 +685,18 @@ export function App({
   }, [catalogApi, homeCadCategory]);
 
   const activeInspectedProduct = useMemo(() => {
-    if (inspectedMpn) {
-      const inCurrentPage = catalogResult.items.find((it) => it.mpn === inspectedMpn);
-      if (inCurrentPage) return inCurrentPage;
-      const exactHit = catalogApi.getProductByMpn(inspectedMpn);
-      if (
-        exactHit &&
-        (selectedCategory === "all" || exactHit.categoryId === selectedCategory) &&
-        (selectedBrand === "all" ||
-          String(exactHit.brandId).toLowerCase() === String(selectedBrand).toLowerCase())
-      ) {
-        return exactHit;
-      }
+    if (!inspectedMpn) return null;
+    const exactHit = catalogApi.getProductByMpn(inspectedMpn);
+    if (
+      exactHit &&
+      (selectedCategory === "all" || exactHit.categoryId === selectedCategory) &&
+      (selectedBrand === "all" ||
+        String(exactHit.brandId).toLowerCase() === String(selectedBrand).toLowerCase())
+    ) {
+      return exactHit;
     }
-    return catalogResult.items[0] || null;
-  }, [inspectedMpn, catalogResult.items, catalogApi, selectedCategory, selectedBrand]);
+    return null;
+  }, [inspectedMpn, catalogApi, selectedCategory, selectedBrand]);
 
   const activeBrandObj =
     selectedBrand && selectedBrand !== "all"
@@ -509,7 +705,10 @@ export function App({
 
   // Active BOM rows displayed on /contact
   const activeContactRows = bomItems.length > 0 ? bomItems : manualRows;
-  const nonEmptyContactRows = activeContactRows.filter((r) => String(r.mpn || "").trim().length > 0);
+  const nonEmptyContactRows = useMemo(
+    () => activeContactRows.filter((r) => String(r.mpn || "").trim().length > 0),
+    [activeContactRows]
+  );
   const effectiveBomText = useMemo(
     () => serializeRowsToText(nonEmptyContactRows, bomTab === "paste" ? rfqBomText : "", locale),
     [nonEmptyContactRows, bomTab, rfqBomText, locale]
@@ -710,11 +909,12 @@ export function App({
 
                 <div className="hero-media-col">
                   <div className="editorial-photo-frame is-home-hero-photo">
-                    <img
+                    <EditorialPicture
                       src={localeContent.hero.imagePath}
                       alt={localeContent.hero.title}
                       width="480"
                       height="504"
+                      priority
                     />
                     {localeContent.hero.imageBadge ? (
                       <span className="photo-corner-badge">
@@ -763,10 +963,7 @@ export function App({
                   locale={locale}
                   brands={catalogApi.brands}
                   brandCopy={localeContent.brandMatrix}
-                  onSelectBrand={(slug, targetHref) => {
-                    setSelectedBrand(slug);
-                    navigateTo(targetHref);
-                  }}
+                  onSelectBrand={handleSelectBrandFromMatrix}
                   onNavigate={navigateTo}
                 />
               </div>
@@ -794,7 +991,7 @@ export function App({
                     </a>
                   </div>
 
-                  <ConnectorCadViewer
+                  <DeferredCadViewer
                     locale={locale}
                     variant="home"
                     categoryId={homeCadCategory}
@@ -861,7 +1058,7 @@ export function App({
                           onClick={handleInlineLink(catHref)}
                         >
                           <div className="editorial-photo-frame is-category-photo">
-                            <img
+                            <EditorialPicture
                               src={cat.imagePath}
                               alt={cat.title}
                               width="306"
@@ -894,7 +1091,7 @@ export function App({
               <section className="ou-section ou-section-warm">
                 <div className="ou-container engineering-home-split">
                   <div className="editorial-photo-frame is-harness-photo">
-                    <img
+                    <EditorialPicture
                       src={localeContent.homeSections.engineeringSection.imagePath}
                       alt={localeContent.homeSections.engineeringSection.title}
                       width="513"
@@ -1074,10 +1271,7 @@ export function App({
                       locale={locale}
                       mode="catalog"
                       query={catalogQuery}
-                      onQueryChange={(val) => {
-                        setCatalogQuery(val);
-                        setCatalogPage(1);
-                      }}
+                      onQueryChange={handleCatalogQueryChange}
                       mpnCopy={localeContent.mpnSearch}
                       catalogCopy={productsCopy}
                       bomItems={bomItems}
@@ -1090,11 +1284,12 @@ export function App({
 
                   <div className="subpage-hero-media">
                     <div className="editorial-photo-frame is-products-hero-photo">
-                      <img
+                      <EditorialPicture
                         src={productsCopy.heroImagePath}
                         alt={productsCopy.heading}
                         width="627"
                         height="339"
+                        priority
                       />
                       {productsCopy.heroImageBadge ? (
                         <span className="photo-corner-badge">
@@ -1247,7 +1442,8 @@ export function App({
                 {/* Right Main Catalog Data Sheet */}
                 <div className="catalog-main-col">
                   <div ref={catalogCadRef}>
-                    <ConnectorCadViewer
+                    <DeferredCadViewer
+                      forceMount={forceCatalogCad}
                       locale={locale}
                       variant="catalog"
                       categoryId={
@@ -1310,18 +1506,7 @@ export function App({
                     onToggleBom={handleToggleBom}
                     onRequestCustomMpn={handleRequestCustomMpn}
                     inspectedMpn={activeInspectedProduct?.mpn || ""}
-                    onInspectItem={(item) => {
-                      setInspectedMpn(item.mpn);
-                      if (typeof window !== "undefined" && catalogCadRef.current) {
-                        const rect = catalogCadRef.current.getBoundingClientRect();
-                        if (rect.top < 64) {
-                          catalogCadRef.current.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start",
-                          });
-                        }
-                      }
-                    }}
+                    onInspectItem={handleInspectCatalogItem}
                     activeQuery={catalogQuery}
                     activeBrandName={
                       activeBrandObj
@@ -1330,15 +1515,7 @@ export function App({
                           : activeBrandObj.nameEn
                         : ""
                     }
-                    pagination={{
-                      page: catalogResult.page,
-                      totalPages: catalogResult.totalPages,
-                      total: catalogResult.total,
-                      onPageChange: (nextP) => {
-                        setCatalogPage(nextP);
-                        window.scrollTo({ top: 240, behavior: "smooth" });
-                      },
-                    }}
+                    pagination={catalogPagination}
                   />
                 </div>
               </div>
@@ -1369,7 +1546,7 @@ export function App({
                     {productsCopy.kittingSection.items.map((kit) => (
                       <div key={kit.id} className="category-editorial-item is-static">
                         <div className="editorial-photo-frame is-category-photo">
-                          <img
+                          <EditorialPicture
                             src={kit.imagePath}
                             alt={kit.title}
                             width="294"
@@ -1438,11 +1615,12 @@ export function App({
 
                   <div className="subpage-hero-media">
                     <div className="editorial-photo-frame is-solutions-hero-photo">
-                      <img
+                      <EditorialPicture
                         src={solutionsCopy.heroImagePath}
                         alt={solutionsCopy.heading}
                         width="642"
                         height="570"
+                        priority
                       />
                       {solutionsCopy.heroImageBadge ? (
                         <span className="photo-corner-badge">{solutionsCopy.heroImageBadge}</span>
@@ -1501,7 +1679,7 @@ export function App({
                 <div className="ou-container solutions-split-row">
                   <div className="solutions-media-block">
                     <div className="editorial-photo-frame">
-                      <img
+                      <EditorialPicture
                         src={solutionsCopy.section01.imagePath}
                         alt={solutionsCopy.section01.title}
                         width="669"
@@ -1584,7 +1762,7 @@ export function App({
 
                   <div className="solutions-media-block">
                     <div className="editorial-photo-frame">
-                      <img
+                      <EditorialPicture
                         src={solutionsCopy.section02.imagePath}
                         alt={solutionsCopy.section02.title}
                         width="678"
@@ -1665,7 +1843,7 @@ export function App({
                   {solutionsCopy.matrixImagePath ? (
                     <div className="subsystem-side-photo">
                       <div className="editorial-photo-frame">
-                        <img
+                        <EditorialPicture
                           src={solutionsCopy.matrixImagePath}
                           alt={solutionsCopy.matrixTitle}
                           width="453"
@@ -1825,11 +2003,12 @@ export function App({
                 {/* Wide Workbench Panorama Photo */}
                 {aboutCopy.panoramaImagePath ? (
                   <div className="editorial-photo-frame is-about-panorama">
-                    <img
+                    <EditorialPicture
                       src={aboutCopy.panoramaImagePath}
                       alt={aboutCopy.companyFullName}
                       width="1194"
                       height="522"
+                      priority
                     />
                     {aboutCopy.panoramaBadge ? (
                       <span className="photo-corner-badge">{aboutCopy.panoramaBadge}</span>
@@ -2052,11 +2231,12 @@ export function App({
 
                   <div className="subpage-hero-media">
                     <div className="editorial-photo-frame is-contact-hero-photo">
-                      <img
+                      <EditorialPicture
                         src={contactCopy.heroImagePath}
                         alt={contactCopy.heading}
                         width="681"
                         height="438"
+                        priority
                       />
                       {contactCopy.heroImageBadge ? (
                         <span className="photo-corner-badge">{contactCopy.heroImageBadge}</span>
@@ -2484,6 +2664,8 @@ export function App({
                           alt={contactCopy.labels.wechat}
                           width="68"
                           height="68"
+                          loading="lazy"
+                          decoding="async"
                         />
                         <div>
                           <strong>{contactCopy.labels.wechat}</strong>
@@ -2499,7 +2681,7 @@ export function App({
 
                   {contactCopy.sidebarImagePath ? (
                     <div className="editorial-photo-frame is-sidebar-photo">
-                      <img
+                      <EditorialPicture
                         src={contactCopy.sidebarImagePath}
                         alt={contactCopy.directChannelsTitle}
                         width="375"

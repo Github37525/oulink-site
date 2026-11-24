@@ -1,7 +1,13 @@
-import React from "react";
+import React, { memo } from "react";
 import { routeHref } from "../routing.js";
 
-export function QualityPipeline({
+function toEditorialWebp(src) {
+  return typeof src === "string" && /\/assets\/editorial\/[^/]+\.jpg$/i.test(src)
+    ? src.replace(/\.jpg$/i, ".webp")
+    : null;
+}
+
+export const QualityPipeline = memo(function QualityPipeline({
   locale = "zh",
   qualityCopy,
   onNavigate,
@@ -29,12 +35,19 @@ export function QualityPipeline({
       {batchCard ? (
         <div className="quality-batch-split">
           <div className="editorial-photo-frame is-square-lot">
-            <img
-              src={batchCard.imagePath}
-              alt={batchCard.title}
-              width="619"
-              height="624"
-            />
+            <picture>
+              {toEditorialWebp(batchCard.imagePath) ? (
+                <source srcSet={toEditorialWebp(batchCard.imagePath)} type="image/webp" />
+              ) : null}
+              <img
+                src={batchCard.imagePath}
+                alt={batchCard.title}
+                width="619"
+                height="624"
+                fetchPriority="high"
+                decoding="async"
+              />
+            </picture>
             {batchCard.imageBadge ? (
               <span className="photo-corner-badge">{batchCard.imageBadge}</span>
             ) : null}
@@ -100,12 +113,19 @@ export function QualityPipeline({
               <div className="qc-row-media">
                 {item.hasPhoto && item.imagePath ? (
                   <div className="editorial-photo-frame is-process-thumb">
-                    <img
-                      src={item.imagePath}
-                      alt={item.title}
-                      width="260"
-                      height="83"
-                    />
+                    <picture>
+                      {toEditorialWebp(item.imagePath) ? (
+                        <source srcSet={toEditorialWebp(item.imagePath)} type="image/webp" />
+                      ) : null}
+                      <img
+                        src={item.imagePath}
+                        alt={item.title}
+                        width="260"
+                        height="83"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </picture>
                     {item.imageBadge ? (
                       <span className="photo-corner-badge is-mini">{item.imageBadge}</span>
                     ) : null}
@@ -173,4 +193,4 @@ export function QualityPipeline({
       ) : null}
     </div>
   );
-}
+});

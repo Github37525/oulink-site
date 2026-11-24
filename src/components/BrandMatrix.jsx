@@ -1,7 +1,7 @@
-import React from "react";
+import React, { memo } from "react";
 import { routeHref } from "../routing.js";
 
-export function BrandMatrix({
+export const BrandMatrix = memo(function BrandMatrix({
   locale = "zh",
   brands = [],
   brandCopy,
@@ -138,6 +138,8 @@ export function BrandMatrix({
                     alt={`${brand.nameEn} ${brand.nameZh || ""}`.trim()}
                     width="168"
                     height="56"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <div className="brand-auth-meta">
@@ -179,6 +181,8 @@ export function BrandMatrix({
                       alt={`${brand.nameEn} ${brand.nameZh || ""}`.trim()}
                       width="144"
                       height="48"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <div className="partner-cell-caption">
@@ -193,4 +197,4 @@ export function BrandMatrix({
       ) : null}
     </div>
   );
-}
+});

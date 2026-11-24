@@ -7914,7 +7914,7 @@ export function createCatalogApi(customProducts = PRODUCTS_CATALOG, customBrands
   };
 }
 
-const defaultCatalogApi = createCatalogApi(PRODUCTS_CATALOG, BRANDS);
+export const defaultCatalogApi = createCatalogApi(PRODUCTS_CATALOG, BRANDS);
 
 export function searchProducts(query = '', options = {}) {
   return defaultCatalogApi.searchProducts(query, options);

@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Menu, X, PhoneCall } from "lucide-react";
 import { routeHref, switchLocaleHref } from "../routing.js";
 
 const PRIMARY_NAV_KEYS = ["home", "products", "solutions", "quality", "about"];
 
-export function Header({
+function toLogoWebp(src) {
+  return typeof src === "string" && /\/assets\/brand\/oulink-logo(?:-dark)?\.svg$/i.test(src)
+    ? src.replace(/\.svg$/i, ".webp")
+    : null;
+}
+
+export const Header = memo(function Header({
   locale = "zh",
   route = "home",
   pathname = "/zh",
@@ -79,12 +85,18 @@ export function Header({
           className="header-brand"
           onClick={handleLinkClick(routeHref(locale, "home"))}
         >
-          <img
-            src={brand.logoPrimary}
-            alt={locale === "zh" ? brand.fullNameZh : brand.fullNameEn}
-            width="150"
-            height="44"
-          />
+          <picture>
+            {toLogoWebp(brand.logoPrimary) ? (
+              <source srcSet={toLogoWebp(brand.logoPrimary)} type="image/webp" />
+            ) : null}
+            <img
+              src={brand.logoPrimary}
+              alt={locale === "zh" ? brand.fullNameZh : brand.fullNameEn}
+              width="150"
+              height="44"
+              decoding="async"
+            />
+          </picture>
         </a>
 
         <nav className="desktop-nav" aria-label={localeContent.accessibility.navigation}>
@@ -198,4 +210,4 @@ export function Header({
       ) : null}
     </header>
   );
-}
+});

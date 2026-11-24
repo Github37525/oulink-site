@@ -11,7 +11,16 @@ html {
   color: var(--color-text-primary);
   background-color: var(--color-bg-canvas);
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+picture {
+  display: contents;
 }
 
 body {
@@ -308,6 +317,7 @@ textarea {
   z-index: 120;
   background-color: var(--color-surface);
   border-bottom: 1px solid var(--color-border-hairline);
+  contain: layout style;
 }
 
 .header-inner {
@@ -482,6 +492,8 @@ textarea {
 /* === Section Containers & Headings === */
 .ou-section {
   padding-block: clamp(38px, 5vw, 64px);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
 }
 
 .ou-section.is-bordered-top {
@@ -855,6 +867,8 @@ textarea {
   display: flex;
   flex-direction: column;
   gap: clamp(36px, 4.5vw, 52px);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
 }
 
 .authorized-brands-grid {
@@ -1571,6 +1585,7 @@ textarea {
   border-top: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: var(--shadow-sticky);
   padding-block: 10px;
+  contain: layout style;
 }
 
 .sticky-bom-inner {
@@ -2120,6 +2135,8 @@ textarea {
   display: flex;
   flex-direction: column;
   gap: clamp(38px, 5vw, 58px);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
 }
 
 .quality-batch-split {
@@ -3063,6 +3080,8 @@ textarea.form-control.is-mono-area {
   background-color: var(--color-footer-bg);
   color: var(--color-text-on-dark);
   padding-block: 26px;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
 }
 
 .footer-bar {

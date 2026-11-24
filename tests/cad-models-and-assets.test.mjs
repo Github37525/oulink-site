@@ -89,7 +89,12 @@ test("all 14 SSR prerendered route HTMLs exist and ConnectorCadViewer + ProductS
     const specTableMod = await server.ssrLoadModule("/src/components/ProductSpecTable.jsx");
     assert.equal(typeof cadViewerMod.ConnectorCadViewer, "function");
     assert.equal(typeof cadViewerMod.FALLBACK_CAD_MODELS_BY_CATEGORY, "object");
-    assert.equal(typeof specTableMod.ProductSpecTable, "function");
+    assert.ok(
+      typeof specTableMod.ProductSpecTable === "function" ||
+        (typeof specTableMod.ProductSpecTable === "object" &&
+          typeof specTableMod.ProductSpecTable?.type === "function"),
+      "ProductSpecTable must export a valid React component"
+    );
 
     const ssrViewerHtml = renderToString(
       createElement(cadViewerMod.ConnectorCadViewer, {
