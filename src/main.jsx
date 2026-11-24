@@ -2,7 +2,6 @@ import React from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import "./styles/tokens.css";
 import "./styles/main.css";
-import "./styles/cad-viewer.css";
 import { App } from "./App.jsx";
 import { resolveLegacyRedirect } from "./routing.js";
 

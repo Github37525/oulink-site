@@ -12,6 +12,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 
+import "../styles/cad-viewer.css";
 import { CAD_MODELS_BY_CATEGORY } from "../content/cadModelsMeta.js";
 
 /**
@@ -324,10 +325,11 @@ export function ConnectorCadViewer({
       try {
         setViewerState((prev) => (prev === "ready" ? "ready" : "loading"));
 
-        const [THREE, { GLTFLoader }, { OrbitControls }] = await Promise.all([
+        const [THREE, { GLTFLoader }, { OrbitControls }, { MeshoptDecoder }] = await Promise.all([
           import("three"),
           import("three/examples/jsm/loaders/GLTFLoader.js"),
           import("three/examples/jsm/controls/OrbitControls.js"),
+          import("three/examples/jsm/libs/meshopt_decoder.module.js"),
         ]);
 
         if (cancelled || !canvasMountRef.current) return;
@@ -629,6 +631,9 @@ export function ConnectorCadViewer({
         resizeObserver.observe(mountEl);
 
         const loader = new GLTFLoader();
+        if (MeshoptDecoder) {
+          loader.setMeshoptDecoder(MeshoptDecoder);
+        }
 
         threeCtxRef.current = {
           THREE,

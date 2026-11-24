@@ -1,459 +1,459 @@
 {
-  "generator": "Blender 5.3 Parametric Automotive CAD Pipeline",
-  "exportSettings": {
-    "export_format": "GLB",
-    "export_yup": true,
-    "export_apply": true,
-    "normalizedEnvelope": 2.4
-  },
-  "models": [
-    {
-      "id": "connector-housings",
-      "filename": "connector-housings.glb",
-      "glbPath": "/assets/models/connector-housings.glb",
-      "fileSizeBytes": 488764,
-      "vertexCount": 15770,
-      "faceCount": 17628,
-      "envelopeTarget": 2.4,
-      "normalizedSize": [
-        2.4,
-        2.0814,
-        1.4655
-      ],
-      "parts": [
-        {
-          "nodeName": "CPA_Lock",
-          "meshName": "CPA_Lock",
-          "vertices": 1636,
-          "triangles": 1216,
-          "min": [
-            -0.3982,
-            0.377,
-            -0.8602
-          ],
-          "max": [
-            0.3982,
-            0.7327,
-            0.0502
-          ]
-        },
-        {
-          "nodeName": "Housing_Body",
-          "meshName": "Housing_Body",
-          "vertices": 5714,
-          "triangles": 5908,
-          "min": [
-            -1.2,
-            -0.7327,
-            -0.8474
-          ],
-          "max": [
-            1.2,
-            0.6106,
-            0.9961
-          ]
-        },
-        {
-          "nodeName": "Perimeter_Seal",
-          "meshName": "Perimeter_Seal",
-          "vertices": 2046,
-          "triangles": 3472,
-          "min": [
-            -1.1671,
-            -0.6998,
-            -0.1274
-          ],
-          "max": [
-            1.1671,
-            0.3175,
-            0.1805
-          ]
-        },
-        {
-          "nodeName": "Terminal_Pins",
-          "meshName": "Terminal_Pins",
-          "vertices": 3104,
-          "triangles": 4224,
-          "min": [
-            -0.8793,
-            -0.3908,
-            -1.0407
-          ],
-          "max": [
-            0.8793,
-            0.0085,
-            0.9133
-          ]
-        },
-        {
-          "nodeName": "TPA_Retainer",
-          "meshName": "TPA_Retainer",
-          "vertices": 3270,
-          "triangles": 2808,
-          "min": [
-            -1.0354,
-            -0.531,
-            0.5522
-          ],
-          "max": [
-            1.0354,
-            0.1487,
-            1.0407
-          ]
-        }
-      ]
-    },
-    {
-      "id": "sealed-heavy-duty",
-      "filename": "sealed-heavy-duty.glb",
-      "glbPath": "/assets/models/sealed-heavy-duty.glb",
-      "fileSizeBytes": 464708,
-      "vertexCount": 15090,
-      "faceCount": 16296,
-      "envelopeTarget": 2.4,
-      "normalizedSize": [
-        2.4,
-        2.0177,
-        1.6673
-      ],
-      "parts": [
-        {
-          "nodeName": "Cavity_Block",
-          "meshName": "Cavity_Block",
-          "vertices": 2226,
-          "triangles": 2640,
-          "min": [
-            -0.8602,
-            -0.6,
-            -0.1168
-          ],
-          "max": [
-            0.8602,
-            0.2283,
-            1.0088
-          ]
-        },
-        {
-          "nodeName": "Lever_Cam_Latch",
-          "meshName": "Lever_Cam_Latch",
-          "vertices": 2006,
-          "triangles": 1624,
-          "min": [
-            -1.2,
-            -0.5822,
-            -0.2655
-          ],
-          "max": [
-            1.2,
-            0.8336,
-            0.4919
-          ]
-        },
-        {
-          "nodeName": "Outer_Shroud",
-          "meshName": "Outer_Shroud",
-          "vertices": 4502,
-          "triangles": 4408,
-          "min": [
-            -1.0938,
-            -0.8336,
-            -0.8517
-          ],
-          "max": [
-            1.0938,
-            0.4619,
-            0.8623
-          ]
-        },
-        {
-          "nodeName": "Power_Contacts",
-          "meshName": "Power_Contacts",
-          "vertices": 4016,
-          "triangles": 3784,
-          "min": [
-            -0.6712,
-            -0.3948,
-            -1.0088
-          ],
-          "max": [
-            0.6712,
-            0.0231,
-            0.9027
-          ]
-        },
-        {
-          "nodeName": "Triple_Rib_Seal",
-          "meshName": "Triple_Rib_Seal",
-          "vertices": 2340,
-          "triangles": 3840,
-          "min": [
-            -0.9611,
-            -0.7009,
-            0.0106
-          ],
-          "max": [
-            0.9611,
-            0.3292,
-            0.4142
-          ]
-        }
-      ]
-    },
-    {
-      "id": "terminals-contacts",
-      "filename": "terminals-contacts.glb",
-      "glbPath": "/assets/models/terminals-contacts.glb",
-      "fileSizeBytes": 201432,
-      "vertexCount": 6312,
-      "faceCount": 7720,
-      "envelopeTarget": 2.4,
-      "normalizedSize": [
-        0.4722,
-        2.4,
-        0.647
-      ],
-      "parts": [
-        {
-          "nodeName": "Contact_Box",
-          "meshName": "Contact_Box",
-          "vertices": 1928,
-          "triangles": 2268,
-          "min": [
-            -0.2208,
-            -0.3024,
-            0.2907
-          ],
-          "max": [
-            0.2208,
-            0.1588,
-            1.2
-          ]
-        },
-        {
-          "nodeName": "Insulation_Crimp",
-          "meshName": "Insulation_Crimp",
-          "vertices": 1412,
-          "triangles": 1932,
-          "min": [
-            -0.2285,
-            -0.2933,
-            -1.2
-          ],
-          "max": [
-            0.2285,
-            0.1424,
-            -0.7169
-          ]
-        },
-        {
-          "nodeName": "Locking_Lance",
-          "meshName": "Locking_Lance",
-          "vertices": 760,
-          "triangles": 888,
-          "min": [
-            -0.1898,
-            -0.3235,
-            -0.1648
-          ],
-          "max": [
-            0.1898,
-            0.3235,
-            0.3183
-          ]
-        },
-        {
-          "nodeName": "Wire_Crimp_Barrel",
-          "meshName": "Wire_Crimp_Barrel",
-          "vertices": 2212,
-          "triangles": 2632,
-          "min": [
-            -0.2361,
-            -0.2694,
-            -0.7514
-          ],
-          "max": [
-            0.2361,
-            0.0425,
-            -0.0958
-          ]
-        }
-      ]
-    },
-    {
-      "id": "seals-accessories",
-      "filename": "seals-accessories.glb",
-      "glbPath": "/assets/models/seals-accessories.glb",
-      "fileSizeBytes": 329544,
-      "vertexCount": 10282,
-      "faceCount": 13148,
-      "envelopeTarget": 2.4,
-      "normalizedSize": [
-        2.4,
-        2.2811,
-        0.8743
-      ],
-      "parts": [
-        {
-          "nodeName": "Cavity_Blind_Plug",
-          "meshName": "Cavity_Blind_Plug",
-          "vertices": 1182,
-          "triangles": 1176,
-          "min": [
-            0.5429,
-            -0.2457,
-            -0.4537
-          ],
-          "max": [
-            1.0343,
-            0.2457,
-            0.6149
-          ]
-        },
-        {
-          "nodeName": "Secondary_Wedge_Lock",
-          "meshName": "Secondary_Wedge_Lock",
-          "vertices": 1538,
-          "triangles": 1252,
-          "min": [
-            -1.2,
-            -0.2629,
-            0.592
-          ],
-          "max": [
-            1.2,
-            0.2629,
-            1.1406
-          ]
-        },
-        {
-          "nodeName": "Strain_Relief_Cap",
-          "meshName": "Strain_Relief_Cap",
-          "vertices": 2570,
-          "triangles": 2848,
-          "min": [
-            -1.1629,
-            -0.4371,
-            -1.1406
-          ],
-          "max": [
-            1.1629,
-            0.4371,
-            -0.008
-          ]
-        },
-        {
-          "nodeName": "Triple_Lip_SWS",
-          "meshName": "Triple_Lip_SWS",
-          "vertices": 4992,
-          "triangles": 7872,
-          "min": [
-            -1.0171,
-            -0.2286,
-            -0.2537
-          ],
-          "max": [
-            0.4914,
-            0.2286,
-            0.5463
-          ]
-        }
-      ]
-    },
-    {
-      "id": "power-distribution",
-      "filename": "power-distribution.glb",
-      "glbPath": "/assets/models/power-distribution.glb",
-      "fileSizeBytes": 381496,
-      "vertexCount": 12300,
-      "faceCount": 13624,
-      "envelopeTarget": 2.4,
-      "normalizedSize": [
-        2.4,
-        2.257,
-        1.834
-      ],
-      "parts": [
-        {
-          "nodeName": "Diecast_Flange_Housing",
-          "meshName": "Diecast_Flange_Housing",
-          "vertices": 5252,
-          "triangles": 5336,
-          "min": [
-            -1.2,
-            -0.917,
-            -0.796
-          ],
-          "max": [
-            1.2,
-            0.917,
-            1.1285
-          ]
-        },
-        {
-          "nodeName": "EMC_Shield_Collar",
-          "meshName": "EMC_Shield_Collar",
-          "vertices": 2780,
-          "triangles": 2736,
-          "min": [
-            -0.8049,
-            -0.4734,
-            -0.4654
-          ],
-          "max": [
-            0.8049,
-            0.4734,
-            0.0734
-          ]
-        },
-        {
-          "nodeName": "Flange_Gasket",
-          "meshName": "Flange_Gasket",
-          "vertices": 2032,
-          "triangles": 2816,
-          "min": [
-            -1.1887,
-            -0.9057,
-            0.5229
-          ],
-          "max": [
-            1.1887,
-            0.9057,
-            0.6134
-          ]
-        },
-        {
-          "nodeName": "High_Current_Busbars",
-          "meshName": "High_Current_Busbars",
-          "vertices": 1704,
-          "triangles": 2272,
-          "min": [
-            -0.6509,
-            -0.2094,
-            -1.1285
-          ],
-          "max": [
-            0.6509,
-            0.1189,
-            1.0606
-          ]
-        },
-        {
-          "nodeName": "HVIL_Signal_Bridge",
-          "meshName": "HVIL_Signal_Bridge",
-          "vertices": 532,
-          "triangles": 464,
-          "min": [
-            -0.1925,
-            0.1811,
-            0.0814
-          ],
-          "max": [
-            0.1925,
-            0.3396,
-            0.8568
-          ]
-        }
-      ]
-    }
-  ]
+    "generator":  "Blender 5.3 Parametric Automotive CAD Pipeline",
+    "exportSettings":  {
+                           "export_format":  "GLB",
+                           "export_yup":  true,
+                           "export_apply":  true,
+                           "normalizedEnvelope":  2.4
+                       },
+    "models":  [
+                   {
+                       "id":  "connector-housings",
+                       "filename":  "connector-housings.glb",
+                       "glbPath":  "/assets/models/connector-housings.glb",
+                       "fileSizeBytes":  113420,
+                       "vertexCount":  15770,
+                       "faceCount":  17628,
+                       "envelopeTarget":  2.4,
+                       "normalizedSize":  [
+                                              2.4,
+                                              2.0814,
+                                              1.4655
+                                          ],
+                       "parts":  [
+                                     {
+                                         "nodeName":  "CPA_Lock",
+                                         "meshName":  "CPA_Lock",
+                                         "vertices":  1636,
+                                         "triangles":  1216,
+                                         "min":  [
+                                                     -0.3982,
+                                                     0.377,
+                                                     -0.8602
+                                                 ],
+                                         "max":  [
+                                                     0.3982,
+                                                     0.7327,
+                                                     0.0502
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "Housing_Body",
+                                         "meshName":  "Housing_Body",
+                                         "vertices":  5714,
+                                         "triangles":  5908,
+                                         "min":  [
+                                                     -1.2,
+                                                     -0.7327,
+                                                     -0.8474
+                                                 ],
+                                         "max":  [
+                                                     1.2,
+                                                     0.6106,
+                                                     0.9961
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "Perimeter_Seal",
+                                         "meshName":  "Perimeter_Seal",
+                                         "vertices":  2046,
+                                         "triangles":  3472,
+                                         "min":  [
+                                                     -1.1671,
+                                                     -0.6998,
+                                                     -0.1274
+                                                 ],
+                                         "max":  [
+                                                     1.1671,
+                                                     0.3175,
+                                                     0.1805
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "Terminal_Pins",
+                                         "meshName":  "Terminal_Pins",
+                                         "vertices":  3104,
+                                         "triangles":  4224,
+                                         "min":  [
+                                                     -0.8793,
+                                                     -0.3908,
+                                                     -1.0407
+                                                 ],
+                                         "max":  [
+                                                     0.8793,
+                                                     0.0085,
+                                                     0.9133
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "TPA_Retainer",
+                                         "meshName":  "TPA_Retainer",
+                                         "vertices":  3270,
+                                         "triangles":  2808,
+                                         "min":  [
+                                                     -1.0354,
+                                                     -0.531,
+                                                     0.5522
+                                                 ],
+                                         "max":  [
+                                                     1.0354,
+                                                     0.1487,
+                                                     1.0407
+                                                 ]
+                                     }
+                                 ]
+                   },
+                   {
+                       "id":  "sealed-heavy-duty",
+                       "filename":  "sealed-heavy-duty.glb",
+                       "glbPath":  "/assets/models/sealed-heavy-duty.glb",
+                       "fileSizeBytes":  107280,
+                       "vertexCount":  15090,
+                       "faceCount":  16296,
+                       "envelopeTarget":  2.4,
+                       "normalizedSize":  [
+                                              2.4,
+                                              2.0177,
+                                              1.6673
+                                          ],
+                       "parts":  [
+                                     {
+                                         "nodeName":  "Cavity_Block",
+                                         "meshName":  "Cavity_Block",
+                                         "vertices":  2226,
+                                         "triangles":  2640,
+                                         "min":  [
+                                                     -0.8602,
+                                                     -0.6,
+                                                     -0.1168
+                                                 ],
+                                         "max":  [
+                                                     0.8602,
+                                                     0.2283,
+                                                     1.0088
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "Lever_Cam_Latch",
+                                         "meshName":  "Lever_Cam_Latch",
+                                         "vertices":  2006,
+                                         "triangles":  1624,
+                                         "min":  [
+                                                     -1.2,
+                                                     -0.5822,
+                                                     -0.2655
+                                                 ],
+                                         "max":  [
+                                                     1.2,
+                                                     0.8336,
+                                                     0.4919
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "Outer_Shroud",
+                                         "meshName":  "Outer_Shroud",
+                                         "vertices":  4502,
+                                         "triangles":  4408,
+                                         "min":  [
+                                                     -1.0938,
+                                                     -0.8336,
+                                                     -0.8517
+                                                 ],
+                                         "max":  [
+                                                     1.0938,
+                                                     0.4619,
+                                                     0.8623
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "Power_Contacts",
+                                         "meshName":  "Power_Contacts",
+                                         "vertices":  4016,
+                                         "triangles":  3784,
+                                         "min":  [
+                                                     -0.6712,
+                                                     -0.3948,
+                                                     -1.0088
+                                                 ],
+                                         "max":  [
+                                                     0.6712,
+                                                     0.0231,
+                                                     0.9027
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "Triple_Rib_Seal",
+                                         "meshName":  "Triple_Rib_Seal",
+                                         "vertices":  2340,
+                                         "triangles":  3840,
+                                         "min":  [
+                                                     -0.9611,
+                                                     -0.7009,
+                                                     0.0106
+                                                 ],
+                                         "max":  [
+                                                     0.9611,
+                                                     0.3292,
+                                                     0.4142
+                                                 ]
+                                     }
+                                 ]
+                   },
+                   {
+                       "id":  "terminals-contacts",
+                       "filename":  "terminals-contacts.glb",
+                       "glbPath":  "/assets/models/terminals-contacts.glb",
+                       "fileSizeBytes":  51952,
+                       "vertexCount":  6312,
+                       "faceCount":  7720,
+                       "envelopeTarget":  2.4,
+                       "normalizedSize":  [
+                                              0.4722,
+                                              2.4,
+                                              0.647
+                                          ],
+                       "parts":  [
+                                     {
+                                         "nodeName":  "Contact_Box",
+                                         "meshName":  "Contact_Box",
+                                         "vertices":  1928,
+                                         "triangles":  2268,
+                                         "min":  [
+                                                     -0.2208,
+                                                     -0.3024,
+                                                     0.2907
+                                                 ],
+                                         "max":  [
+                                                     0.2208,
+                                                     0.1588,
+                                                     1.2
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "Insulation_Crimp",
+                                         "meshName":  "Insulation_Crimp",
+                                         "vertices":  1412,
+                                         "triangles":  1932,
+                                         "min":  [
+                                                     -0.2285,
+                                                     -0.2933,
+                                                     -1.2
+                                                 ],
+                                         "max":  [
+                                                     0.2285,
+                                                     0.1424,
+                                                     -0.7169
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "Locking_Lance",
+                                         "meshName":  "Locking_Lance",
+                                         "vertices":  760,
+                                         "triangles":  888,
+                                         "min":  [
+                                                     -0.1898,
+                                                     -0.3235,
+                                                     -0.1648
+                                                 ],
+                                         "max":  [
+                                                     0.1898,
+                                                     0.3235,
+                                                     0.3183
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "Wire_Crimp_Barrel",
+                                         "meshName":  "Wire_Crimp_Barrel",
+                                         "vertices":  2212,
+                                         "triangles":  2632,
+                                         "min":  [
+                                                     -0.2361,
+                                                     -0.2694,
+                                                     -0.7514
+                                                 ],
+                                         "max":  [
+                                                     0.2361,
+                                                     0.0425,
+                                                     -0.0958
+                                                 ]
+                                     }
+                                 ]
+                   },
+                   {
+                       "id":  "seals-accessories",
+                       "filename":  "seals-accessories.glb",
+                       "glbPath":  "/assets/models/seals-accessories.glb",
+                       "fileSizeBytes":  79788,
+                       "vertexCount":  10282,
+                       "faceCount":  13148,
+                       "envelopeTarget":  2.4,
+                       "normalizedSize":  [
+                                              2.4,
+                                              2.2811,
+                                              0.8743
+                                          ],
+                       "parts":  [
+                                     {
+                                         "nodeName":  "Cavity_Blind_Plug",
+                                         "meshName":  "Cavity_Blind_Plug",
+                                         "vertices":  1182,
+                                         "triangles":  1176,
+                                         "min":  [
+                                                     0.5429,
+                                                     -0.2457,
+                                                     -0.4537
+                                                 ],
+                                         "max":  [
+                                                     1.0343,
+                                                     0.2457,
+                                                     0.6149
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "Secondary_Wedge_Lock",
+                                         "meshName":  "Secondary_Wedge_Lock",
+                                         "vertices":  1538,
+                                         "triangles":  1252,
+                                         "min":  [
+                                                     -1.2,
+                                                     -0.2629,
+                                                     0.592
+                                                 ],
+                                         "max":  [
+                                                     1.2,
+                                                     0.2629,
+                                                     1.1406
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "Strain_Relief_Cap",
+                                         "meshName":  "Strain_Relief_Cap",
+                                         "vertices":  2570,
+                                         "triangles":  2848,
+                                         "min":  [
+                                                     -1.1629,
+                                                     -0.4371,
+                                                     -1.1406
+                                                 ],
+                                         "max":  [
+                                                     1.1629,
+                                                     0.4371,
+                                                     -0.008
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "Triple_Lip_SWS",
+                                         "meshName":  "Triple_Lip_SWS",
+                                         "vertices":  4992,
+                                         "triangles":  7872,
+                                         "min":  [
+                                                     -1.0171,
+                                                     -0.2286,
+                                                     -0.2537
+                                                 ],
+                                         "max":  [
+                                                     0.4914,
+                                                     0.2286,
+                                                     0.5463
+                                                 ]
+                                     }
+                                 ]
+                   },
+                   {
+                       "id":  "power-distribution",
+                       "filename":  "power-distribution.glb",
+                       "glbPath":  "/assets/models/power-distribution.glb",
+                       "fileSizeBytes":  89376,
+                       "vertexCount":  12300,
+                       "faceCount":  13624,
+                       "envelopeTarget":  2.4,
+                       "normalizedSize":  [
+                                              2.4,
+                                              2.257,
+                                              1.834
+                                          ],
+                       "parts":  [
+                                     {
+                                         "nodeName":  "Diecast_Flange_Housing",
+                                         "meshName":  "Diecast_Flange_Housing",
+                                         "vertices":  5252,
+                                         "triangles":  5336,
+                                         "min":  [
+                                                     -1.2,
+                                                     -0.917,
+                                                     -0.796
+                                                 ],
+                                         "max":  [
+                                                     1.2,
+                                                     0.917,
+                                                     1.1285
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "EMC_Shield_Collar",
+                                         "meshName":  "EMC_Shield_Collar",
+                                         "vertices":  2780,
+                                         "triangles":  2736,
+                                         "min":  [
+                                                     -0.8049,
+                                                     -0.4734,
+                                                     -0.4654
+                                                 ],
+                                         "max":  [
+                                                     0.8049,
+                                                     0.4734,
+                                                     0.0734
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "Flange_Gasket",
+                                         "meshName":  "Flange_Gasket",
+                                         "vertices":  2032,
+                                         "triangles":  2816,
+                                         "min":  [
+                                                     -1.1887,
+                                                     -0.9057,
+                                                     0.5229
+                                                 ],
+                                         "max":  [
+                                                     1.1887,
+                                                     0.9057,
+                                                     0.6134
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "High_Current_Busbars",
+                                         "meshName":  "High_Current_Busbars",
+                                         "vertices":  1704,
+                                         "triangles":  2272,
+                                         "min":  [
+                                                     -0.6509,
+                                                     -0.2094,
+                                                     -1.1285
+                                                 ],
+                                         "max":  [
+                                                     0.6509,
+                                                     0.1189,
+                                                     1.0606
+                                                 ]
+                                     },
+                                     {
+                                         "nodeName":  "HVIL_Signal_Bridge",
+                                         "meshName":  "HVIL_Signal_Bridge",
+                                         "vertices":  532,
+                                         "triangles":  464,
+                                         "min":  [
+                                                     -0.1925,
+                                                     0.1811,
+                                                     0.0814
+                                                 ],
+                                         "max":  [
+                                                     0.1925,
+                                                     0.3396,
+                                                     0.8568
+                                                 ]
+                                     }
+                                 ]
+                   }
+               ]
 }

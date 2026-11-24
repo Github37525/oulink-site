@@ -8,3 +8,4 @@ qa/*/node-compile-cache/
 .env.*
 !.env.example
 *.log
+.vercel
